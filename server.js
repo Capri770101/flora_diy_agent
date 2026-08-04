@@ -56,13 +56,21 @@ async function handleChat(req, res) {
   const text = (parsed.message || '').trim();
   if (!text) return sendJSON(res, 400, { error: 'empty message' });
 
+  // 门店上下文：平台侧透传（季节/地区、门店价格与毛利、打包成本），缺省用全局库价+系统当月
+  const shop = parsed.shop || {};
   const requirements = await decomposer.decompose(text);
+  requirements.month = parsed.month != null ? parsed.month : shop.month;
+  if (parsed.price_map || shop.price_map) requirements.price_map = parsed.price_map || shop.price_map;
+  if (parsed.cost_map || shop.cost_map) requirements.cost_map = parsed.cost_map || shop.cost_map;
+  if (parsed.margin_rate != null || shop.margin_rate != null) requirements.margin_rate = parsed.margin_rate != null ? parsed.margin_rate : shop.margin_rate;
+  if (parsed.pack_cost != null || shop.pack_cost != null) requirements.pack_cost = parsed.pack_cost != null ? parsed.pack_cost : shop.pack_cost;
   const plan = composePlan(requirements);
   const img = await generateImage(plan, requirements);
 
   plan.render_url = img.url;
   plan.render_type = img.type;
   plan.image_prompt = img.prompt;
+  plan.negative_prompt = img.negative_prompt;
   plan.summary = buildSummary(plan, requirements);
 
   const plans = loadPlans();
@@ -76,7 +84,8 @@ async function handleChat(req, res) {
     plan,
     render_url: img.url,
     render_type: img.type,
-    image_prompt: img.prompt
+    image_prompt: img.prompt,
+    negative_prompt: img.negative_prompt
   });
 }
 

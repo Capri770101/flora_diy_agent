@@ -3,7 +3,7 @@
     <view wx:for="{{messages}}" wx:key="index" class="bubble {{item.role}}">{{item.text}}</view>
 
     <view class="card" wx:if="{{plan}}">
-      <view class="card-title">🌿 你的 DIY 方案
+      <view class="card-title">🌿 你的专属花艺方案
         <text wx:if="{{plan.budget_ok === false}}" class="warn">已超预算·已自动降级</text>
       </view>
       <!-- 配色预览（演示态；接入文生图后为真实效果图） -->

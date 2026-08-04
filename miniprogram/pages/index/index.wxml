@@ -1,7 +1,7 @@
 <view class="home">
   <view class="hero">
-    <view class="hero-title">🌸 花艺 DIY 顾问</view>
-    <view class="hero-sub">说一句需求，智能体帮你设计专属花卉 DIY 方案与效果图</view>
+    <view class="hero-title">🌸 花艺顾问</view>
+    <view class="hero-sub">说一句需求，智能体帮你设计专属花艺方案与效果图</view>
   </view>
 
   <view class="section-title">快速开始</view>

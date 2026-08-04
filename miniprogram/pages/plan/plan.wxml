@@ -1,6 +1,6 @@
 <view class="plan" wx:if="{{plan}}">
   <view class="hero">
-    <view class="h-title">🌿 你的 DIY 方案</view>
+    <view class="h-title">🌿 你的专属花艺方案</view>
     <view class="h-sub">{{plan.summary}}</view>
   </view>
 
@@ -28,7 +28,7 @@
   </view>
 
   <view class="card">
-    <view class="label">制作步骤（{{plan.structure}}）</view>
+    <view class="label">门店执行工单（{{plan.structure}}）</view>
     <view class="step" wx:for="{{plan.steps}}" wx:key="index">
       <text class="num">{{index+1}}</text>
       <text class="step-t">{{item.t}}</text>

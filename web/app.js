@@ -47,14 +47,14 @@ function renderPlan(data) {
   const card = document.createElement('div');
   card.className = 'plan-card';
   card.innerHTML = `
-    <h3>🌿 你的 DIY 方案${p.budget_ok === false ? '<span class="badge">已超预算·已自动降级</span>' : ''}</h3>
+    <h3>🌿 你的专属花艺方案${p.budget_ok === false ? '<span class="badge">已超预算·已自动降级</span>' : ''}</h3>
     <div class="tag-row">${tags.join('')}</div>
     <div class="summary">${p.summary}</div>
     <img class="render" src="${data.render_url}" alt="效果图" />
     <div class="price">约 ¥${p.total}${req.budget ? ` <small>/ 预算 ¥${req.budget}</small>` : ''} · ${p.package}</div>
     <div class="section-title">花材清单 · 花语与寓意</div>
     <div class="flower-list">${flowers}</div>
-    <div class="section-title">制作步骤（${p.structure}）</div>
+    <div class="section-title">门店执行工单（${p.structure}）</div>
     <ol class="steps">${steps}</ol>
     <div class="section-title">💧 日常养护建议</div>
     <ul class="steps cares">${cares}</ul>
