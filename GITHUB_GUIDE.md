@@ -146,3 +146,28 @@ awesome xxx          # 主题精选合集，新手强烈推荐
 - 新设备流程：`git clone <仓库>` → `copy .env.example .env` → 填自己的 key → `node server.js`
 - `.env.example` 是安全模板可随处传；`.env` 是私密的，永远不提交
 
+### 私有仓库换设备（会报认证失败，需要登录）
+私有仓库 clone 需要身份认证，直接 clone 会报 "Authentication failed"。流程：
+
+**方式一：浏览器登录（推荐，最省事）**
+Windows 的 git 自带凭据管理器，新设备 clone 私有仓库时会自动弹出浏览器 → 登录 GitHub 账号 → 自动记住，以后不用再登。
+
+**方式二：Personal Access Token**
+1. 在已登录的浏览器上：头像 → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token，勾选 `repo` 权限，生成后立即复制（只显示一次）
+2. 新设备先配置：
+```
+git config --global user.name "你的GitHub用户名"
+git config --global user.email "你的邮箱"
+git config --global http.proxy http://127.0.0.1:7890   # 若新设备开了代理
+git config --global https.proxy http://127.0.0.1:7890
+```
+3. clone 时用户名填 GitHub 名，密码栏粘贴 token：
+```
+git clone https://github.com/你的名字/flora_diy_agent.git
+```
+或地址直接带 token：`git clone https://用户名:token@github.com/你的名字/flora_diy_agent.git`
+4. clone 完补 key：`copy .env.example .env` → 填 key → `node server.js`
+
+> 注意：token 就是新设备上的"密码"，别发群里别提交仓库；泄露了去 GitHub 作废重新生成即可。
+
+
