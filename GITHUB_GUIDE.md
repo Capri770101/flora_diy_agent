@@ -105,3 +105,44 @@ git clone https://github.com/你的名字/flora-diy-agent.git
 | `push` 提示登录 | 首次授权 GitHub 账号 |
 | `Remote origin already exists` | 重复 add remote → 用 `git remote set-url origin <新地址>` |
 | 不想传的文件出现在 add 里 | 先补进 .gitignore，再 `git add .` |
+
+## 九、逛开源项目：GitHub 的正确打开方式
+
+### 项目页面看什么
+| 区域 | 是什么 | 你的用法 |
+|---|---|---|
+| README | 项目说明书（干什么/怎么装/怎么用） | 第一优先看，决定要不要用 |
+| ⭐ Star | 收藏/点赞 | 好项目点一下 = 我的收藏（右上角头像 → Your stars） |
+| Fork | 复制一份到你的账号 | 想魔改或保存副本时用 |
+| Code 按钮 | 获取地址 | Download ZIP 直接下载；复制 URL 用于 clone |
+| Issues | 问题讨论区 | 看已知 bug、学别人怎么描述问题 |
+| Releases | 发行版 | 下载现成安装包 |
+
+### 找项目的 3 个入口
+1. github.com/explore —— 分类推荐
+2. github.com/trending —— 今日热榜，可筛语言
+3. 搜索高级语法：
+```
+stars:>1000 聊天机器人
+language:javascript 花卉
+topic:chatbot
+awesome xxx          # 主题精选合集，新手强烈推荐
+```
+
+### 把一个项目"用起来"的四步
+1. 看 README（有安装说明吗）
+2. Star 收藏
+3. `git clone <项目地址>` 到本地
+4. 按 README 跑起来 —— 跑不通就换一个，别硬啃
+
+### 用开源项目学编程
+- 黄金法则：README 好懂 + star<5000 + 有"快速开始"章节 → 通读源码收获最大（star 几十万的顶级项目太大，现阶段别碰）
+- clone 下来用 VS Code 打开，挑 100 行内的小文件通读，让 AI 逐行讲解（与学习计划同款方法）
+- 去 Issues 搜 bug 看讨论，学真实世界的排错思路
+- 魔改：Fork → clone 自己副本 → 改 → 想贡献给原作者点 `New Pull Request`（先看 CONTRIBUTING.md）
+
+### 换设备/重装的密钥配置
+- clone 下来的版本不含 `.env`（密钥）—— 属正常设计
+- 新设备流程：`git clone <仓库>` → `copy .env.example .env` → 填自己的 key → `node server.js`
+- `.env.example` 是安全模板可随处传；`.env` 是私密的，永远不提交
+
