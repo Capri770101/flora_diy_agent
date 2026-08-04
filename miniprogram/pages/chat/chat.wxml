@@ -6,6 +6,7 @@
       <view class="card-title">🌿 你的专属花艺方案
         <text wx:if="{{plan.budget_ok === false}}" class="warn">已超预算·已自动降级</text>
       </view>
+      <image wx:if="{{plan.render_url}}" class="render-img" src="{{plan.render_url}}" mode="aspectFill" />
       <!-- 配色预览（演示态；接入文生图后为真实效果图） -->
       <view class="dots">
         <view class="dot" wx:for="{{plan.items}}" wx:key="flower_id" style="background:{{item.color}}"></view>
@@ -16,8 +17,11 @@
       <view class="flower-list">
         <text class="pill" wx:for="{{plan.items}}" wx:key="flower_id">{{item.name}} ×{{item.qty}}{{item.unit}}</text>
       </view>
-      <view class="label">步骤（{{plan.structure}}）</view>
-      <view class="step" wx:for="{{plan.steps}}" wx:key="index">{{index+1}}. {{item}}</view>
+      <view class="label">门店执行工单（{{plan.structure}}）</view>
+      <view class="step" wx:for="{{plan.steps}}" wx:key="index">
+        <text class="step-t">{{index+1}}. {{item.t}}</text>
+        <view class="step-d">{{item.d}}</view>
+      </view>
       <view class="detail-btn" bindtap="openPlan">查看完整方案 →</view>
     </view>
 

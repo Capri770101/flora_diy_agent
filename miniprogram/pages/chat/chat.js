@@ -19,6 +19,10 @@ Page({
     this.setData({ messages: msgs, input: '', loading: true });
     try {
       const data = await request('/api/v1/chat', 'POST', { message: text });
+      if (data.render_url && data.render_url.startsWith('/')) {
+        data.render_url = (getApp().globalData.apiBase || '') + data.render_url;
+        data.plan.render_url = data.render_url;
+      }
       const botMsgs = this.data.messages.concat([{ role: 'bot', text: data.reply_text }]);
       this.setData({ messages: botMsgs, plan: data.plan, loading: false });
       this.saveHistory(data.plan);
