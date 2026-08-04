@@ -1,0 +1,31 @@
+<view class="chat">
+  <scroll-view scroll-y class="msg-area">
+    <view wx:for="{{messages}}" wx:key="index" class="bubble {{item.role}}">{{item.text}}</view>
+
+    <view class="card" wx:if="{{plan}}">
+      <view class="card-title">🌿 你的 DIY 方案
+        <text wx:if="{{plan.budget_ok === false}}" class="warn">已超预算·已自动降级</text>
+      </view>
+      <!-- 配色预览（演示态；接入文生图后为真实效果图） -->
+      <view class="dots">
+        <view class="dot" wx:for="{{plan.items}}" wx:key="flower_id" style="background:{{item.color}}"></view>
+      </view>
+      <view class="summary">{{plan.summary}}</view>
+      <view class="price">约 ¥{{plan.total}}<text wx:if="{{plan.budget}}" class="muted"> / 预算 ¥{{plan.budget}}</text></view>
+      <view class="label">花材清单</view>
+      <view class="flower-list">
+        <text class="pill" wx:for="{{plan.items}}" wx:key="flower_id">{{item.name}} ×{{item.qty}}{{item.unit}}</text>
+      </view>
+      <view class="label">步骤（{{plan.structure}}）</view>
+      <view class="step" wx:for="{{plan.steps}}" wx:key="index">{{index+1}}. {{item}}</view>
+      <view class="detail-btn" bindtap="openPlan">查看完整方案 →</view>
+    </view>
+
+    <view wx:if="{{loading}}" class="bubble bot">正在设计你的花艺方案…</view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input class="input" placeholder="描述你的需求…" value="{{input}}" bindinput="onInput" confirm-type="send" bindconfirm="send" />
+    <view class="send-btn" bindtap="send">发送</view>
+  </view>
+</view>

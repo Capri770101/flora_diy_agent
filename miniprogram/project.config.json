@@ -1,0 +1,13 @@
+{
+  "description": "智能花卉 DIY 推荐智能体 · 小程序",
+  "miniprogramRoot": "./",
+  "projectname": "flora-diy-agent",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": false
+  },
+  "libVersion": "latest"
+}

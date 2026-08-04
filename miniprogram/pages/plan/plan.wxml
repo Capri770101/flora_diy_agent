@@ -1,0 +1,44 @@
+<view class="plan" wx:if="{{plan}}">
+  <view class="hero">
+    <view class="h-title">🌿 你的 DIY 方案</view>
+    <view class="h-sub">{{plan.summary}}</view>
+  </view>
+
+  <view class="card">
+    <view class="label">配色预览</view>
+    <view class="dots">
+      <view class="dot" wx:for="{{plan.items}}" wx:key="flower_id" style="background:{{item.color}}"></view>
+    </view>
+    <view class="price">约 ¥{{plan.total}}<text wx:if="{{plan.budget}}" class="muted"> / 预算 ¥{{plan.budget}}</text></view>
+    <view class="pkg">包装：{{plan.package}}</view>
+  </view>
+
+  <view class="card">
+    <view class="label">花材清单 · 花语与寓意</view>
+    <view class="flower" wx:for="{{plan.items}}" wx:key="flower_id">
+      <view class="flower-head">
+        <view class="dot sm" style="background:{{item.color}}"></view>
+        <text class="name">{{item.name}} ×{{item.qty}}{{item.unit}}</text>
+        <text class="role">{{item.role}}</text>
+        <text class="meta">¥{{item.price * item.qty}}</text>
+      </view>
+      <view class="flower-meta">花语：{{item.花语}} · 花期：{{item.花期}} · 时令：{{item.season || '全年'}}</view>
+      <view class="flower-care">💧 {{item.care}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="label">制作步骤（{{plan.structure}}）</view>
+    <view class="step" wx:for="{{plan.steps}}" wx:key="index">
+      <text class="num">{{index+1}}</text>
+      <text class="step-t">{{item.t}}</text>
+      <view class="step-d">{{item.d}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="label">💧 日常养护建议</view>
+    <view class="care" wx:for="{{plan.care_tips}}" wx:key="index">· {{item}}</view>
+  </view>
+</view>
+<view wx:else class="empty">方案不存在</view>

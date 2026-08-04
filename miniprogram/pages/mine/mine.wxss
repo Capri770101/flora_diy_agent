@@ -1,0 +1,6 @@
+.mine { padding: 24rpx; }
+.head { font-size: 36rpx; font-weight: 700; margin-bottom: 20rpx; }
+.empty { color: #999; text-align: center; margin-top: 120rpx; font-size: 28rpx; }
+.item { background: #fff; border-radius: 20rpx; padding: 24rpx; margin-bottom: 16rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
+.item-sum { font-size: 28rpx; color: #333; line-height: 1.5; }
+.item-meta { font-size: 24rpx; color: #999; margin-top: 10rpx; }

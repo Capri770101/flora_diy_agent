@@ -1,0 +1,10 @@
+.home { padding: 24rpx; }
+.hero { background: linear-gradient(135deg,#8E44AD,#C39BD3); border-radius: 24rpx; padding: 40rpx 32rpx; color:#fff; }
+.hero-title { font-size: 40rpx; font-weight: 700; }
+.hero-sub { font-size: 24rpx; opacity: 0.95; margin-top: 12rpx; line-height: 1.5; }
+.section-title { font-size: 26rpx; color: #888; margin: 32rpx 8rpx 16rpx; }
+.scene-grid { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.scene { width: calc(50% - 8rpx); background: #fff; border-radius: 20rpx; padding: 28rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
+.scene-icon { font-size: 48rpx; }
+.scene-label { font-size: 28rpx; margin-top: 12rpx; color: #444; }
+.free-btn { display: block; text-align: center; padding: 24rpx; font-size: 28rpx; }

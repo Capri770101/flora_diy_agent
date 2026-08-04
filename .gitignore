@@ -1,0 +1,17 @@
+# 密钥与环境配置（绝不提交！）
+.env
+
+# 依赖与日志
+node_modules/
+*.log
+
+# 运行期生成数据
+data/plans.json
+data/previews/
+
+# 工具状态
+.workbuddy/
+
+# 系统文件
+.DS_Store
+Thumbs.db

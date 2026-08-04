@@ -1,0 +1,26 @@
+.plan { padding: 20rpx; }
+.hero { background: linear-gradient(135deg,#8E44AD,#C39BD3); border-radius: 24rpx; padding: 36rpx 32rpx; color:#fff; margin-bottom: 20rpx; }
+.h-title { font-size: 36rpx; font-weight: 700; }
+.h-sub { font-size: 26rpx; opacity: 0.95; margin-top: 12rpx; line-height: 1.5; }
+.card { background:#fff; border-radius: 20rpx; padding: 24rpx; margin-bottom: 20rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
+.label { font-size: 26rpx; color: #888; margin-bottom: 12rpx; }
+.dots { margin: 8rpx 0; }
+.price { font-size: 36rpx; font-weight: 700; color: #d2691e; margin: 10rpx 0; }
+.muted { font-weight: 400; color: #999; font-size: 24rpx; }
+.pkg { font-size: 26rpx; color: #555; }
+.flower { padding: 14rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.flower:last-child { border-bottom: none; }
+.flower-head { display: flex; align-items: center; }
+.dot { display: inline-block; width: 28rpx; height: 28rpx; border-radius: 50%; }
+.dot.sm { width: 28rpx; height: 28rpx; }
+.flower .name { font-size: 28rpx; color: #333; margin-left: 12rpx; }
+.flower .role { font-size: 20rpx; color: #8E44AD; background: #F3E8FA; padding: 2rpx 12rpx; border-radius: 16rpx; margin-left: 12rpx; }
+.flower .meta { font-size: 24rpx; color: #d2691e; font-weight: 600; margin-left: auto; }
+.flower-meta { font-size: 22rpx; color: #999; margin-top: 6rpx; }
+.flower-care { font-size: 22rpx; color: #4a7a5a; margin-top: 4rpx; line-height: 1.6; }
+.step { font-size: 26rpx; color: #555; line-height: 1.6; padding: 10rpx 0; }
+.num { display: inline-block; width: 36rpx; height: 36rpx; line-height: 36rpx; text-align: center; background: #8E44AD; color: #fff; border-radius: 50%; font-size: 22rpx; margin-right: 12rpx; }
+.step-t { font-size: 28rpx; color: #333; font-weight: 600; }
+.step-d { font-size: 24rpx; color: #777; margin: 6rpx 0 0 48rpx; line-height: 1.6; }
+.care { font-size: 24rpx; color: #666; line-height: 1.7; padding: 6rpx 0; }
+.empty { text-align: center; color: #999; margin-top: 100rpx; }

@@ -1,0 +1,61 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: #eef1f5;
+  display: flex; justify-content: center;
+  min-height: 100vh; padding: 16px;
+}
+.phone {
+  width: 420px; max-width: 100%; height: 90vh;
+  background: #fff; border-radius: 20px; overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+.app-bar {
+  background: linear-gradient(135deg, #8E44AD, #C39BD3);
+  color: #fff; padding: 18px 18px 14px;
+}
+.app-bar .title { font-size: 18px; font-weight: 700; }
+.app-bar .sub { font-size: 12px; opacity: 0.92; margin-top: 4px; }
+.messages { flex: 1; overflow-y: auto; padding: 14px; background: #fafafa; display: flex; flex-direction: column; gap: 10px; }
+.bubble {
+  max-width: 82%; padding: 10px 13px; border-radius: 14px;
+  font-size: 14px; line-height: 1.5; word-break: break-word;
+}
+.bubble.bot { background: #fff; border: 1px solid #eee; align-self: flex-start; border-bottom-left-radius: 4px; }
+.bubble.user { background: #8E44AD; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+.plan-card {
+  background: #fff; border: 1px solid #eee; border-radius: 14px;
+  padding: 14px; margin: 6px 0 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+.plan-card h3 { font-size: 15px; margin-bottom: 8px; color: #333; }
+.plan-card img.render { width: 100%; border-radius: 12px; margin: 6px 0 10px; border: 1px solid #f0f0f0; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.tag { background: #F3E8FA; color: #8E44AD; font-size: 12px; padding: 3px 8px; border-radius: 20px; }
+.summary { font-size: 14px; color: #444; line-height: 1.6; }
+.price { font-size: 16px; font-weight: 700; color: #d2691e; margin: 8px 0; }
+.price small { font-weight: 400; color: #999; font-size: 12px; }
+.section-title { font-size: 13px; color: #888; margin: 10px 0 4px; }
+.flower-list { display: flex; flex-direction: column; gap: 8px; }
+.flower-card { font-size: 12px; background: #fafafa; border: 1px solid #eee; border-radius: 10px; padding: 8px 10px; }
+.flower-head { display: flex; align-items: center; gap: 6px; }
+.flower-head .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.flower-price { color: #d2691e; font-weight: 600; margin-left: auto; }
+.role { font-size: 10px; color: #8E44AD; background: #F3E8FA; padding: 1px 6px; border-radius: 8px; }
+.flower-meta { color: #888; margin-top: 4px; }
+.flower-care { color: #4a7a5a; margin-top: 3px; line-height: 1.5; }
+.steps { margin: 4px 0 0 18px; font-size: 13px; color: #555; line-height: 1.7; }
+.steps.cares { list-style: none; margin-left: 0; }
+.steps.cares li { padding-left: 2px; margin-bottom: 3px; }
+.steps b { color: #444; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 6px; background: #fff3e0; color: #e08e0b; margin-left: 6px; }
+
+.examples { display: flex; gap: 6px; padding: 8px 12px; flex-wrap: wrap; background: #fafafa; border-top: 1px solid #f0f0f0; }
+.chip { font-size: 12px; background: #fff; border: 1px solid #E8D5F0; color: #8E44AD; padding: 5px 10px; border-radius: 16px; cursor: pointer; }
+.chip:active { background: #F3E8FA; }
+.input-bar { display: flex; padding: 10px; background: #fff; border-top: 1px solid #eee; }
+.input-bar input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 14px; font-size: 14px; outline: none; }
+.input-bar button { margin-left: 8px; border: none; background: #8E44AD; color: #fff; padding: 0 18px; border-radius: 20px; font-size: 14px; cursor: pointer; }
+.input-bar button:disabled { opacity: 0.5; }
+.loading { font-size: 13px; color: #aaa; padding: 6px 2px; }
