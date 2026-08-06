@@ -22,14 +22,13 @@ async function check(cond, msg) {
   const m1 = r.match('GET', '/api/v1/orders/ord_abc123');
   assert.ok(m1, 'GET /api/v1/orders/:id 应匹配');
   m1.handler({ params: m1.params });
-  check(captured.id === 'ord_abc', '路径参数提取 :id');
+  check(captured.id === 'ord_abc123', '路径参数提取 :id');
   check(r.match('GET', '/api/v1/orders/a/b') === null, '多余路径段不匹配');
   check(r.match('DELETE', '/api/v1/orders/x') === null, '方法不匹配返回 null');
   check(r.match('POST', '/api/v1/shops') !== null, 'POST 注册匹配');
   let threw = false;
   try { r.add('FOO', '/x', () => { }); } catch (e) { threw = true; }
   check(threw, '非法方法注册被拒');
-  pass += 1; // 占位对齐（m1 已在上面断言）
 }
 
 // ── 单元：HttpError 结构 ──

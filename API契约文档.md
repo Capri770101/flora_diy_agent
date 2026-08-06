@@ -22,7 +22,9 @@
 | 编码 | 所有请求/响应 `Content-Type: application/json; charset=utf-8` |
 | 会话保持 | **LLM 无状态**。多轮对话需客户端自行保存 `session_id`，并在每次请求回传（服务端据此合并需求、保留版本历史） |
 | 价格安全 | 凡金额，服务端以 `data/shops.json` 为准；客户端在 `shop` 中传入的价格字段（`price_map/cost_map/margin_rate/pack_cost`）**被忽略**，不可信 |
-| 错误格式 | 统一 `{ "error": "<message>" }`，HTTP 状态码见各接口 |
+| 错误格式 | 统一 `{ "code": "<机器可读错误码>", "message": "<人读信息>", "details": <可选> }`，HTTP 状态码见各接口。错误码表：`BAD_REQUEST`(400) / `NOT_FOUND`(404) / `INVALID_TRANSITION`(400) / `NOT_PAYABLE`(400) / `BAD_FEEDBACK`(400) / `RATE_LIMITED`(429) / `INTERNAL_ERROR`(500) |
+| 限流 | 可选：`RATE_LIMIT_PER_MIN`（每 IP 每分钟请求上限，0 关闭），超限返回 429 + `Retry-After: 60` |
+| CORS | 已放开（`Access-Control-Allow-Origin: *`），便于 Web 端联调；小程序不受 CORS 约束 |
 | 鉴权 | 当前 dev 态无鉴权；上线建议在网关前置 `Authorization: Bearer <token>`（小程序走微信 `code2session` 换平台 token） |
 
 ---

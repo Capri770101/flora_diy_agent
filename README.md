@@ -61,6 +61,11 @@ curl -X POST http://localhost:3000/api/v1/chat \
 
 ## 商城接口（店铺 / 订单 / 支付）
 
+> HTTP 壳层：`server.js` 走 `lib/http/`（声明式路由 `Router` + CORS/限流/日志/统一错误处理中间件），启动后**免费获得**：
+> - 机器可读错误码：`GET /api/v1/openapi.json` 实时生成的 **OpenAPI 3.0 契约**；
+> - CORS 放开 + 可选限流（`.env` 设 `RATE_LIMIT_PER_MIN=<每IP每分钟>`，0 关闭）。
+> 单元测试：`node test/http.test.js` / `node test/ratelimit.test.js`（已并入 `npm test`）。
+
 ```bash
 # 花店列表 / 详情
 GET /api/v1/shops
