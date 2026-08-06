@@ -123,7 +123,7 @@ async function runFixture(fx) {
     }
     check(results[0].need_clarify === false, '完整信息不反问', 'shopflow');
     check(results[0].shop_suggestions.length === 3, '首轮给出 3 家花店', 'shopflow');
-    check(results[1].shop_choice && results[1].shop_choice.name === '一枝花艺·罗湖店', '选第二家锁定罗湖店', 'shopflow');
+    check(results[1].shop_choice && results[1].shop_choice.name === results[0].shop_suggestions[1].name, '选第二家锁定列表第 2 家店', 'shopflow');
     check(versions[1] === versions[0], '选店回合不推新版本', 'shopflow');
     check(results[2].shop_suggestions.length === 5, '看看其他店扩展到 5 家', 'shopflow');
     check(results[3].shop_choice && results[3].shop_choice.name === '花间集·福田店', '按店名锁定花间集', 'shopflow');

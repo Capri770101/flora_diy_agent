@@ -954,5 +954,1072 @@
     ],
     "care": "叶柄斜剪深插，叶面每周用湿布擦拭除尘；耐养近1个月，喜阴凉",
     "months": []
+  },
+  {
+    "id": "peony",
+    "name": "牡丹",
+    "en": "peony",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#F7CAC9"
+      },
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "全年",
+    "price": 18,
+    "unit": "支",
+    "花语": "富贵圆满/浪漫",
+    "花期": "7-10天",
+    "过敏": false,
+    "styleTags": [
+      "温柔",
+      "高级",
+      "复古"
+    ],
+    "occasions": [
+      "婚礼",
+      "生日",
+      "母亲节",
+      "表白",
+      "乔迁"
+    ],
+    "care": "根部斜剪醒花2-4h；花瓣薄勿喷水，避风口直吹",
+    "months": []
+  },
+  {
+    "id": "ranunculus",
+    "name": "洋牡丹",
+    "en": "ranunculus",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#F8BBD0"
+      },
+      {
+        "name": "橙",
+        "hex": "#E8915B"
+      },
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "春",
+    "price": 9,
+    "unit": "支",
+    "花语": "魅力/温柔",
+    "花期": "5-7天",
+    "过敏": false,
+    "styleTags": [
+      "温柔",
+      "浪漫",
+      "复古"
+    ],
+    "occasions": [
+      "生日",
+      "表白",
+      "婚礼",
+      "母亲节"
+    ],
+    "care": "冷水养护，根部十字剪；易垂头需深水",
+    "months": [
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "calla",
+    "name": "马蹄莲",
+    "en": "calla",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      },
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      },
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      },
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      }
+    ],
+    "season": "全年",
+    "price": 14,
+    "unit": "支",
+    "花语": "圣洁/高贵",
+    "花期": "7-10天",
+    "过敏": false,
+    "styleTags": [
+      "高级",
+      "极简",
+      "浪漫"
+    ],
+    "occasions": [
+      "婚礼",
+      "乔迁",
+      "商务",
+      "表白"
+    ],
+    "care": "浅水养护，花茎中空易烂，水位不过高",
+    "months": []
+  },
+  {
+    "id": "anthurium",
+    "name": "红掌",
+    "en": "anthurium",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "全年",
+    "price": 12,
+    "unit": "支",
+    "花语": "热情/红火",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "热烈",
+      "高级",
+      "热带"
+    ],
+    "occasions": [
+      "开业",
+      "商务",
+      "乔迁"
+    ],
+    "care": "叶面喷水保湿，避阳光直射，耐阴",
+    "months": []
+  },
+  {
+    "id": "protea",
+    "name": "帝王花",
+    "en": "protea",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#E8A0BF"
+      },
+      {
+        "name": "红",
+        "hex": "#B03A5B"
+      }
+    ],
+    "season": "全年",
+    "price": 22,
+    "unit": "支",
+    "花语": "胜利/独特",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "高级",
+      "复古",
+      "热带"
+    ],
+    "occasions": [
+      "开业",
+      "乔迁",
+      "表白"
+    ],
+    "care": "耐放，深水醒花；花头重需支撑",
+    "months": []
+  },
+  {
+    "id": "freesia",
+    "name": "小苍兰",
+    "en": "freesia",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      },
+      {
+        "name": "粉",
+        "hex": "#F8BBD0"
+      },
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      }
+    ],
+    "season": "春",
+    "price": 7,
+    "unit": "支",
+    "花语": "纯洁/幸福",
+    "花期": "5-7天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "温柔",
+      "浪漫"
+    ],
+    "occasions": [
+      "生日",
+      "表白",
+      "母亲节"
+    ],
+    "care": "斜剪醒花，香味浓放通风处；易垂头",
+    "months": [
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "snapdragon",
+    "name": "金鱼草",
+    "en": "snapdragon",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      },
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "春",
+    "price": 4,
+    "unit": "支",
+    "花语": "活泼/多金",
+    "花期": "7-10天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "田园",
+      "复古"
+    ],
+    "occasions": [
+      "生日",
+      "家居装饰",
+      "探病"
+    ],
+    "care": "斜剪深水醒花；花穗由下往上开",
+    "months": [
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "amaryllis",
+    "name": "朱顶红",
+    "en": "amaryllis",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      },
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      }
+    ],
+    "season": "冬",
+    "price": 15,
+    "unit": "支",
+    "花语": "渴望/热情",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "热烈",
+      "高级",
+      "浪漫"
+    ],
+    "occasions": [
+      "生日",
+      "表白",
+      "节日"
+    ],
+    "care": "高瓶支撑，浅水养护；花后留叶养球",
+    "months": [
+      12,
+      1,
+      2
+    ]
+  },
+  {
+    "id": "delphinium",
+    "name": "飞燕草",
+    "en": "delphinium",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "蓝",
+        "hex": "#6A8CDB"
+      },
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "春",
+    "price": 8,
+    "unit": "支",
+    "花语": "轻盈/自由",
+    "花期": "5-7天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "浪漫",
+      "高级"
+    ],
+    "occasions": [
+      "婚礼",
+      "生日",
+      "乔迁"
+    ],
+    "care": "易垂头，冷水深水醒花；中空补水",
+    "months": [
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "dahlia",
+    "name": "大丽花",
+    "en": "dahlia",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#F8BBD0"
+      },
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "橙",
+        "hex": "#E8915B"
+      },
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "夏秋",
+    "price": 11,
+    "unit": "支",
+    "花语": "华丽/感恩",
+    "花期": "7-10天",
+    "过敏": false,
+    "styleTags": [
+      "复古",
+      "热烈",
+      "高级"
+    ],
+    "occasions": [
+      "生日",
+      "母亲节",
+      "表白",
+      "婚礼"
+    ],
+    "care": "斜剪醒花，花头重需支撑；避风",
+    "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "camellia",
+    "name": "山茶",
+    "en": "camellia",
+    "role": "主花",
+    "colors": [
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "冬",
+    "price": 13,
+    "unit": "支",
+    "花语": "谦逊/理想爱",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "温柔",
+      "高级",
+      "复古"
+    ],
+    "occasions": [
+      "生日",
+      "表白",
+      "探病"
+    ],
+    "care": "整枝浸水复水；叶片油亮耐放",
+    "months": [
+      12,
+      1,
+      2
+    ]
+  },
+  {
+    "id": "statice",
+    "name": "星辰花",
+    "en": "statice",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      },
+      {
+        "name": "蓝",
+        "hex": "#6A8CDB"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "全年",
+    "price": 3,
+    "unit": "支",
+    "花语": "永恒记忆",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "复古",
+      "清新",
+      "田园"
+    ],
+    "occasions": [
+      "生日",
+      "表白",
+      "探病"
+    ],
+    "care": "耐放易干花，浅水即可",
+    "months": []
+  },
+  {
+    "id": "agapanthus",
+    "name": "百子莲",
+    "en": "agapanthus",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "蓝",
+        "hex": "#6A8CDB"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "夏",
+    "price": 9,
+    "unit": "支",
+    "花语": "浪漫/恋恋不忘",
+    "花期": "7-10天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "高级",
+      "浪漫"
+    ],
+    "occasions": [
+      "婚礼",
+      "乔迁",
+      "生日"
+    ],
+    "care": "深水醒花；花茎中空需补水",
+    "months": [
+      6,
+      7,
+      8
+    ]
+  },
+  {
+    "id": "craspedia",
+    "name": "金槌花",
+    "en": "craspedia",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      }
+    ],
+    "season": "全年",
+    "price": 5,
+    "unit": "支",
+    "花语": "活力/明亮",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "田园",
+      "复古",
+      "清新"
+    ],
+    "occasions": [
+      "生日",
+      "家居装饰",
+      "探病"
+    ],
+    "care": "耐放，浅水；圆球花不易损",
+    "months": []
+  },
+  {
+    "id": "waxflower",
+    "name": "风蜡花",
+    "en": "waxflower",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#F8BBD0"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "全年",
+    "price": 4,
+    "unit": "支",
+    "花语": "温柔/坚韧",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "浪漫",
+      "田园"
+    ],
+    "occasions": [
+      "生日",
+      "婚礼",
+      "表白"
+    ],
+    "care": "细枝多花，浅水；香气淡雅",
+    "months": []
+  },
+  {
+    "id": "veronica",
+    "name": "美人樱",
+    "en": "veronica",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      },
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      },
+      {
+        "name": "蓝",
+        "hex": "#6A8CDB"
+      }
+    ],
+    "season": "春",
+    "price": 5,
+    "unit": "支",
+    "花语": "祝愿/健康",
+    "花期": "5-7天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "浪漫",
+      "田园"
+    ],
+    "occasions": [
+      "生日",
+      "探病",
+      "家居装饰"
+    ],
+    "care": "斜剪醒花，线状花挺括",
+    "months": [
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "astilbe",
+    "name": "落新妇",
+    "en": "astilbe",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "粉",
+        "hex": "#F8BBD0"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      },
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      }
+    ],
+    "season": "春",
+    "price": 8,
+    "unit": "支",
+    "花语": "真诚/可爱",
+    "花期": "5-7天",
+    "过敏": false,
+    "styleTags": [
+      "温柔",
+      "浪漫",
+      "高级"
+    ],
+    "occasions": [
+      "婚礼",
+      "生日",
+      "表白"
+    ],
+    "care": "易垂头，深水醒花；羽状花怕压",
+    "months": [
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "hypericum",
+    "name": "红豆",
+    "en": "hypericum",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      },
+      {
+        "name": "橙",
+        "hex": "#E8915B"
+      }
+    ],
+    "season": "全年",
+    "price": 4,
+    "unit": "支",
+    "花语": "珍贵/点缀",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "田园",
+      "复古",
+      "热烈"
+    ],
+    "occasions": [
+      "生日",
+      "家居装饰",
+      "节日"
+    ],
+    "care": "红果点缀，耐放；浅水",
+    "months": []
+  },
+  {
+    "id": "thistle",
+    "name": "蓟",
+    "en": "thistle",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      },
+      {
+        "name": "蓝",
+        "hex": "#6A8CDB"
+      }
+    ],
+    "season": "全年",
+    "price": 6,
+    "unit": "支",
+    "花语": "勇敢/独立",
+    "花期": "10-15天",
+    "过敏": false,
+    "styleTags": [
+      "复古",
+      "高级",
+      "清新"
+    ],
+    "occasions": [
+      "生日",
+      "表白",
+      "商务"
+    ],
+    "care": "耐放，刺小心；浅水",
+    "months": []
+  },
+  {
+    "id": "stock",
+    "name": "紫罗兰",
+    "en": "stock",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "紫",
+        "hex": "#9B59B6"
+      },
+      {
+        "name": "粉",
+        "hex": "#F5A9B8"
+      },
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      },
+      {
+        "name": "黄",
+        "hex": "#F4D35E"
+      }
+    ],
+    "season": "冬春",
+    "price": 5,
+    "unit": "支",
+    "花语": "永恒美/思念",
+    "花期": "5-7天",
+    "过敏": false,
+    "styleTags": [
+      "温柔",
+      "浪漫",
+      "清新"
+    ],
+    "occasions": [
+      "生日",
+      "母亲节",
+      "表白",
+      "探病"
+    ],
+    "care": "香味浓，斜剪醒花；基部易臭需勤换水",
+    "months": [
+      12,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "feverfew",
+    "name": "小白菊",
+    "en": "feverfew",
+    "role": "配花",
+    "colors": [
+      {
+        "name": "白",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "season": "春",
+    "price": 4,
+    "unit": "支",
+    "花语": "和平/纯真",
+    "花期": "7-10天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "田园",
+      "浪漫"
+    ],
+    "occasions": [
+      "生日",
+      "探病",
+      "家居装饰"
+    ],
+    "care": "小菊耐放，浅水；多花清新",
+    "months": [
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "ruscus",
+    "name": "玉羊齿",
+    "en": "ruscus",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#6B8E5A"
+      }
+    ],
+    "season": "全年",
+    "price": 3,
+    "unit": "扎",
+    "花语": "陪伴/守护",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "高级",
+      "极简",
+      "清新"
+    ],
+    "occasions": [
+      "婚礼",
+      "商务",
+      "乔迁"
+    ],
+    "care": "叶材耐放，可干养；浅水",
+    "months": []
+  },
+  {
+    "id": "salal",
+    "name": "沙龙叶",
+    "en": "salal",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#5F8C4E"
+      }
+    ],
+    "season": "全年",
+    "price": 2,
+    "unit": "扎",
+    "花语": "自然/丰盈",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "田园",
+      "复古"
+    ],
+    "occasions": [
+      "生日",
+      "家居装饰",
+      "婚礼"
+    ],
+    "care": "叶材耐放，浅水；圆叶饱满",
+    "months": []
+  },
+  {
+    "id": "leatherleaf",
+    "name": "革叶蕨",
+    "en": "leatherleaf",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#4F7A3F"
+      }
+    ],
+    "season": "全年",
+    "price": 2,
+    "unit": "扎",
+    "花语": "坚韧/常青",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "清新",
+      "田园",
+      "复古"
+    ],
+    "occasions": [
+      "生日",
+      "探病",
+      "家居装饰"
+    ],
+    "care": "蕨类耐阴，浅水保湿",
+    "months": []
+  },
+  {
+    "id": "aspidistra",
+    "name": "蜘蛛抱蛋",
+    "en": "aspidistra",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#4F7A3F"
+      }
+    ],
+    "season": "全年",
+    "price": 3,
+    "unit": "扎",
+    "花语": "坚毅/质朴",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "高级",
+      "复古",
+      "清新"
+    ],
+    "occasions": [
+      "商务",
+      "乔迁",
+      "婚礼"
+    ],
+    "care": "叶材挺括耐放，浅水",
+    "months": []
+  },
+  {
+    "id": "camellialeaf",
+    "name": "山茶叶",
+    "en": "camellialeaf",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#3E6B35"
+      }
+    ],
+    "season": "全年",
+    "price": 2,
+    "unit": "扎",
+    "花语": "常青/衬托",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "高级",
+      "清新",
+      "复古"
+    ],
+    "occasions": [
+      "婚礼",
+      "商务",
+      "乔迁"
+    ],
+    "care": "叶材油亮耐放，浅水",
+    "months": []
+  },
+  {
+    "id": "huckleberry",
+    "name": "越橘果",
+    "en": "huckleberry",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#4F7A3F"
+      },
+      {
+        "name": "红",
+        "hex": "#C0392B"
+      }
+    ],
+    "season": "全年",
+    "price": 4,
+    "unit": "扎",
+    "花语": "丰收/点缀",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "田园",
+      "复古",
+      "热烈"
+    ],
+    "occasions": [
+      "生日",
+      "节日",
+      "家居装饰"
+    ],
+    "care": "红果绿叶耐放，浅水",
+    "months": []
+  },
+  {
+    "id": "berzelia",
+    "name": "柏泽丽",
+    "en": "berzelia",
+    "role": "叶材",
+    "colors": [
+      {
+        "name": "绿",
+        "hex": "#6B8E5A"
+      }
+    ],
+    "season": "全年",
+    "price": 5,
+    "unit": "扎",
+    "花语": "精致/独特",
+    "花期": "15-20天",
+    "过敏": false,
+    "styleTags": [
+      "高级",
+      "极简",
+      "复古"
+    ],
+    "occasions": [
+      "商务",
+      "婚礼",
+      "乔迁"
+    ],
+    "care": "鳞叶精致耐放，浅水",
+    "months": []
   }
 ]
