@@ -177,6 +177,34 @@ await runAgent({ text, session, location, config })
 - `location`：`{ lat, lng }`，用于附近花店匹配
 - `config`：`{ skip_image, shop_limit }`
 
+## 可插拔接口与插件机制
+
+智能体的能力按**槽位（slot）**组织，所有实现都是可替换的 **adapter**，通过 `lib/plugins/registry.js` 按优先级注册/解析（`npm run test` 含插件自测 `test/plugins.test.js`，验证注册/解析/优先级/覆盖）：
+
+| 槽位 | 门面入口 | 默认 adapter | 插拔后自动生效的实现 |
+|---|---|---|---|
+| `llm`（需求理解） | `lib/llm/client.js` | —（无 key 走规则引擎） | `lib/plugins/llm/openai-compatible.js` |
+| `image`（文生图） | `lib/imageGen.js` | `svg`（风格预览兜底） | `lib/plugins/image/dashscope.js` / `generic.js` |
+| `data`（数据源） | `lib/dataLayer.js` | `sqlite-json`（SQLite→JSON 回退） | 自定义 adapter 覆盖，无需改动业务代码 |
+
+**新增一个提供方只需两步**（以换一项文生图 API 为例）：
+
+1. 新建 `lib/plugins/image/xxx.js`，实现槽位接口：
+   ```js
+   module.exports = {
+     id: 'xxx',
+     slot: 'image',
+     priority: 200,            // 数值大的优先被 resolve
+     enabled: (cfg) => cfg.get('image.provider') === 'xxx',
+     async generate(plan, req) { /* 返回 { type, url, prompt, negative_prompt, provider } */ }
+   };
+   ```
+2. 在门面注册：`lib/imageGen.js` 里加一行 `registry.register(require('./plugins/image/xxx'))`；然后按需在 `.env` 设 `IMAGE_PROVIDER=xxx`.
+
+配置统一走 `lib/config.js`（`.env` 已有：`LLM_BASE_URL` / `LLM_API_KEY` / `LLM_MODEL` / `IMAGE_API` / `IMAGE_API_KEY` / `IMAGE_MODEL`），provider 推导规则：
+- 有 `IMAGE_API_KEY`：若 `IMAGE_API` 为空或为 `dashscope` → `dashscope`；若 `IMAGE_API` 为其他非空值 → `generic`；无 key → `svg`（SVG 兜底）。
+- LLM 仅当 `LLM_API_KEY` + `LLM_BASE_URL` 同时存在才启用（否则规则引擎）。
+
 ## 关键设计
 
 - **智能体四段式流水线**：理解（decompose，规则基底 + LLM 补缺）→ 澄清（缺字段反问）→ 方案合成（planner + 预算回退）→ 效果图 + 选店匹配（Top 3）；
