@@ -1,0 +1,26 @@
+#!/bin/sh
+# 质量门禁：提交前跑全套回归测试，不过则阻止提交
+# 启用：git config core.hooksPath .githooks
+
+# 优先用 npm；若 npm 不在 PATH 但 node 在，则直接用 node 跑测试套件（绕过 npm）
+NPM=$(command -v npm 2>/dev/null)
+NODE=$(command -v node 2>/dev/null)
+
+if [ -n "$NPM" ]; then
+  echo "🔍 质量门禁：运行 npm test ..."
+  npm test
+  rc=$?
+elif [ -n "$NODE" ]; then
+  echo "🔍 质量门禁：运行测试（node 直跑）..."
+  "$NODE" test/agent.test.js && "$NODE" test/plugins.test.js && "$NODE" test/http.test.js && "$NODE" test/ratelimit.test.js && "$NODE" test/insights.test.js
+  rc=$?
+else
+  echo "⚠️  未找到 npm / node，请在 PATH 中安装 Node 22+ 后重试（或 git commit --no-verify 跳过门禁）"
+  exit 1
+fi
+
+if [ "$rc" -ne 0 ]; then
+  echo "❌ 测试未通过（退出码 $rc），提交被阻止。请修复后重试；紧急情况可用 git commit --no-verify 跳过（不推荐）。"
+  exit 1
+fi
+echo "✅ 测试通过，允许提交。"
