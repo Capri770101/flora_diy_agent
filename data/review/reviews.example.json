@@ -1,0 +1,17 @@
+{
+  "A花卉::rose": {
+    "status": "confirmed",
+    "reviewer": "花艺师-王",
+    "note": "无误"
+  },
+  "F潮流::t_m12_camellia": {
+    "status": "revised",
+    "reviewer": "运营-李",
+    "note": "12月流行度偏低，score 建议下调至 0.65"
+  },
+  "M竞品::c_orose": {
+    "status": "pending",
+    "reviewer": "",
+    "note": ""
+  }
+}

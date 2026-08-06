@@ -18,6 +18,11 @@ data/agent.db-wal
 data/agent.db-shm
 data/*.json.migrated
 
+# 知识质检流水线 · 生成物（由 `npm run review` 重新生成；reviews.json 为复核工作文件）
+data/review/review_checklist.md
+data/review/review_checklist.csv
+data/review/reviews.json
+
 # 工具状态
 .workbuddy/
 
