@@ -188,7 +188,8 @@ await runAgent({ text, session, location, config })
 
 | 槽位 | 门面入口 | 默认 adapter | 插拔后自动生效的实现 |
 |---|---|---|---|
-| `llm`（需求理解） | `lib/llm/client.js` | —（无 key 走规则引擎） | `lib/plugins/llm/openai-compatible.js` |
+| `llm`（需求理解+对话） | `lib/llm/client.js` | —（无 key 走规则引擎） | `lib/plugins/llm/openai-compatible.js`（`extract` 抽需求 / `chat` 上下文对话） |
+| `chat`（回复润色） | `lib/agent/chat.js` | `template`（与状态机耦合的模板回复） | LLM 可用时自动接管自然回复，失败/超时/无 key 回落模板 |
 | `image`（文生图） | `lib/imageGen.js` | `svg`（风格预览兜底） | `lib/plugins/image/dashscope.js` / `generic.js` |
 | `data`（数据源） | `lib/dataLayer.js` | `sqlite-json`（SQLite→JSON 回退） | 自定义 adapter 覆盖，无需改动业务代码 |
 | `insight`（领域洞察） | `lib/agent/insights.js` | `trends` / `region` / `knowledge` | 多插件**并列叠加**（`registry.resolveAll`），每个贡献字段 |
@@ -214,6 +215,7 @@ await runAgent({ text, session, location, config })
 ## 关键设计
 
 - **智能体四段式流水线**：理解（decompose，规则基底 + LLM 补缺）→ 澄清（缺字段反问）→ 方案合成（planner + 预算回退）→ 效果图 + 选店匹配（Top 3）；
+- **双轨对话**：规则引擎产出结构化事实（方案/价格/店铺/版本），LLM 只负责"怎么说"——system prompt 注入事实防幻觉，历史对话随请求携带实现多轮上下文；LLM 不可用/超时/失败时回复原样回落模板，结构化数据永不受 LLM 影响；
 - **多轮记忆**：追问在上一版需求上迭代——标量覆盖、色系/风格/偏好并集、禁忌只增不减，产出 v1/v2/v3 版本历史；
 - **规则优先防覆盖**：LLM 返回稀疏/空值时不冲掉规则引擎已提取的准确字段，只补规则漏掉的；
 - **时令约束**：非当季花材直接排除出候选（如 8 月不推蝴蝶兰）；
