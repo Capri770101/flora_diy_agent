@@ -191,6 +191,7 @@ await runAgent({ text, session, location, config })
 | `llm`（需求理解） | `lib/llm/client.js` | —（无 key 走规则引擎） | `lib/plugins/llm/openai-compatible.js` |
 | `image`（文生图） | `lib/imageGen.js` | `svg`（风格预览兜底） | `lib/plugins/image/dashscope.js` / `generic.js` |
 | `data`（数据源） | `lib/dataLayer.js` | `sqlite-json`（SQLite→JSON 回退） | 自定义 adapter 覆盖，无需改动业务代码 |
+| `insight`（领域洞察） | `lib/agent/insights.js` | `trends` / `region` / `knowledge` | 多插件**并列叠加**（`registry.resolveAll`），每个贡献字段 |
 
 **新增一个提供方只需两步**（以换一项文生图 API 为例）：
 
