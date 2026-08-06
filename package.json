@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node test/agent.test.js && node test/plugins.test.js && node test/http.test.js && node test/ratelimit.test.js && node test/insights.test.js && node test/chat.test.js && node test/review.test.js",
+    "test": "node test/agent.test.js && node test/plugins.test.js && node test/http.test.js && node test/ratelimit.test.js && node test/insights.test.js && node test/chat.test.js && node test/review.test.js && node test/quantity.test.js",
     "review": "node scripts/export_review.js",
     "smoke": "node test/api.smoke.js"
   },
