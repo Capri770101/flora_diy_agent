@@ -23,6 +23,27 @@
         <view class="step-d">{{item.d}}</view>
       </view>
       <view class="detail-btn" bindtap="openPlan">查看完整方案 →</view>
+
+      <view class="shops" wx:if="{{plan.shop_suggestions && plan.shop_suggestions.length}}">
+        <view class="shops-title">🏬 附近花店 · 点选一家，我帮您锁定</view>
+        <view class="shop {{selectedShop && selectedShop.shop_id === item.shop_id ? 'picked' : ''}}"
+              wx:for="{{plan.shop_suggestions}}" wx:key="shop_id" wx:for-item="s" wx:for-index="si"
+              bindtap="pickShop" data-idx="{{si + 1}}">
+          <view class="s-head">
+            <text class="s-name">{{s.name}}</text>
+            <text class="s-price">¥{{s.price_total}}</text>
+          </view>
+          <view class="s-meta">{{s.distance_km}}km · ⭐{{s.rating}} · 覆盖{{s.coverage}}%
+            <text wx:if="{{s.missing.length}}" class="s-miss"> · 缺{{s.missing[0].name}}可替换</text>
+          </view>
+          <text wx:if="{{selectedShop && selectedShop.shop_id === item.shop_id}}" class="s-check">✓ 已选</text>
+        </view>
+        <view class="more-shop" bindtap="sendMore">看看其他店 →</view>
+      </view>
+
+      <view class="picked-bar" wx:if="{{selectedShop}}" bindtap="goOrder">
+        已锁定「{{selectedShop.name}}」约 ¥{{selectedShop.price_total}} · 去下单 →
+      </view>
     </view>
 
     <view wx:if="{{loading}}" class="bubble bot">正在设计你的花艺方案…</view>

@@ -1,0 +1,43 @@
+<view class="order">
+  <view class="card" wx:if="{{plan}}">
+    <view class="label">方案</view>
+    <view class="plan-sum">{{plan.summary}}</view>
+    <view class="muted">方案价约 ¥{{plan.total}}<text wx:if="{{plan.budget}}" class="muted"> / 预算 ¥{{plan.budget}}</text></view>
+  </view>
+
+  <view class="card" wx:if="{{shop}}">
+    <view class="label">花店</view>
+    <view class="shop-name">{{shop.name}}（{{shop.district}}）</view>
+    <view class="muted">⭐{{shop.rating}} · {{shop.distance_km}}km · 覆盖{{shop.coverage}}%
+      <text wx:if="{{shop.missing.length}}" class="warn"> · 缺{{shop.missing[0].name}}可替换</text>
+    </view>
+    <view class="price">店铺报价 ¥{{shop.price_total}}<text class="muted" wx:if="{{shop.price_diff}}">（vs 方案价 {{shop.price_diff > 0 ? '+' : ''}}{{shop.price_diff}}）</text></view>
+  </view>
+
+  <view class="card">
+    <view class="label">配送方式</view>
+    <radio-group bindchange="setDelivery">
+      <label class="radio"><radio value="delivery" checked="{{deliveryType === 'delivery'}}" color="#8E44AD"/>配送</label>
+      <label class="radio"><radio value="pickup" checked="{{deliveryType === 'pickup'}}" color="#8E44AD"/>到店自取</label>
+    </radio-group>
+    <input class="input" placeholder="收货地址（配送时必填）" value="{{address}}" bindinput="onAddress" />
+    <input class="input" placeholder="备注（如：下午送达 / 贺卡文字）" value="{{remark}}" bindinput="onRemark" />
+  </view>
+
+  <view class="card" wx:if="{{order}}">
+    <view class="label">订单 {{order.order_id}}</view>
+    <view class="muted">状态：{{order.status}}</view>
+    <view class="flower" wx:for="{{order.items}}" wx:key="flower_id">
+      <text>{{item.name}} ×{{item.qty}}{{item.unit}}</text>
+      <text class="meta">¥{{item.price * item.qty}}</text>
+    </view>
+    <view class="flower" wx:if="{{order.missing.length}}">
+      <text class="warn">缺货：{{order.missing[0].name}}（可替换）</text>
+    </view>
+    <view class="price">应付 ¥{{order.price_total}}</view>
+  </view>
+
+  <view class="btn" wx:if="{{!order}}" bindtap="submit">提交订单</view>
+  <view class="btn pay" wx:if="{{order && order.status === 'created'}}" bindtap="pay">微信支付 ¥{{order.price_total}}</view>
+  <view class="btn done" wx:if="{{order && order.status === 'paid'}}">已支付 · 等待花店接单制作</view>
+</view>

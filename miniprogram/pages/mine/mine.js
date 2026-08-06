@@ -6,5 +6,8 @@ Page({
   },
   open(e) {
     wx.navigateTo({ url: '/pages/plan/plan?id=' + e.currentTarget.dataset.id });
+  },
+  goOrders() {
+    wx.navigateTo({ url: '/pages/orders/orders' });
   }
 });

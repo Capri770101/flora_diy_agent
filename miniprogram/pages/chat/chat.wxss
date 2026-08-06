@@ -18,6 +18,19 @@
 .step-t { font-weight: 600; color: #333; }
 .step-d { font-size: 24rpx; color: #888; margin-top: 4rpx; line-height: 1.6; }
 .detail-btn { margin-top: 16rpx; text-align: center; color: #8E44AD; font-size: 26rpx; }
+.shop-hint { margin-top: 12rpx; text-align: center; background: #F3E8FA; color: #8E44AD; font-size: 24rpx; border-radius: 12rpx; padding: 14rpx 0; }
+.shops { margin-top: 20rpx; }
+.shops-title { font-size: 26rpx; color: #666; margin-bottom: 12rpx; }
+.shop { border: 2rpx solid #f0e6f5; border-radius: 14rpx; padding: 16rpx; margin-bottom: 12rpx; position: relative; }
+.shop.picked { border-color: #8E44AD; background: #F9F3FC; }
+.s-head { display: flex; align-items: center; }
+.s-name { font-size: 28rpx; font-weight: 600; color: #333; }
+.s-price { font-size: 28rpx; font-weight: 700; color: #d2691e; margin-left: auto; }
+.s-meta { font-size: 22rpx; color: #888; margin-top: 6rpx; }
+.s-miss { color: #e74c3c; }
+.s-check { position: absolute; right: 16rpx; top: 14rpx; font-size: 24rpx; color: #8E44AD; font-weight: 600; }
+.more-shop { text-align: center; color: #8E44AD; font-size: 26rpx; padding: 12rpx 0; }
+.picked-bar { margin-top: 16rpx; background: #8E44AD; color: #fff; text-align: center; border-radius: 40rpx; padding: 18rpx 0; font-size: 28rpx; }
 .input-bar { display: flex; padding: 16rpx; background: #fff; border-top: 1rpx solid #eee; }
 .input { flex: 1; border: 1rpx solid #ddd; border-radius: 36rpx; padding: 16rpx 24rpx; font-size: 28rpx; }
 .send-btn { margin-left: 16rpx; background: #8E44AD; color: #fff; padding: 0 32rpx; border-radius: 36rpx; font-size: 28rpx; display: flex; align-items: center; }

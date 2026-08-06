@@ -23,4 +23,13 @@
 .step-t { font-size: 28rpx; color: #333; font-weight: 600; }
 .step-d { font-size: 24rpx; color: #777; margin: 6rpx 0 0 48rpx; line-height: 1.6; }
 .care { font-size: 24rpx; color: #666; line-height: 1.7; padding: 6rpx 0; }
+.shop { border: 1rpx solid #f0e6f5; border-radius: 16rpx; padding: 20rpx; margin-bottom: 16rpx; }
+.shop:last-child { margin-bottom: 0; }
+.shop-head { display: flex; align-items: center; }
+.shop-name { font-size: 30rpx; font-weight: 600; color: #333; }
+.shop-dist { font-size: 24rpx; color: #888; margin-left: auto; }
+.shop-meta { font-size: 24rpx; color: #777; margin-top: 8rpx; }
+.shop-price { font-size: 32rpx; font-weight: 700; color: #d2691e; margin-top: 8rpx; }
+.order-btn { margin-top: 16rpx; background: #8E44AD; color: #fff; text-align: center; border-radius: 40rpx; padding: 16rpx 0; font-size: 28rpx; }
+.warn { color: #e74c3c; }
 .empty { text-align: center; color: #999; margin-top: 100rpx; }

@@ -1,4 +1,5 @@
 .mine { padding: 24rpx; }
+.entry { background: #8E44AD; color: #fff; border-radius: 16rpx; padding: 24rpx; font-size: 30rpx; font-weight: 600; margin-bottom: 28rpx; text-align: center; }
 .head { font-size: 36rpx; font-weight: 700; margin-bottom: 20rpx; }
 .empty { color: #999; text-align: center; margin-top: 120rpx; font-size: 28rpx; }
 .item { background: #fff; border-radius: 20rpx; padding: 24rpx; margin-bottom: 16rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "birthday-mom-lavender",
+    "desc": "完整需求：生日/母亲/淡紫/禁玫瑰/预算150/客厅茶几",
+    "turns": ["想给我妈做个生日花束，她喜欢淡紫色，温柔一点，不要玫瑰，预算150左右，放在客厅茶几上"],
+    "expect": {
+      "occasion": "生日",
+      "recipient": "母亲",
+      "budget": 150,
+      "color_contains": ["紫"],
+      "forbidden_contains": ["rose"],
+      "plan_excludes": ["rose"],
+      "total_le_budget": true,
+      "need_clarify": false,
+      "versions": 1,
+      "shops_top3": true
+    }
+  },
+  {
+    "id": "too-vague-clarify",
+    "desc": "信息过少应反问（预算+品类都缺）",
+    "turns": ["想给我妈做花"],
+    "expect": {
+      "need_clarify": true,
+      "missing_fields_contains": ["budget"]
+    }
+  },
+  {
+    "id": "multi-turn-iteration",
+    "desc": "多轮追问：禁玫瑰并换粉色系，v2 在原需求上迭代",
+    "turns": ["想给我妈做个生日花束，预算150，淡紫色", "不要玫瑰，换成粉色"],
+    "expect": {
+      "budget": 150,
+      "forbidden_contains": ["rose"],
+      "color_contains": ["粉"],
+      "plan_excludes": ["rose"],
+      "need_clarify": false,
+      "versions": 2
+    }
+  },
+  {
+    "id": "allergy-hospital",
+    "desc": "探病+花粉过敏+禁百合：安全约束被记录；信息不足时反问而非出草稿",
+    "turns": ["朋友住院了，想去探病送花，她对花粉过敏，别放百合"],
+    "expect": {
+      "occasion": "探病",
+      "avoid_allergen": true,
+      "forbidden_contains": ["lily"],
+      "need_clarify": true
+    }
+  },
+  {
+    "id": "budget-overrun-fallback",
+    "desc": "预算50要高价花材：数量压缩+删配花回退到预算内（选当季花材）",
+    "turns": ["预算50，想要绣球、向日葵、满天星的花束"],
+    "expect": {
+      "budget": 50,
+      "preferred_contains": ["hydrangea", "sunflower", "babybreath"],
+      "plan_contains": ["hydrangea", "sunflower"],
+      "total_le_budget": true,
+      "need_clarify": false
+    }
+  },
+  {
+    "id": "confession-box",
+    "desc": "表白花盒：品类与风格识别",
+    "turns": ["情人节想跟女朋友表白，我想做一个花盒，红色浪漫一点"],
+    "expect": {
+      "occasion": "表白",
+      "recipient": "恋人",
+      "category": "花盒",
+      "style_contains": ["浪漫"],
+      "color_contains": ["红"],
+      "need_clarify": false
+    }
+  },
+  {
+    "id": "preference-actionable",
+    "desc": "只有偏好也能干活：有偏好时即使缺关键字段也不反问",
+    "turns": ["我喜欢向日葵和雏菊，放在办公室桌上"],
+    "expect": {
+      "placement": "办公桌",
+      "size": "小型",
+      "preferred_contains": ["sunflower", "spraymum"],
+      "plan_contains": ["sunflower"],
+      "need_clarify": false
+    }
+  },
+  {
+    "id": "budget-only-missing",
+    "desc": "只缺预算不反问，出带价方案（价格基于库价）",
+    "turns": ["给女朋友做一个母亲节花束，粉色的"],
+    "expect": {
+      "occasion": "母亲节",
+      "recipient": "恋人",
+      "color_contains": ["粉"],
+      "need_clarify": false,
+      "plan_has_total": true
+    }
+  },
+  {
+    "id": "reroute-occasion",
+    "desc": "追问后修正：v2 覆盖 v1 的场合并识别收礼人",
+    "turns": ["想买束花放客厅", "其实是想送给老师当毕业礼物，做成花束"],
+    "expect": {
+      "occasion": "家居装饰",
+      "recipient": "老师",
+      "category": "花束",
+      "versions": 2
+    }
+  }
+]

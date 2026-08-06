@@ -8,6 +8,15 @@ node_modules/
 # 运行期生成数据
 data/plans.json
 data/previews/
+data/sessions.json
+data/orders.json
+data/feedback.json
+
+# SQLite 数据库（运行期主存储）与迁移备份
+data/agent.db
+data/agent.db-wal
+data/agent.db-shm
+data/*.json.migrated
 
 # 工具状态
 .workbuddy/

@@ -22,7 +22,7 @@
         <text class="role">{{item.role}}</text>
         <text class="meta">¥{{item.price * item.qty}}</text>
       </view>
-      <view class="flower-meta">花语：{{item.花语}} · 花期：{{item.花期}} · 时令：{{item.season || '全年'}}</view>
+      <view class="flower-meta">花语：{{item['花语']}} · 花期：{{item['花期']}} · 时令：{{item.season || '全年'}}</view>
       <view class="flower-care">💧 {{item.care}}</view>
     </view>
   </view>
@@ -39,6 +39,21 @@
   <view class="card">
     <view class="label">💧 日常养护建议</view>
     <view class="care" wx:for="{{plan.care_tips}}" wx:key="index">· {{item}}</view>
+  </view>
+
+  <view class="card" wx:if="{{plan.shop_suggestions && plan.shop_suggestions.length}}">
+    <view class="label">🏬 附近花店 · 直接下单</view>
+    <view class="shop" wx:for="{{plan.shop_suggestions}}" wx:key="shop_id" wx:for-item="shop">
+      <view class="shop-head">
+        <text class="shop-name">{{shop.name}}</text>
+        <text class="shop-dist">{{shop.distance_km}}km</text>
+      </view>
+      <view class="shop-meta">⭐ {{shop.rating}} · 覆盖 {{shop.coverage}}%
+        <text wx:if="{{shop.missing.length}}" class="warn"> · 缺 {{shop.missing[0].name}} 可替换</text>
+      </view>
+      <view class="shop-price">¥{{shop.price_total}}<text class="muted" wx:if="{{shop.price_diff}}"> / 方案价 ¥{{plan.total}}</text></view>
+      <view class="order-btn" bindtap="order" data-shop="{{shop.shop_id}}">去这家店下单</view>
+    </view>
   </view>
 </view>
 <view wx:else class="empty">方案不存在</view>

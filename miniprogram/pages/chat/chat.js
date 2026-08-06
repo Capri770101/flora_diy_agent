@@ -2,7 +2,7 @@
 const { request } = require('../../utils/api.js');
 
 Page({
-  data: { input: '', messages: [], plan: null, loading: false },
+  data: { input: '', messages: [], plan: null, selectedShop: null, loading: false, sessionId: null },
 
   onLoad(q) {
     if (q && q.q) {
@@ -18,14 +18,29 @@ Page({
     const msgs = this.data.messages.concat([{ role: 'user', text }]);
     this.setData({ messages: msgs, input: '', loading: true });
     try {
-      const data = await request('/api/v1/chat', 'POST', { message: text });
-      if (data.render_url && data.render_url.startsWith('/')) {
-        data.render_url = (getApp().globalData.apiBase || '') + data.render_url;
-        data.plan.render_url = data.render_url;
+      const app = getApp();
+      const body = {
+        message: text,
+        session_id: this.data.sessionId || null,
+        location: app.globalData.location
+      };
+      const data = await request('/api/v1/chat', 'POST', body);
+      if (data.plan) {
+        if (data.render_url && data.render_url.startsWith('/')) {
+          data.render_url = app.globalData.apiBase + data.render_url;
+          data.plan.render_url = data.render_url;
+        }
+        data.plan.shop_suggestions = data.shop_suggestions || [];
       }
       const botMsgs = this.data.messages.concat([{ role: 'bot', text: data.reply_text }]);
-      this.setData({ messages: botMsgs, plan: data.plan, loading: false });
-      this.saveHistory(data.plan);
+      this.setData({
+        messages: botMsgs,
+        plan: data.plan,
+        selectedShop: data.shop_choice || null,
+        loading: false,
+        sessionId: data.session_id
+      });
+      if (data.plan) this.saveHistory(data.plan);
     } catch (e) {
       const err = this.data.messages.concat([{ role: 'bot', text: '出错了：' + (e.errMsg || e.message) }]);
       this.setData({ messages: err, loading: false });
@@ -44,6 +59,24 @@ Page({
   openPlan() {
     if (this.data.plan) {
       wx.navigateTo({ url: '/pages/plan/plan?id=' + this.data.plan.plan_id });
+    }
+  },
+
+  pickShop(e) {
+    this.setData({ input: '选第' + e.currentTarget.dataset.idx + '家' });
+    this.send();
+  },
+
+  sendMore() {
+    this.setData({ input: '看看其他店' });
+    this.send();
+  },
+
+  goOrder() {
+    const p = this.data.plan;
+    const c = this.data.selectedShop;
+    if (p && c) {
+      wx.navigateTo({ url: '/pages/order/order?plan_id=' + p.plan_id + '&shop_id=' + c.shop_id });
     }
   }
 });

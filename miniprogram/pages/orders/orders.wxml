@@ -1,0 +1,16 @@
+<view class="orders">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{orders.length === 0}}" class="empty">还没有订单，去生成方案下单吧 🌸</view>
+  <view class="card" wx:for="{{orders}}" wx:key="order_id">
+    <view class="head">
+      <text class="shop">{{item.shop_name}}</text>
+      <text class="status {{item.status}}">{{statusText(item.status)}}</text>
+    </view>
+    <view class="sum">{{item.plan_summary || '鲜花方案'}}</view>
+    <view class="meta">¥{{item.price_total}} · {{item.created_at.slice(0, 16).replace('T', ' ')}}</view>
+    <view class="foot">
+      <view class="link" bindtap="openPlan" data-plan="{{item.plan_id}}">查看方案</view>
+    </view>
+  </view>
+  <view class="refresh" bindtap="refresh" wx:if="{{orders.length}}">刷新</view>
+</view>
