@@ -8,18 +8,10 @@
     "pages/mine/mine"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#2B6CFF",
+    "navigationBarBackgroundColor": "#061333",
     "navigationBarTitleText": "花艺顾问",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#E9F1FF"
-  },
-  "tabBar": {
-    "color": "#9AA8C4",
-    "selectedColor": "#2B6CFF",
-    "list": [
-      { "pagePath": "pages/index/index", "text": "首页" },
-      { "pagePath": "pages/mine/mine", "text": "我的" }
-    ]
+    "backgroundColor": "#061333"
   },
   "permission": {
     "scope.userLocation": {

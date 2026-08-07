@@ -2,18 +2,18 @@
 /* 横向 padding 归零，hero 通栏 + .card 统一 margin(28rpx) 控制左对齐 */
 .plan { padding: 0 0 20rpx; }
 
-/* 顶部主视觉：深蓝渐变 + 斜切（终末地 HUD） */
+/* 顶部主视觉：深蓝渐变，无阴影、无斜切，与下方页面背景连续（修复色块分界）
+   原设计：底部斜切 polygon(0 0, 100% 0, 100% 86%, 0 100%) + box-shadow，会在斜切处暴露页面背景，
+   且硬阴影在 hero 下方形成可见暗带，产生"色块分界"。本版改为垂直渐变收尾于 #2B6CFF，
+   与 page 全局渐变在 hero 底部位置同色系，margin-bottom:0 直接衔接页面背景。 */
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #061333 0%, #0F1E4D 35%, #16337A 65%, #2B6CFF 100%);
+  background: linear-gradient(180deg, #061333 0%, #0F1E4D 30%, #16337A 60%, #2B6CFF 100%);
   border-radius: 0;
-  padding: 60rpx 32rpx 80rpx;
+  padding: 60rpx 32rpx 70rpx;
   color: #fff;
-  margin-bottom: 24rpx;
+  margin-bottom: 0;
   overflow: hidden;
-  box-shadow: 0 12rpx 32rpx rgba(6,19,51,0.30);
-  /* 底部斜切 */
-  clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%);
 }
 /* hero 装饰用 background-image 多重渐变，不用伪元素 */
 /* .hero 装饰已通过 background: radial-gradient + linear-gradient 实现 */

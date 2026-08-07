@@ -63,9 +63,10 @@
     color: rgba(255,255,255,.85);
     font-size: 12px; font-weight: 600;
   }
-  /* 微信小程序导航栏 */
+  /* 微信小程序导航栏：与 page 顶/hero 顶同色 #061333，消除临界色阶断层 */
   .navbar {
     height: 44px; padding: 0 20px;
+    background: #061333;
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-weight: 600; font-size: 17px; letter-spacing: 1px;
@@ -89,6 +90,14 @@
     color: #fff;
     text-shadow: 0 2px 10px rgba(0,0,0,.4);
     display: block;
+  }
+  /* 方案页 hero：与真机一致，无斜切/无硬阴影/垂直渐变收尾，保证连续性 */
+  .hero.hero-plan {
+    background: linear-gradient(180deg, #061333 0%, #0F1E4D 30%, #16337A 60%, #2B6CFF 100%);
+    box-shadow: none;
+    clip-path: none;
+    margin-bottom: 0;
+    padding-bottom: 60px;
   }
   .hero-sub {
     display: block; margin-top: 14px;
@@ -390,7 +399,7 @@
       <div class="statusbar"><span>9:36</span><span>📶 WiFi 🔋100%</span></div>
       <div class="navbar">方案详情</div>
       <div class="body">
-        <div class="hero">
+        <div class="hero hero-plan">
           <span class="hero-title" style="font-size:30px">🌿 你的专属花艺方案</span>
           <span class="hero-sub">11支红玫瑰 + 1扎白满天星 组成的花束</span>
         </div>
