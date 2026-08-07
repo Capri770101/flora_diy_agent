@@ -3,34 +3,60 @@
 .bubble { max-width: 82%; padding: 16rpx 22rpx; border-radius: 20rpx; font-size: 28rpx; line-height: 1.5; margin-bottom: 16rpx; word-break: break-word; }
 .bubble.user { background: #8E44AD; color: #fff; margin-left: auto; border-bottom-right-radius: 6rpx; }
 .bubble.bot { background: #fff; border: 1rpx solid #eee; border-bottom-left-radius: 6rpx; }
-.card { background: #fff; border-radius: 20rpx; padding: 24rpx; margin: 8rpx 0 20rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
-.card-title { font-size: 30rpx; font-weight: 700; color: #333; }
+.caret { color: #8E44AD; font-weight: 700; animation: blink 0.9s infinite; }
+@keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+/* 思考动画气泡 */
+.thinking-bubble { display: flex; align-items: center; }
+.thinking-dots { display: flex; align-items: center; margin-right: 14rpx; }
+.t-dot { width: 12rpx; height: 12rpx; border-radius: 50%; background: #8E44AD; margin-right: 8rpx; animation: tpop 1s infinite ease-in-out; }
+.t-dot:nth-child(2) { animation-delay: 0.15s; }
+.t-dot:nth-child(3) { animation-delay: 0.3s; margin-right: 0; }
+@keyframes tpop { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-8rpx); opacity: 1; } }
+.thinking-text { font-size: 26rpx; color: #888; }
+
+/* 方案入口：一行紧凑，点击开抽屉 */
+.plan-entry { display: flex; align-items: center; background: #fff; border: 1rpx solid #f0e6f5; border-radius: 20rpx; padding: 20rpx 24rpx; margin: 8rpx 0 20rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
+.plan-entry:active { background: #f9f3fc; }
+.pe-title { font-size: 26rpx; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pe-brief { flex: 1; min-width: 0; margin-left: 20rpx; }
+.pe-summary { font-size: 24rpx; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+.pe-price { font-size: 26rpx; font-weight: 700; color: #d2691e; }
+.pe-arrow { font-size: 26rpx; color: #8E44AD; padding-left: 12rpx; }
+.warn { font-size: 20rpx; color: #e08e0b; background: #fff3e0; padding: 2rpx 8rpx; border-radius: 8rpx; margin-left: 8rpx; }
+.muted { font-weight: 400; color: #999; font-size: 22rpx; }
+
+/* 方案抽屉（底部半屏弹层） */
+.drawer-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 90; }
+.plan-drawer { position: fixed; left: 0; right: 0; bottom: 0; width: 100%; box-sizing: border-box; background: #fff; border-radius: 28rpx 28rpx 0 0; z-index: 99; max-height: 75vh; display: flex; flex-direction: column; transform: translateY(105%); transition: transform 0.28s ease; box-shadow: 0 -6rpx 24rpx rgba(0,0,0,0.12); overflow: hidden; }
+.plan-drawer.show { transform: translateY(0); }
+.drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 26rpx 28rpx 18rpx; border-bottom: 1rpx solid #f2f2f2; flex-shrink: 0; }
+.drawer-title { font-size: 30rpx; font-weight: 700; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+.drawer-close { width: 52rpx; height: 52rpx; line-height: 52rpx; text-align: center; border-radius: 50%; background: #f5f5f5; color: #888; font-size: 28rpx; margin-left: 16rpx; flex-shrink: 0; }
+.drawer-body { padding: 8rpx 28rpx 40rpx; max-height: 60vh; box-sizing: border-box; width: 100%; }
 .render-img { width: 100%; height: 420rpx; border-radius: 16rpx; margin: 16rpx 0 4rpx; background: #f3e8fa; }
-.warn { font-size: 22rpx; color: #e08e0b; background: #fff3e0; padding: 2rpx 10rpx; border-radius: 8rpx; margin-left: 10rpx; }
 .dots { margin: 12rpx 0; }
-.summary { font-size: 28rpx; color: #444; line-height: 1.6; }
+.summary { font-size: 28rpx; color: #444; line-height: 1.6; word-break: break-all; overflow-wrap: break-word; }
 .price { font-size: 32rpx; font-weight: 700; color: #d2691e; margin: 14rpx 0; }
-.muted { font-weight: 400; color: #999; font-size: 24rpx; }
 .label { font-size: 24rpx; color: #888; margin: 16rpx 0 8rpx; }
 .flower-list { display: flex; flex-wrap: wrap; }
-.pill { font-size: 24rpx; background: #f7f7f7; padding: 6rpx 16rpx; border-radius: 10rpx; border: 1rpx solid #eee; margin: 0 10rpx 10rpx 0; }
-.step { font-size: 26rpx; color: #555; line-height: 1.7; margin-bottom: 12rpx; }
+.pill { font-size: 24rpx; background: #f7f7f7; padding: 6rpx 16rpx; border-radius: 10rpx; border: 1rpx solid #eee; margin: 0 10rpx 10rpx 0; max-width: 100%; word-break: break-all; overflow-wrap: break-word; box-sizing: border-box; }
+.step { font-size: 26rpx; color: #555; line-height: 1.7; margin-bottom: 12rpx; word-break: break-all; overflow-wrap: break-word; }
 .step-t { font-weight: 600; color: #333; }
-.step-d { font-size: 24rpx; color: #888; margin-top: 4rpx; line-height: 1.6; }
+.step-d { font-size: 24rpx; color: #888; margin-top: 4rpx; line-height: 1.6; word-break: break-all; overflow-wrap: break-word; }
 .detail-btn { margin-top: 16rpx; text-align: center; color: #8E44AD; font-size: 26rpx; }
-.shop-hint { margin-top: 12rpx; text-align: center; background: #F3E8FA; color: #8E44AD; font-size: 24rpx; border-radius: 12rpx; padding: 14rpx 0; }
 .shops { margin-top: 20rpx; }
-.shops-title { font-size: 26rpx; color: #666; margin-bottom: 12rpx; }
-.shop { border: 2rpx solid #f0e6f5; border-radius: 14rpx; padding: 16rpx; margin-bottom: 12rpx; position: relative; }
+.shops-title { font-size: 26rpx; color: #666; margin-bottom: 12rpx; word-break: break-all; overflow-wrap: break-word; }
+.shop { border: 2rpx solid #f0e6f5; border-radius: 14rpx; padding: 16rpx; margin-bottom: 12rpx; position: relative; overflow: hidden; }
 .shop.picked { border-color: #8E44AD; background: #F9F3FC; }
-.s-head { display: flex; align-items: center; }
-.s-name { font-size: 28rpx; font-weight: 600; color: #333; }
-.s-price { font-size: 28rpx; font-weight: 700; color: #d2691e; margin-left: auto; }
-.s-meta { font-size: 22rpx; color: #888; margin-top: 6rpx; }
+.s-head { display: flex; align-items: center; min-width: 0; }
+.s-name { font-size: 28rpx; font-weight: 600; color: #333; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 16rpx; box-sizing: border-box; }
+.s-price { font-size: 28rpx; font-weight: 700; color: #d2691e; margin-left: auto; flex-shrink: 0; }
+.s-meta { font-size: 22rpx; color: #888; margin-top: 6rpx; word-break: break-all; overflow-wrap: break-word; }
 .s-miss { color: #e74c3c; }
 .s-check { position: absolute; right: 16rpx; top: 14rpx; font-size: 24rpx; color: #8E44AD; font-weight: 600; }
 .more-shop { text-align: center; color: #8E44AD; font-size: 26rpx; padding: 12rpx 0; }
-.picked-bar { margin-top: 16rpx; background: #8E44AD; color: #fff; text-align: center; border-radius: 40rpx; padding: 18rpx 0; font-size: 28rpx; }
+.picked-bar { margin-top: 16rpx; background: #8E44AD; color: #fff; text-align: center; border-radius: 40rpx; padding: 18rpx 0; font-size: 28rpx; word-break: break-all; overflow-wrap: break-word; box-sizing: border-box; }
 .input-bar { display: flex; padding: 16rpx; background: #fff; border-top: 1rpx solid #eee; }
 .input { flex: 1; border: 1rpx solid #ddd; border-radius: 36rpx; padding: 16rpx 24rpx; font-size: 28rpx; }
 .send-btn { margin-left: 16rpx; background: #8E44AD; color: #fff; padding: 0 32rpx; border-radius: 36rpx; font-size: 28rpx; display: flex; align-items: center; }

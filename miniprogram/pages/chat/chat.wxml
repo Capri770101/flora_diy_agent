@@ -1,13 +1,40 @@
 <view class="chat">
-  <scroll-view scroll-y class="msg-area">
-    <view wx:for="{{messages}}" wx:key="index" class="bubble {{item.role}}">{{item.text}}</view>
+  <!-- 消息流：纯对话气泡，方案不占用对话空间 -->
+  <scroll-view scroll-y class="msg-area" scroll-into-view="{{scroller}}" scroll-with-animation>
+    <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="bubble {{item.role}}">
+      <text>{{item.text}}</text><text wx:if="{{item.typing}}" class="caret">▍</text>
+    </view>
 
-    <view class="card" wx:if="{{plan}}">
-      <view class="card-title">🌿 你的专属花艺方案
-        <text wx:if="{{plan.budget_ok === false}}" class="warn">已超预算·已自动降级</text>
+    <!-- 思考动画气泡：发送后立即出现，首个 token 到达时消失 -->
+    <view wx:if="{{thinking}}" id="thinking" class="bubble bot thinking-bubble">
+      <view class="thinking-dots">
+        <view class="t-dot"></view><view class="t-dot"></view><view class="t-dot"></view>
       </view>
+      <text class="thinking-text">{{thinkingText}}</text>
+    </view>
+
+    <!-- 方案入口：一行紧凑卡片，点击从底部弹出方案抽屉（不阻断对话） -->
+    <view wx:if="{{plan}}" id="plan-entry" class="plan-entry" bindtap="openPlanDrawer">
+      <view class="pe-title">🌿 花艺方案
+        <text wx:if="{{plan.budget_ok === false}}" class="warn">已超预算·自动降级</text>
+      </view>
+      <view class="pe-brief">
+        <text class="pe-summary">{{plan.summary}}</text>
+        <text class="pe-price">约 ¥{{plan.total}}<text wx:if="{{plan.budget}}" class="muted"> / 预算 ¥{{plan.budget}}</text></text>
+      </view>
+      <view class="pe-arrow">▾</view>
+    </view>
+  </scroll-view>
+
+  <!-- 方案抽屉（底部半屏弹层）：详情都在这里，看完即走，对话不被打断 -->
+  <view class="drawer-mask" wx:if="{{planDrawer}}" bindtap="closePlanDrawer"></view>
+  <view class="plan-drawer {{planDrawer ? 'show' : ''}}">
+    <view class="drawer-head">
+      <text class="drawer-title">🌿 你的专属花艺方案</text>
+      <view class="drawer-close" catchtap="closePlanDrawer">✕</view>
+    </view>
+    <scroll-view scroll-y class="drawer-body">
       <image wx:if="{{plan.render_url}}" class="render-img" src="{{plan.render_url}}" mode="aspectFill" />
-      <!-- 配色预览（演示态；接入文生图后为真实效果图） -->
       <view class="dots">
         <view class="dot" wx:for="{{plan.items}}" wx:key="flower_id" style="background:{{item.color}}"></view>
       </view>
@@ -44,10 +71,8 @@
       <view class="picked-bar" wx:if="{{selectedShop}}" bindtap="goOrder">
         已锁定「{{selectedShop.name}}」约 ¥{{selectedShop.price_total}} · 去下单 →
       </view>
-    </view>
-
-    <view wx:if="{{loading}}" class="bubble bot">正在设计你的花艺方案…</view>
-  </scroll-view>
+    </scroll-view>
+  </view>
 
   <view class="input-bar">
     <input class="input" placeholder="描述你的需求…" value="{{input}}" bindinput="onInput" confirm-type="send" bindconfirm="send" />

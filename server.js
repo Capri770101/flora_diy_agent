@@ -115,6 +115,94 @@ router.post('/api/v1/chat', async (ctx) => {
   });
 });
 
+// 与 /api/v1/chat 相同的请求语义，但回复以 SSE 流式返回：
+//   data: {"type":"meta", ...}     （首帧：阶段信息）
+//   data: {"type":"token","delta":"..."}  （LLM 逐段文本）
+//   data: {"type":"done", ...完整响应体...} （结束帧，含 session_id/plan/shop_suggestions 等）
+//   data: {"type":"error","message":"..."} （失败帧）
+// 降级：LLM 不可用/超时 → 只有 meta + done（done 内含模板 reply_text），前端自行打字机动画。
+function sseWrite(res, payload) {
+  res.write('data: ' + JSON.stringify(payload) + '\n\n');
+}
+
+router.post('/api/v1/chat/stream', async (ctx) => {
+  const parsed = parseBody(ctx.body);
+  const text = (parsed.message || '').trim();
+  if (!text) throw HttpError.badRequest('empty message');
+
+  const sid = parsed.session_id || null;
+  const session = sid ? loadSessions()[sid] || null : null;
+  const loc = parsed.location;
+  const location = loc && typeof loc.lat === 'number' && typeof loc.lng === 'number'
+    ? { lat: loc.lat, lng: loc.lng } : null;
+
+  let safeShop = null;
+  if (parsed.shop && typeof parsed.shop === 'object') {
+    const srv = parsed.shop.shop_id ? loadShops().find((s) => s.shop_id === parsed.shop.shop_id) : null;
+    safeShop = srv
+      ? {
+          shop_id: srv.shop_id,
+          month: parsed.shop.month != null ? parsed.shop.month : undefined,
+          price_map: srv.price_map,
+          cost_map: srv.cost_map,
+          margin_rate: srv.margin_rate,
+          pack_cost: srv.pack_cost
+        }
+      : (parsed.shop.month != null ? { month: parsed.shop.month } : null);
+  }
+
+  ctx.res.writeHead(200, {
+    'Content-Type': 'text/event-stream; charset=utf-8',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+    'X-Accel-Buffering': 'no'
+  });
+  sseWrite(ctx.res, { type: 'meta', status: 'thinking' });
+
+  try {
+    const result = await runAgent({
+      text,
+      session,
+      location,
+      config: {
+        skip_image: parsed.skip_image === true,
+        shop_limit: parsed.shop_limit || 3,
+        shop_context: safeShop,
+        onReplyChunk: (delta) => sseWrite(ctx.res, { type: 'token', delta })
+      }
+    });
+
+    const sessions = loadSessions();
+    sessions[result.session_id] = result.session;
+    saveSessions(sessions);
+    const plans = loadPlans();
+    if (result.plan) plans[result.plan.plan_id] = result.plan;
+    savePlans(plans);
+
+    sseWrite(ctx.res, {
+      type: 'done',
+      session_id: result.session_id,
+      plan_id: result.plan ? result.plan.plan_id : null,
+      reply_text: result.reply,
+      plan: result.plan,
+      plan_version: result.plan_version,
+      render_url: result.plan ? result.plan.render_url : null,
+      render_type: result.plan ? result.plan.render_type : null,
+      image_prompt: result.plan ? result.plan.image_prompt || null : null,
+      negative_prompt: result.plan ? result.plan.negative_prompt || null : null,
+      shop_suggestions: result.shop_suggestions,
+      feedback_signals: feedbackStore.getSignals(),
+      domain_insights: result.domain_insights || null,
+      shop_choice: result.shop_choice || null,
+      need_clarify: result.need_clarify,
+      missing_fields: result.missing_fields
+    });
+  } catch (e) {
+    sseWrite(ctx.res, { type: 'error', message: e && e.message ? e.message : 'internal error' });
+  }
+  ctx.res.end();
+});
+
 router.get('/api/v1/plan/:id', (ctx) => {
   const p = loadPlans()[ctx.params.id];
   if (!p) throw new HttpError(404, 'NOT_FOUND', 'plan not found');

@@ -59,6 +59,15 @@ curl -X POST http://localhost:3000/api/v1/chat \
 
 返回包含：`requirements`（结构化需求）、`plan`（花材清单/步骤/价格）、`render_url`（效果图）、`image_prompt`、`shop_suggestions`（附近 Top3 花店）。
 
+**流式回复（打字机效果）**：`POST /api/v1/chat/stream` 参数同上，以 SSE 返回：
+```text
+data: {"type":"meta","status":"thinking"}
+data: {"type":"token","delta":"好的！"}      # 逐段文本
+data: {"type":"token","delta":"为你找到…"}
+data: {"type":"done", ...完整响应体...}       # 结束帧（含 session_id/plan/shop_suggestions）
+```
+LLM 不可用/超时/失败时只有 `meta` + `done` 两帧（`done` 内为模板回复），前端可自行做打字机动画；小程序端 `utils/api.js` 的 `requestStream` 已封装该协议（含降级）。
+
 ## 商城接口（店铺 / 订单 / 支付）
 
 > HTTP 壳层：`server.js` 走 `lib/http/`（声明式路由 `Router` + CORS/限流/日志/统一错误处理中间件），启动后**免费获得**：

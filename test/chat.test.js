@@ -13,7 +13,8 @@ process.env.FLORA_DATA_DIR = TEST_DIR;
 process.on('exit', () => { try { fs.rmSync(TEST_DIR, { recursive: true, force: true }); } catch (e) {} });
 const registry = require('../lib/plugins/registry');
 const config = require('../lib/config');
-const { chatReplyFor, buildSystemPrompt, formatRequirements } = require('../lib/agent/chat');
+const { chatReplyFor, chatReplyStreamFor, buildSystemPrompt, formatRequirements } = require('../lib/agent/chat');
+const { chatStreamReply } = require('../lib/llm/client');
 const { runAgent } = require('../lib/agent');
 require('../lib/db').init();
 require('../lib/seed').runAll();
@@ -44,7 +45,12 @@ function check(cond, msg) {
     priority: 999,
     enabled: () => true,
     extract: async () => null,
-    chat: async ({ system, history }) => `（LLM）你说了：${(history[history.length - 1] || {}).content || ''}`
+    chat: async ({ system, history }) => `（LLM）你说了：${(history[history.length - 1] || {}).content || ''}`,
+    chatStream: async ({ system, history, onChunk }) => {
+      const full = `（LLM流）你说了：${(history[history.length - 1] || {}).content || ''}`;
+      for (const ch of full) onChunk(ch); // 逐字回调模拟真实流式
+      return full;
+    }
   };
   registry.register(fake);
   {
@@ -55,6 +61,31 @@ function check(cond, msg) {
     check(sys.includes('测试方案') && sys.includes('200'), 'system prompt 注入方案事实');
     const fr = formatRequirements({ recipient: '恋人', budget: 300 });
     check(fr.includes('恋人') && fr.includes('300'), '需求格式化正确');
+  }
+
+  // ── 1.5) chatStreamReplyFor：逐段回调 + 返回完整文本 ──
+  {
+    const chunks = [];
+    const out = await chatReplyStreamFor({ role: 'plan', ctx: { requirements: {}, plan: null, shops: [], transcript: [{ role: 'user', content: '你好' }] }, templateReply: '兜底', onChunk: (d) => chunks.push(d) });
+    check(out.startsWith('（LLM流）'), '流式返回完整 LLM 文本');
+    check(chunks.length > 1, 'onChunk 被逐段调用');
+    check(chunks.join('') === out, '分片拼接等于完整文本');
+  }
+  // 无流式能力的适配器（只有 chat，priority 最高被 resolve）→ chatStreamReply 返回 null 且不回调
+  {
+    const onlyChat = {
+      id: 'only-chat', slot: 'llm', priority: 2000, enabled: () => true,
+      extract: async () => null,
+      chat: async () => '只有 chat'
+    };
+    registry.register(onlyChat);
+    const chunks = [];
+    const out = await chatStreamReply({ system: 's', history: [], onChunk: (d) => chunks.push(d) });
+    check(out === null, '无 chatStream 能力 → 返回 null 走模板');
+    check(chunks.length === 0, '无 chatStream 能力 → 不回调');
+    const arr = registry.registry.get('llm');
+    const i = arr.findIndex((a) => a.id === 'only-chat');
+    if (i >= 0) arr.splice(i, 1);
   }
 
   // ── 2) 模拟 chat 抛错：回落模板 ──
@@ -87,6 +118,18 @@ function check(cond, msg) {
     check(r2.session.transcript.length === 4, 'transcript 多轮累积');
     check(r2.changed === true, '新需求被规则引擎识别为实质变化');
     check(r2.session.requirements.budget === 500, '多轮需求字段正确合并');
+  }
+
+  // ── 3.5) runAgent 流式模式：onReplyChunk 逐段收到、回复完整、结构不变 ──
+  {
+    const chunks = [];
+    const cfg = Object.assign({}, CONFIG, { onReplyChunk: (d) => chunks.push(d) });
+    const r = await runAgent({ text: '帮我做一束送给女朋友的生日花束，预算300以内，喜欢粉色', location: LOCATION, config: cfg });
+    check(chunks.length > 1, '流式模式 onReplyChunk 被逐段调用');
+    check(chunks.join('') === r.reply, '流式分片拼接等于最终回复');
+    check(r.reply.startsWith('（LLM流）'), '流式模式走 chatStream');
+    check(r.plan && r.plan.total > 0, '流式模式方案数据不变');
+    check(r.shop_suggestions.length === 3, '流式模式候选店不变');
   }
 
   // 清理测试插件，避免污染其他测试进程无关（注册表是进程内 Map，无害）

@@ -71,6 +71,29 @@ function ok(name, cond) {
   ok('LLM 返回 budget=200（合理）被保留', p3.budget === 200);
   llm.extractRequirements = orig;
 
+  console.log('— M19 极端自然语言理解（纯规则） —');
+  const e1 = await decompose('一百零一朵玫瑰');
+  ok('“一百零一朵玫瑰” → 组合 玫瑰×101 而非预算', e1.quantity_spec && e1.quantity_spec[0].qty === 101 && e1.budget == null);
+  const e2 = await decompose('十三支百合');
+  ok('“十三支百合” → 组合 百合×13', e2.quantity_spec && e2.quantity_spec[0].qty === 13 && e2.quantity_spec[0].flower_id === 'lily');
+  const e3 = await decompose('不想要向日葵和菊花');
+  ok('“不想要向日葵” → 禁忌 sunflower 而非偏好', e3.forbidden.includes('sunflower') && !e3.preferred.includes('sunflower'));
+  const e4 = await decompose('别用百合，我对花粉过敏');
+  ok('“别用百合+花粉过敏” → 禁忌 lily 且不误判粉色', e4.forbidden.includes('lily') && !e4.color_tone.includes('粉'));
+  ok('  且 avoid_allergen = true', e4.avoid_allergen === true);
+  const e5 = await decompose('预算5百左右');
+  ok('“预算5百左右” → budget 500', e5.budget === 500);
+  const e6 = await decompose('二百以内吧');
+  ok('“二百以内吧” → budget 200', e6.budget === 200);
+  const e7 = await decompose('我姐姐过生日喜欢郁金香不喜欢康乃馨');
+  ok('“姐姐” → 对象家人', e7.recipient === '家人');
+  ok('“不喜欢康乃馨” → 禁忌而非偏好', e7.forbidden.includes('carnation') && !e7.preferred.includes('carnation'));
+  ok('“喜欢郁金香” → 偏好保留', e7.preferred.includes('tulip'));
+  const e8 = await decompose('七夕要给女朋友什么花');
+  ok('“七夕” → 场合表白', e8.occasion === '表白');
+  const e9 = await decompose('预算一百零一');
+  ok('“预算一百零一” → budget 101', e9.budget === 101);
+
   console.log(`\n数量现算测试：${pass} 通过, ${fail} 失败`);
   process.exit(fail ? 1 : 0);
 })().catch((e) => { console.error('测试异常:', e); process.exit(1); });
