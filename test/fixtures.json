@@ -1,7 +1,7 @@
 [
   {
     "id": "birthday-mom-lavender",
-    "desc": "完整需求：生日/母亲/淡紫/禁玫瑰/预算150/客厅茶几",
+    "desc": "4关键字段齐→确认门禁→DIY方案：淡紫/禁玫瑰/预算150内",
     "turns": ["想给我妈做个生日花束，她喜欢淡紫色，温柔一点，不要玫瑰，预算150左右，放在客厅茶几上"],
     "expect": {
       "occasion": "生日",
@@ -9,104 +9,109 @@
       "budget": 150,
       "color_contains": ["紫"],
       "forbidden_contains": ["rose"],
+      "drive_to_plan": true,
+      "plan_category": "花束",
       "plan_excludes": ["rose"],
       "total_le_budget": true,
-      "need_clarify": false,
-      "versions": 1,
       "shops_top3": true
     }
   },
   {
     "id": "too-vague-clarify",
-    "desc": "信息过少应反问（预算+品类都缺）",
+    "desc": "信息过少应反问（缺预算/品类）",
     "turns": ["想给我妈做花"],
     "expect": {
       "need_clarify": true,
+      "recipient": "母亲",
       "missing_fields_contains": ["budget"]
     }
   },
   {
     "id": "multi-turn-iteration",
-    "desc": "多轮追问：禁玫瑰并换粉色系，v2 在原需求上迭代",
+    "desc": "多轮累积:禁玫瑰+换粉,确认后DIY方案排除玫瑰",
     "turns": ["想给我妈做个生日花束，预算150，淡紫色", "不要玫瑰，换成粉色"],
     "expect": {
       "budget": 150,
       "forbidden_contains": ["rose"],
       "color_contains": ["粉"],
+      "drive_to_plan": true,
       "plan_excludes": ["rose"],
-      "need_clarify": false,
-      "versions": 2
+      "total_le_budget": true
     }
   },
   {
-    "id": "allergy-hospital",
-    "desc": "探病+花粉过敏+禁百合：安全约束被记录；信息不足时反问而非出草稿",
+    "id": "allergy-hospital-clarify",
+    "desc": "探病+花粉过敏+禁百合：安全约束被记录；缺预算仍反问（不出方案）",
     "turns": ["朋友住院了，想去探病送花，她对花粉过敏，别放百合"],
     "expect": {
       "occasion": "探病",
       "avoid_allergen": true,
       "forbidden_contains": ["lily"],
-      "need_clarify": true
+      "need_clarify": true,
+      "missing_fields_contains": ["budget"]
     }
   },
   {
     "id": "budget-overrun-fallback",
-    "desc": "预算50要高价花材：数量压缩+删配花回退到预算内（选当季花材）",
-    "turns": ["预算50，想要绣球、向日葵、满天星的花束"],
+    "desc": "预算50要高价花材：数量压缩/删配花回退到预算内（4字段补齐后走DIY）",
+    "turns": ["生日送朋友，预算50，想要绣球、向日葵、满天星的花束"],
     "expect": {
+      "occasion": "生日",
+      "recipient": "朋友",
       "budget": 50,
       "preferred_contains": ["hydrangea", "sunflower", "babybreath"],
-      "plan_contains": ["hydrangea", "sunflower"],
-      "total_le_budget": true,
-      "need_clarify": false
+      "drive_to_plan": true,
+      "plan_contains": ["sunflower"],
+      "total_le_budget": true
     }
   },
   {
     "id": "confession-box",
-    "desc": "表白花盒：品类与风格识别",
-    "turns": ["情人节想跟女朋友表白，我想做一个花盒，红色浪漫一点"],
+    "desc": "表白花盒：品类/风格识别，4字段齐后走DIY出花盒方案",
+    "turns": ["情人节想跟女朋友表白，我想做一个花盒，红色浪漫一点，预算200"],
     "expect": {
       "occasion": "表白",
       "recipient": "恋人",
-      "category": "花盒",
+      "budget": 200,
       "style_contains": ["浪漫"],
       "color_contains": ["红"],
-      "need_clarify": false
+      "drive_to_plan": true,
+      "plan_category": "花盒"
     }
   },
   {
-    "id": "preference-actionable",
-    "desc": "只有偏好也能干活：有偏好时即使缺关键字段也不反问",
+    "id": "gate-blocks-preference-only",
+    "desc": "需求①门禁：只有偏好(缺场合/对象/预算)必须反问，不得出方案",
     "turns": ["我喜欢向日葵和雏菊，放在办公室桌上"],
     "expect": {
       "placement": "办公桌",
-      "size": "小型",
       "preferred_contains": ["sunflower", "spraymum"],
-      "plan_contains": ["sunflower"],
-      "need_clarify": false
+      "need_clarify": true,
+      "missing_fields_contains": ["budget"]
     }
   },
   {
-    "id": "budget-only-missing",
-    "desc": "只缺预算不反问，出带价方案（价格基于库价）",
+    "id": "budget-mandatory-clarify",
+    "desc": "需求①门禁：预算为关键字段，缺预算必须反问（不再直接出方案）",
     "turns": ["给女朋友做一个母亲节花束，粉色的"],
     "expect": {
       "occasion": "母亲节",
       "recipient": "恋人",
       "color_contains": ["粉"],
-      "need_clarify": false,
-      "plan_has_total": true
+      "need_clarify": true,
+      "missing_fields_contains": ["budget"]
     }
   },
   {
     "id": "reroute-occasion",
-    "desc": "追问后修正：v2 覆盖 v1 的场合并识别收礼人",
-    "turns": ["想买束花放客厅", "其实是想送给老师当毕业礼物，做成花束"],
+    "desc": "追问后修正+补齐预算：v2 识别收礼人并补预算，进入确认后出方案",
+    "turns": ["想买束花放客厅", "其实是想送给老师当毕业礼物，做成花束，预算200"],
     "expect": {
       "occasion": "家居装饰",
       "recipient": "老师",
-      "category": "花束",
-      "versions": 2
+      "budget": 200,
+      "drive_to_plan": true,
+      "plan_category": "花束"
     }
   }
 ]

@@ -1,0 +1,67 @@
+[
+  {
+    "plan_id": "mp-birthday-bouquet",
+    "shop_id": "shop_luhua",
+    "title": "生日惊喜花束",
+    "category": "花束",
+    "occasion": "生日",
+    "summary": "11支红玫瑰 + 满天星 生日花束",
+    "budget": 120,
+    "items": [
+      { "flower_id": "rose", "name": "红玫瑰", "qty": 11, "unit": "支", "price": 8, "color": "#E0384D" },
+      { "flower_id": "babybreath", "name": "满天星", "qty": 1, "unit": "扎", "price": 10, "color": "#F5F7FA" }
+    ]
+  },
+  {
+    "plan_id": "mp-mother-bouquet",
+    "shop_id": "shop_muqing",
+    "title": "暖心母亲节花束",
+    "category": "花束",
+    "occasion": "母亲节",
+    "summary": "康乃馨 + 百合 母亲节花束",
+    "budget": 150,
+    "items": [
+      { "flower_id": "carnation", "name": "康乃馨", "qty": 9, "unit": "支", "price": 9, "color": "#F2A0C0" },
+      { "flower_id": "lily", "name": "百合", "qty": 3, "unit": "支", "price": 18, "color": "#FFF6E6" }
+    ]
+  },
+  {
+    "plan_id": "mp-confession-box",
+    "shop_id": "shop_luhua",
+    "title": "表白花盒",
+    "category": "花盒",
+    "occasion": "表白",
+    "summary": "19支红玫瑰 表白礼盒",
+    "budget": 200,
+    "items": [
+      { "flower_id": "rose", "name": "红玫瑰", "qty": 19, "unit": "支", "price": 9, "color": "#E0384D" },
+      { "flower_id": "eucalyptus", "name": "尤加利", "qty": 1, "unit": "扎", "price": 12, "color": "#6FA47C" }
+    ]
+  },
+  {
+    "plan_id": "mp-housewarming",
+    "shop_id": "shop_qingyi",
+    "title": "乔迁高级花盒",
+    "category": "花盒",
+    "occasion": "乔迁",
+    "summary": "蓝白高级感 绣球花盒",
+    "budget": 200,
+    "items": [
+      { "flower_id": "hydrangea", "name": "绣球", "qty": 2, "unit": "支", "price": 35, "color": "#6FA8DC" },
+      { "flower_id": "pingpong", "name": "乒乓菊", "qty": 5, "unit": "支", "price": 12, "color": "#F2C94C" }
+    ]
+  },
+  {
+    "plan_id": "mp-desk-vase",
+    "shop_id": "shop_qingyi",
+    "title": "办公桌清新瓶花",
+    "category": "瓶花",
+    "occasion": "家居装饰",
+    "summary": "清新极简 郁金香瓶花",
+    "budget": 80,
+    "items": [
+      { "flower_id": "tulip", "name": "郁金香", "qty": 5, "unit": "支", "price": 8, "color": "#9B6FC0" },
+      { "flower_id": "eucalyptus", "name": "尤加利", "qty": 1, "unit": "扎", "price": 10, "color": "#6FA47C" }
+    ]
+  }
+]

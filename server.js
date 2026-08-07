@@ -26,8 +26,15 @@ const { loadShops, effPrice } = require('./lib/agent/shopMatcher');
 const feedbackStore = require('./lib/agent/feedbackStore');
 const { DATA_DIR, uid } = require('./lib/util');
 const db = require('./lib/db');
+const seed = require('./lib/seed');
+const pay = require('./lib/pay');
 
 const PORT = config.get('PORT');
+
+// 首次启动自动灌入种子数据（幂等：已存在则跳过）。
+// 避免全新 DATA_DIR 下空库导致模板/花材缺失、规划或匹配阶段崩溃。
+db.init();
+if (!db.kvGet('config', 'templates')) seed.runAll();
 
 const loadPlans = () => db.kvGetAll('plans');
 const savePlans = (p) => { for (const [k, v] of Object.entries(p || {})) db.kvSet('plans', k, v); };
@@ -111,7 +118,8 @@ router.post('/api/v1/chat', async (ctx) => {
     domain_insights: result.domain_insights || null,
     shop_choice: result.shop_choice || null,
     need_clarify: result.need_clarify,
-    missing_fields: result.missing_fields
+    missing_fields: result.missing_fields,
+    card: result.card || null
   });
 });
 
@@ -195,7 +203,8 @@ router.post('/api/v1/chat/stream', async (ctx) => {
       domain_insights: result.domain_insights || null,
       shop_choice: result.shop_choice || null,
       need_clarify: result.need_clarify,
-      missing_fields: result.missing_fields
+      missing_fields: result.missing_fields,
+      card: result.card || null
     });
   } catch (e) {
     sseWrite(ctx.res, { type: 'error', message: e && e.message ? e.message : 'internal error' });
@@ -207,6 +216,22 @@ router.get('/api/v1/plan/:id', (ctx) => {
   const p = loadPlans()[ctx.params.id];
   if (!p) throw new HttpError(404, 'NOT_FOUND', 'plan not found');
   sendJSON(ctx.res, 200, p);
+});
+// 历史方案列表（服务端持久化，跨设备；用于首页「历史方案」入口）
+router.get('/api/v1/plans', (ctx) => {
+  const list = Object.values(loadPlans())
+    .map((p) => ({
+      plan_id: p.plan_id,
+      summary: p.summary,
+      total: p.total,
+      budget: p.budget,
+      category: p.category,
+      mode: p.mode,
+      render_url: p.render_url || null,
+      created_at: p.created_at
+    }))
+    .sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+  sendJSON(ctx.res, 200, list);
 });
 router.get('/api/v1/shops', (ctx) => sendJSON(ctx.res, 200, loadShops()));
 router.get('/api/v1/shops/:id', (ctx) => {
@@ -310,16 +335,9 @@ router.post('/api/v1/orders/:id/pay', async (ctx) => {
   order.status = 'paid';
   order.paid_at = new Date().toISOString();
   saveOrders(orders);
-  sendJSON(ctx.res, 200, {
-    order,
-    payment: {
-      timeStamp: String(Math.floor(Date.now() / 1000)),
-      nonceStr: Math.random().toString(36).slice(2, 12),
-      package: 'prepay_id=mock_' + order.order_id,
-      signType: 'RSA',
-      paySign: 'MOCK_SIGN_' + order.order_id
-    }
-  });
+  // 支付走统一接口（当前 mock provider，预留微信支付替换点）
+  const payment = await pay.createPayment(order);
+  sendJSON(ctx.res, 200, { order, payment });
 });
 
 router.post('/api/v1/pay/notify', async (ctx) => {

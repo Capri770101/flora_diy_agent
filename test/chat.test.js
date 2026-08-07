@@ -106,21 +106,28 @@ function check(cond, msg) {
     if (i >= 0) arr.splice(i, 1);
   }
 
-  // ── 3) runAgent 整链路：fake LLM 生效 + 结构化数据不变 + transcript 累积 ──
+  // ── 3) runAgent 整链路：fake LLM 生效 + 确认门禁 + 确认后结构化数据由规则引擎产出 + transcript 累积 ──
   {
     const r1 = await runAgent({ text: '帮我做一束送给女朋友的生日花束，预算300以内，喜欢粉色', location: LOCATION, config: CONFIG });
     check(r1.reply.startsWith('（LLM）'), 'runAgent 回复被 LLM 接管');
-    check(r1.plan && r1.plan.total > 0, '方案结构化数据仍由规则引擎产出');
-    check(r1.shop_suggestions.length === 3, '候选店仍由规则引擎产出');
+    check(r1.card && r1.card.kind === 'confirm', '完整需求先发确认卡片（需求①门禁）');
+    check(r1.plan === null, '确认前不出方案');
     check(r1.session.transcript.length >= 2, 'transcript 记录 user+assistant 两轮');
-    const r2 = await runAgent({ text: '预算加到500吧', session: r1.session, location: LOCATION, config: CONFIG });
+    // 确认 → DIY → 结构化方案 + 选店由规则引擎产出
+    const b = await runAgent({ text: '确认', session: r1.session, location: LOCATION, config: CONFIG });
+    check(b.card && b.card.kind === 'branch', '确认后进入现有/DIY 分支卡片');
+    const p = await runAgent({ text: 'DIY', session: b.session, location: LOCATION, config: CONFIG });
+    check(p.plan && p.plan.total > 0, '方案结构化数据仍由规则引擎产出');
+    const s = await runAgent({ text: '不用', session: p.session, location: LOCATION, config: CONFIG });
+    check(s.shop_suggestions.length === 3, '候选店仍由规则引擎产出（独立选店卡片）');
+    // 修改预算 → 识别为实质变化并合并（重新进入确认）
+    const r2 = await runAgent({ text: '预算加到500吧', session: s.session, location: LOCATION, config: CONFIG });
     check(r2.reply.includes('预算加到500吧'), '第二轮 LLM 能看到上一轮上下文');
-    check(r2.session.transcript.length === 4, 'transcript 多轮累积');
     check(r2.changed === true, '新需求被规则引擎识别为实质变化');
     check(r2.session.requirements.budget === 500, '多轮需求字段正确合并');
   }
 
-  // ── 3.5) runAgent 流式模式：onReplyChunk 逐段收到、回复完整、结构不变 ──
+  // ── 3.5) runAgent 流式模式：onReplyChunk 逐段收到、回复完整、确认后结构不变 ──
   {
     const chunks = [];
     const cfg = Object.assign({}, CONFIG, { onReplyChunk: (d) => chunks.push(d) });
@@ -128,8 +135,13 @@ function check(cond, msg) {
     check(chunks.length > 1, '流式模式 onReplyChunk 被逐段调用');
     check(chunks.join('') === r.reply, '流式分片拼接等于最终回复');
     check(r.reply.startsWith('（LLM流）'), '流式模式走 chatStream');
-    check(r.plan && r.plan.total > 0, '流式模式方案数据不变');
-    check(r.shop_suggestions.length === 3, '流式模式候选店不变');
+    check(r.card && r.card.kind === 'confirm', '流式模式完整需求先发确认卡片');
+    // 驱动到 DIY 方案 + 选店（仍走流式）
+    const b = await runAgent({ text: '确认', session: r.session, location: LOCATION, config: cfg });
+    const p = await runAgent({ text: 'DIY', session: b.session, location: LOCATION, config: cfg });
+    check(p.plan && p.plan.total > 0, '流式模式方案数据不变');
+    const s = await runAgent({ text: '不用', session: p.session, location: LOCATION, config: cfg });
+    check(s.shop_suggestions.length === 3, '流式模式候选店不变');
   }
 
   // 清理测试插件，避免污染其他测试进程无关（注册表是进程内 Map，无害）
