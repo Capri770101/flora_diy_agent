@@ -1,4 +1,4 @@
-.orders { padding: 20rpx; }
+.orders { padding: 0 0 20rpx; }
 /* .card 由 app.wxss 统一定义（透明三角形卡片） */
 .head { display: flex; justify-content: space-between; align-items: center; }
 .shop { font-size: 30rpx; font-weight: 600; color: #16233F; }

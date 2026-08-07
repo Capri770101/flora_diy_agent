@@ -1,4 +1,4 @@
-.order { padding: 20rpx; }
+.order { padding: 0 0 20rpx; }
 /* .card 由 app.wxss 统一定义（透明三角形卡片） */
 .label { font-size: 26rpx; color: #6B7A99; margin-bottom: 12rpx; }
 .plan-sum { font-size: 28rpx; color: #16233F; line-height: 1.6; margin-bottom: 8rpx; }

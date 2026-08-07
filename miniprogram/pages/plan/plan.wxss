@@ -1,5 +1,6 @@
 /* plan 页面：蓝白 + 透明三角卡 */
-.plan { padding: 20rpx; }
+/* 横向 padding 归零，hero 通栏 + .card 统一 margin(28rpx) 控制左对齐 */
+.plan { padding: 0 0 20rpx; }
 
 /* 顶部主视觉：深蓝渐变 + 斜切（终末地 HUD） */
 .hero {
