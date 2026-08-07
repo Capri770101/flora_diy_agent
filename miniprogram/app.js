@@ -3,7 +3,7 @@ App({
   globalData: {
     // 后端地址默认（开发者工具模拟器用 localhost；真机预览须改成电脑局域网 IP 如 http://192.168.0.147:3000）
     // 真机用户可在「我的」页 → API 设置里改；改动写入 wx.storage，启动时优先读 storage
-    apiBase: 'http://localhost:3000',
+    apiBase: 'http://192.168.0.147:3000',
     // 定位（授权拒绝时回退深圳福田中心）
     location: { lat: 22.5431, lng: 114.0579 },
     locationReady: false
