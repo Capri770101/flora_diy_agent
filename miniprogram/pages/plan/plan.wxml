@@ -41,12 +41,26 @@
     <view class="care" wx:for="{{plan.care_tips}}" wx:key="index">· {{item}}</view>
   </view>
 
-  <!-- 改进②：方案卡不含店铺选择；选店与下单统一在对话的「独立选店卡片」完成 -->
+  <!-- 改进②：方案卡不含店铺选择；选店是下方独立区块，与方案卡分离 -->
   <view class="card">
-    <view class="label">💡 下单提示</view>
-    <view class="care">本方案不含店铺选择。回到对话，在「选择花店」卡片里挑一家即可下单。</view>
+    <view class="label">🏪 选择花店（独立选店，方案不含店铺）</view>
+    <view wx:if="{{loadingShops}}" class="care">正在匹配附近花店…</view>
+    <block wx:elif="{{shops.length}}">
+      <view class="shop-item {{selectedShop && selectedShop.shop_id === s.shop_id ? 'picked' : ''}}"
+            wx:for="{{shops}}" wx:key="shop_id" wx:for-item="s"
+            bindtap="onPickShop" data-shop-id="{{s.shop_id}}">
+        <view class="shop-name">{{s.name}}</view>
+        <view class="shop-meta">{{s.district}} · ⭐{{s.rating}}<text wx:if="{{s.distance_km != null}}"> · {{s.distance_km}}km</text></view>
+        <view class="shop-price">¥{{s.price_total}}<text class="muted" wx:if="{{s.price_diff}}">（vs 方案 {{s.price_diff > 0 ? '+' : ''}}{{s.price_diff}}）</text></view>
+      </view>
+    </block>
+    <view wx:else class="care">暂无可匹配花店，可回对话重新选店</view>
+    <view class="btn pay" wx:if="{{selectedShop}}" bindtap="goOrder">选「{{selectedShop.name}}」· 去下单 →</view>
+    <view class="care" wx:if="{{!selectedShop}}">选一家花店后即可下单</view>
   </view>
-  <view class="btn order-btn" bindtap="goChat">去对话选店下单 →</view>
+
+  <!-- 备选入口：回到对话，由独立选店卡片完成 -->
+  <view class="btn order-btn" bindtap="goChat">回对话继续沟通 →</view>
   <!-- 全局「我的」悬浮按钮 -->
   <mine-fab fab-pos="fab-d" />
 </view>

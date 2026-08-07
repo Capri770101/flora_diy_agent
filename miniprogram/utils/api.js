@@ -132,6 +132,15 @@ function getPlan(id) {
   return request('/api/v1/plans/' + id, 'GET');
 }
 
+// 按方案匹配花店（方案详情页独立选店用；location 可选）
+function getPlanShops(id, location) {
+  let path = '/api/v1/plans/' + id + '/shops';
+  if (location && location.lat != null && location.lng != null) {
+    path += '?lat=' + location.lat + '&lng=' + location.lng;
+  }
+  return request(path, 'GET');
+}
+
 // 单个订单详情
 function getOrder(id) {
   return request('/api/v1/orders/' + id, 'GET');
@@ -147,4 +156,4 @@ function payOrder(id) {
   return request('/api/v1/orders/' + id + '/pay', 'POST', {});
 }
 
-module.exports = { request, requestStream, chat, chatStream, getPlans, getPlan, getOrder, createOrder, payOrder };
+module.exports = { request, requestStream, chat, chatStream, getPlans, getPlan, getPlanShops, getOrder, createOrder, payOrder };

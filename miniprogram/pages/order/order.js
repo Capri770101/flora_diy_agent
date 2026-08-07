@@ -1,5 +1,5 @@
 // 下单页：确认店铺报价 → 创建订单 → mock 微信支付
-const { request } = require('../../utils/api.js');
+const { request, getPlan } = require('../../utils/api.js');
 
 Page({
   data: {
@@ -13,11 +13,19 @@ Page({
     missing: []
   },
 
-  onLoad(q) {
+  async onLoad(q) {
     const planId = q.plan_id;
     const shopId = q.shop_id;
-    const map = wx.getStorageSync('planMap') || {};
-    const plan = map[planId];
+    // 优先本地缓存；缺失时回源服务端详情，避免跳单时 plan 为 null 导致下单报错
+    let plan = (wx.getStorageSync('planMap') || {})[planId];
+    if (!plan) {
+      try { plan = await getPlan(planId); } catch (e) { plan = null; }
+      if (plan) {
+        const map = wx.getStorageSync('planMap') || {};
+        map[planId] = plan;
+        wx.setStorageSync('planMap', map);
+      }
+    }
     const shop = (plan && plan.shop_suggestions || []).find((s) => s.shop_id === shopId) || null;
     this.setData({ plan, shop, missing: shop ? shop.missing : [] });
     if (!shop) this.loadShop(shopId);

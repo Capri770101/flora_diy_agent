@@ -22,7 +22,7 @@ const { Router } = require('./lib/http/router');
 const { corsMiddleware, rateLimitMiddleware, logMiddleware, errorHandler, sendJSON } = require('./lib/http/middleware');
 const { buildOpenApi } = require('./lib/http/openapi');
 const { runAgent } = require('./lib/agent');
-const { loadShops, effPrice } = require('./lib/agent/shopMatcher');
+const { loadShops, effPrice, matchShops } = require('./lib/agent/shopMatcher');
 const feedbackStore = require('./lib/agent/feedbackStore');
 const { DATA_DIR, uid } = require('./lib/util');
 const db = require('./lib/db');
@@ -233,6 +233,22 @@ router.get('/api/v1/plans', (ctx) => {
     }))
     .sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
   sendJSON(ctx.res, 200, list);
+});
+// 按方案匹配花店（方案详情页独立选店用；location 可选，缺省按评分/距离兜底）
+router.get('/api/v1/plans/:id/shops', (ctx) => {
+  const p = loadPlans()[ctx.params.id];
+  if (!p) throw new HttpError(404, 'NOT_FOUND', 'plan not found');
+  const q = ctx.query || {};
+  const location = (q.lat != null && q.lng != null) ? { lat: +q.lat, lng: +q.lng } : null;
+  let shops;
+  try { shops = matchShops(p, { location, limit: 3 }); }
+  catch (e) { shops = []; }
+  if (!shops || !shops.length) {
+    shops = loadShops().slice(0, 3).map((s) => ({
+      shop_id: s.shop_id, name: s.name, district: s.district || '', rating: s.rating || 4
+    }));
+  }
+  sendJSON(ctx.res, 200, shops);
 });
 router.get('/api/v1/shops', (ctx) => sendJSON(ctx.res, 200, loadShops()));
 router.get('/api/v1/shops/:id', (ctx) => {

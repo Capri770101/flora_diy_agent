@@ -162,6 +162,14 @@ async function check(cond, msg) {
       check(found && found[f] != null, `⑤ 历史方案字段 ${f} 完整`);
     }
 
+    // ── 方案详情页独立选店：GET /api/v1/plans/:id/shops ──
+    const shopMatch = await fetch(base + '/api/v1/plans/' + r4.plan.plan_id + '/shops').then((r) => r.json());
+    check(Array.isArray(shopMatch) && shopMatch.length >= 1, '方案详情页匹配花店返回非空数组');
+    check(shopMatch[0] && shopMatch[0].shop_id && shopMatch[0].name, '匹配花店含 shop_id 与 name');
+    check(shopMatch[0].price_total != null, '匹配花店含 price_total（下单页展示报价用）');
+    const m404 = await fetch(base + '/api/v1/plans/plan_noexist/shops');
+    check(m404.status === 404, '方案不存在时 /plans/:id/shops 返回 404');
+
     // ── 下单 POST /api/v1/orders ──
     const shopId = r4.shop_suggestions[0].shop_id;
     const order = await fetch(base + '/api/v1/orders', {
