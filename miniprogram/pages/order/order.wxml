@@ -17,8 +17,8 @@
   <view class="card">
     <view class="label">配送方式</view>
     <radio-group bindchange="setDelivery">
-      <label class="radio"><radio value="delivery" checked="{{deliveryType === 'delivery'}}" color="#8E44AD"/>配送</label>
-      <label class="radio"><radio value="pickup" checked="{{deliveryType === 'pickup'}}" color="#8E44AD"/>到店自取</label>
+      <label class="radio"><radio value="delivery" checked="{{deliveryType === 'delivery'}}" color="#2B6CFF"/>配送</label>
+      <label class="radio"><radio value="pickup" checked="{{deliveryType === 'pickup'}}" color="#2B6CFF"/>到店自取</label>
     </radio-group>
     <input class="input" placeholder="收货地址（配送时必填）" value="{{address}}" bindinput="onAddress" />
     <input class="input" placeholder="备注（如：下午送达 / 贺卡文字）" value="{{remark}}" bindinput="onRemark" />

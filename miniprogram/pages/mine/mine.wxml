@@ -1,8 +1,12 @@
 <view class="mine">
   <view class="entry" bindtap="goOrders">我的订单 →</view>
-  <view class="head">我的方案</view>
+  <view class="section-title">
+    <view class="section-bar"></view>
+    <text>我的方案</text>
+  </view>
   <view wx:if="{{list.length === 0}}" class="empty">还没有保存的方案，去首页生成一个吧 🌸</view>
   <view class="item" wx:for="{{list}}" wx:key="plan_id" bindtap="open" data-id="{{item.plan_id}}">
+    <view class="item-deco"></view>
     <view class="item-sum">{{item.summary}}</view>
     <view class="item-meta">¥{{item.total}} · {{item.created_at}}</view>
   </view>

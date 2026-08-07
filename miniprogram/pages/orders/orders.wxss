@@ -1,15 +1,15 @@
 .orders { padding: 20rpx; }
-.card { background: #fff; border-radius: 20rpx; padding: 24rpx; margin-bottom: 20rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
+/* .card 由 app.wxss 统一定义（透明三角形卡片） */
 .head { display: flex; justify-content: space-between; align-items: center; }
-.shop { font-size: 30rpx; font-weight: 600; color: #333; }
-.status { font-size: 24rpx; padding: 4rpx 16rpx; border-radius: 20rpx; }
-.status.paid, .status.making, .status.delivering { background: #FDF2E3; color: #d2691e; }
-.status.done { background: #EAF6EA; color: #4a7a5a; }
-.status.created { background: #F3E8FA; color: #8E44AD; }
-.status.canceled { background: #f5f5f5; color: #999; }
-.sum { font-size: 26rpx; color: #555; line-height: 1.5; margin-top: 10rpx; }
-.meta { font-size: 24rpx; color: #999; margin-top: 8rpx; }
+.shop { font-size: 30rpx; font-weight: 600; color: #16233F; }
+.status { font-size: 24rpx; padding: 4rpx 16rpx; border-radius: 6rpx; }
+.status.paid, .status.making, .status.delivering { background: #FFF4E2; color: #E58B1A; }
+.status.done { background: #E8F6EC; color: #2E8B57; }
+.status.created { background: #E8F1FF; color: #2B6CFF; }
+.status.canceled { background: #EEF1F6; color: #9AA8C4; }
+.sum { font-size: 26rpx; color: #44506B; line-height: 1.5; margin-top: 10rpx; }
+.meta { font-size: 24rpx; color: #9AA8C4; margin-top: 8rpx; }
 .foot { margin-top: 12rpx; display: flex; justify-content: flex-end; }
-.link { font-size: 26rpx; color: #8E44AD; }
-.refresh { text-align: center; color: #8E44AD; font-size: 26rpx; padding: 20rpx; }
-.empty { text-align: center; color: #999; margin-top: 100rpx; }
+.link { font-size: 26rpx; color: #2B6CFF; }
+.refresh { text-align: center; color: #2B6CFF; font-size: 26rpx; padding: 20rpx; }
+.empty { text-align: center; color: #9AA8C4; margin-top: 100rpx; }

@@ -1,5 +1,307 @@
-page { background: #fafafa; font-family: "PingFang SC", sans-serif; }
-.btn { background: #8E44AD; color: #fff; border-radius: 24rpx; }
-.tag { display: inline-block; background: #F3E8FA; color: #8E44AD; font-size: 22rpx; padding: 4rpx 14rpx; border-radius: 20rpx; margin: 4rpx; }
-.card { background: #fff; border-radius: 20rpx; padding: 24rpx; margin: 20rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
-.dot { display: inline-block; width: 36rpx; height: 36rpx; border-radius: 50%; margin: 4rpx; border: 1rpx solid rgba(0,0,0,0.08); vertical-align: middle; }
+/* ===== 全局主题：蓝白色 + 透明三角形卡片（终末地风格 v2，真元素版） ===== */
+
+/* 调色板（全局复用值） */
+/* 蓝白主调 + 科技青强调 + 顶部深蓝 HUD */
+
+/* === 根页面：顶部深蓝 HUD + 向下渐变到浅蓝白 === */
+page {
+  background:
+    /* 顶部 200rpx 深蓝 HUD 渐变 */
+    linear-gradient(180deg,
+      #061333 0%,
+      #0F1E4D 10%,
+      #16337A 25%,
+      #2B6CFF 40%,
+      #6FA1FF 55%,
+      #CFE0FF 70%,
+      #E9F1FF 85%,
+      #F4F7FF 100%);
+  font-family: "PingFang SC", -apple-system, sans-serif;
+  color: #16233F;
+  min-height: 100vh;
+}
+
+/* === 通用容器 === */
+.container {
+  padding: 0 0 60rpx;
+}
+
+/* ============================================================
+   透明三角形卡片（核心风格 v2）
+   - clip-path 切角（右上 + 左下）
+   - background-image 多重渐变实现右上小三角 + 顶部发光线
+   - 半透明白 + 蓝边 + 蓝色发光阴影
+   ============================================================ */
+.card {
+  position: relative;
+  background:
+    /* 右上小三角（青色角标） */
+    linear-gradient(45deg,
+      transparent calc(50% - 1rpx),
+      rgba(22,194,213,0.95) calc(50% - 1rpx),
+      rgba(22,194,213,0.95) 50%,
+      transparent 50%) top right / 32rpx 32rpx no-repeat,
+    /* 顶部发光线（蓝→青） */
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(43,108,255,0.85) 25%,
+      rgba(22,194,213,0.85) 70%,
+      transparent 100%) top left / 100% 2rpx no-repeat,
+    /* 左下小三角（蓝色角标） */
+    linear-gradient(-45deg,
+      transparent calc(50% - 1rpx),
+      rgba(43,108,255,0.55) calc(50% - 1rpx),
+      rgba(43,108,255,0.55) 50%,
+      transparent 50%) bottom left / 24rpx 24rpx no-repeat,
+    /* 主半透明背景 */
+    linear-gradient(135deg, rgba(255,255,255,0.92), rgba(232,240,255,0.85));
+  border: 1rpx solid rgba(43,108,255,0.30);
+  border-radius: 0;
+  padding: 30rpx 26rpx 26rpx;
+  margin: 24rpx 28rpx 24rpx;
+  box-shadow:
+    0 10rpx 28rpx rgba(15,30,77,0.10),
+    inset 0 0 0 1rpx rgba(255,255,255,0.6);
+  /* 切角：右上 + 左下（终末地感） */
+  clip-path: polygon(
+    18rpx 0,
+    100% 0,
+    100% calc(100% - 18rpx),
+    calc(100% - 18rpx) 100%,
+    0 100%,
+    0 18rpx
+  );
+}
+
+/* 卡片标题文字 */
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #16233F;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+/* 卡片副标题/描述 */
+.card-subtitle {
+  font-size: 24rpx;
+  color: #5A6B8C;
+  line-height: 1.6;
+  display: block;
+}
+
+/* ============================================================
+   区块标题（左侧蓝青竖条）
+   - 用真实 .section-bar 子元素，不用 ::before
+   ============================================================ */
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #16233F;
+  margin: 40rpx 28rpx 12rpx;
+  padding-left: 0;
+  position: relative;
+  text-shadow: 0 1rpx 3rpx rgba(255,255,255,0.6);
+}
+
+.section-bar {
+  width: 6rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #2B6CFF 0%, #16C2D5 100%);
+  margin-right: 14rpx;
+  border-radius: 2rpx;
+  box-shadow: 0 0 10rpx rgba(43,108,255,0.5);
+  flex-shrink: 0;
+}
+
+/* 区块标题右侧文字（如果需要副标题） */
+.section-sub {
+  font-size: 22rpx;
+  color: #8FA0BC;
+  font-weight: 400;
+  margin-left: 12rpx;
+}
+
+/* ============================================================
+   通用按钮（蓝青渐变 + 切角 + 发光）
+   ============================================================ */
+.btn {
+  position: relative;
+  display: block;
+  width: calc(100% - 56rpx);
+  margin: 24rpx 28rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #2B6CFF 0%, #16C2D5 100%);
+  border-radius: 0;
+  letter-spacing: 2rpx;
+  box-shadow:
+    0 8rpx 22rpx rgba(43,108,255,0.35),
+    inset 0 1rpx 0 rgba(255,255,255,0.35);
+  border: 1rpx solid rgba(43,108,255,0.4);
+  clip-path: polygon(
+    16rpx 0,
+    100% 0,
+    100% calc(100% - 16rpx),
+    calc(100% - 16rpx) 100%,
+    0 100%,
+    0 16rpx
+  );
+  text-shadow: 0 1rpx 2rpx rgba(0,0,0,0.2);
+}
+
+.btn::after { border: none; } /* 覆盖 button 默认边框 */
+
+.btn:active {
+  opacity: 0.85;
+  box-shadow:
+    0 4rpx 12rpx rgba(43,108,255,0.30),
+    inset 0 1rpx 0 rgba(255,255,255,0.3);
+}
+
+.btn[disabled] {
+  background: #B0BDD9;
+  box-shadow: none;
+  color: #FFFFFF;
+  border-color: #B0BDD9;
+}
+
+.btn.btn-pay { background: linear-gradient(90deg, #16C2D5 0%, #2B6CFF 100%); }
+.btn.btn-done { background: #B0BDD9; box-shadow: none; border-color: #B0BDD9; }
+
+/* 次按钮（透明+描边+切角） */
+.btn-ghost {
+  position: relative;
+  display: block;
+  width: calc(100% - 56rpx);
+  margin: 16rpx 28rpx;
+  padding: 22rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #2B6CFF;
+  background: rgba(255,255,255,0.65);
+  border: 1rpx solid rgba(43,108,255,0.45);
+  border-radius: 0;
+  clip-path: polygon(
+    16rpx 0,
+    100% 0,
+    100% calc(100% - 16rpx),
+    calc(100% - 16rpx) 100%,
+    0 100%,
+    0 16rpx
+  );
+  box-shadow: 0 4rpx 12rpx rgba(43,108,255,0.08);
+}
+.btn-ghost::after { border: none; }
+.btn-ghost:active { background: rgba(43,108,255,0.10); }
+
+/* ============================================================
+   标签（蓝调/青调/警示/成功）
+   ============================================================ */
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  font-size: 22rpx;
+  color: #2B6CFF;
+  background: rgba(43,108,255,0.10);
+  border: 1rpx solid rgba(43,108,255,0.32);
+  margin-right: 10rpx;
+  margin-bottom: 8rpx;
+  border-radius: 0;
+  line-height: 1.4;
+}
+
+.tag.tag-cyan {
+  color: #0E8A99;
+  background: rgba(22,194,213,0.14);
+  border-color: rgba(22,194,213,0.40);
+}
+
+.tag.tag-warn {
+  color: #C46300;
+  background: rgba(255,170,0,0.10);
+  border-color: rgba(255,170,0,0.40);
+}
+
+.tag.tag-ok {
+  color: #0E7D3C;
+  background: rgba(0,180,90,0.10);
+  border-color: rgba(0,180,90,0.32);
+}
+
+.tag.tag-muted {
+  color: #5A6B8C;
+  background: rgba(143,160,188,0.10);
+  border-color: rgba(143,160,188,0.30);
+}
+
+/* ============================================================
+   价格/警告
+   ============================================================ */
+.price {
+  color: #2B6CFF;
+  font-weight: 700;
+  font-size: 34rpx;
+  text-shadow: 0 1rpx 2rpx rgba(43,108,255,0.15);
+  letter-spacing: 0.5rpx;
+}
+.price-sub {
+  color: #5A6B8C;
+  font-size: 24rpx;
+}
+.price-old {
+  color: #8FA0BC;
+  font-size: 22rpx;
+  text-decoration: line-through;
+  margin-left: 8rpx;
+}
+
+.warn {
+  color: #C46300;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  display: block;
+}
+
+/* 颜色点 */
+.dot {
+  display: inline-block;
+  width: 36rpx; height: 36rpx;
+  border-radius: 50%;
+  margin: 4rpx;
+  border: 1rpx solid rgba(22,35,63,0.08);
+  vertical-align: middle;
+}
+
+/* ============================================================
+   顶部 hero 区域（页面专属，在各页面 wxml 中可选使用）
+   ============================================================ */
+.hero {
+  position: relative;
+  padding: 60rpx 32rpx 80rpx;
+  color: #FFFFFF;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+.hero-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+  display: block;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.3);
+}
+.hero-sub {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.85);
+  margin-top: 14rpx;
+  line-height: 1.5;
+  text-shadow: 0 1rpx 4rpx rgba(0,0,0,0.2);
+}

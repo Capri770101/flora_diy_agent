@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>智能花卉 DIY 小程序 · 蓝白透明三角卡 v2 真机预览</title>
+<style>
+  /* ====== 调色板（与小程序 wxss 一致） ====== */
+  :root {
+    --blue: #2B6CFF;
+    --blue-deep: #0F1E4D;
+    --blue-cyan: #16C2D5;
+    --ink: #16233F;
+    --muted: #6B7A99;
+    --warn: #E58B1A;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; padding: 32px 16px;
+    background: radial-gradient(ellipse at top, #1a2554 0%, #0a0e22 70%);
+    font-family: "PingFang SC", -apple-system, "Segoe UI", sans-serif;
+    display: flex; gap: 32px; flex-wrap: wrap;
+    justify-content: center; align-items: flex-start;
+    min-height: 100vh;
+  }
+  h1.page-title {
+    width: 100%;
+    text-align: center;
+    color: #E9F1FF;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0 0 18px;
+    text-shadow: 0 2px 8px rgba(22,194,213,.4);
+  }
+
+  /* ====== 手机外壳 ====== */
+  .phone {
+    width: 390px;
+    background: #000;
+    border-radius: 44px;
+    padding: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(43,108,255,.2);
+  }
+  .screen {
+    width: 100%;
+    min-height: 760px;
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    /* 顶部深蓝 HUD → 浅蓝白渐变（与小程序 page 背景一致） */
+    background: linear-gradient(180deg,
+      #061333 0%, #0F1E4D 10%, #16337A 25%, #2B6CFF 40%,
+      #6FA1FF 55%, #CFE0FF 70%, #E9F1FF 85%, #F4F7FF 100%);
+    color: var(--ink);
+  }
+
+  /* 顶部状态栏模拟 */
+  .statusbar {
+    height: 28px; padding: 0 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: rgba(255,255,255,.85);
+    font-size: 12px; font-weight: 600;
+  }
+  /* 微信小程序导航栏 */
+  .navbar {
+    height: 44px; padding: 0 20px;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 17px; letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,.2);
+  }
+  .body { padding: 16px 0 40px; }
+
+  /* ====== 顶部 hero（终末地 HUD 感） ====== */
+  .hero {
+    position: relative;
+    background: radial-gradient(ellipse at top right, rgba(22,194,213,.3) 0%, transparent 60%),
+                linear-gradient(135deg, #061333 0%, #0F1E4D 35%, #16337A 65%, #2B6CFF 100%);
+    color: #fff;
+    padding: 56px 28px 76px;
+    margin-bottom: 8px;
+    box-shadow: 0 14px 36px rgba(6,19,51,.35);
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+  }
+  .hero-title {
+    font-size: 38px; font-weight: 800; letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,.4);
+    display: block;
+  }
+  .hero-sub {
+    display: block; margin-top: 14px;
+    font-size: 14px; line-height: 1.6;
+    color: rgba(255,255,255,.92);
+    text-shadow: 0 1px 4px rgba(0,0,0,.25);
+  }
+
+  /* ====== 区块标题（左侧蓝青竖条，用真实 div） ====== */
+  .section-title {
+    display: flex; align-items: center;
+    font-size: 15px; font-weight: 700;
+    color: var(--ink);
+    margin: 28px 28px 12px;
+    text-shadow: 0 1px 3px rgba(255,255,255,.6);
+  }
+  .section-bar {
+    width: 4px; height: 18px;
+    background: linear-gradient(180deg, var(--blue), var(--blue-cyan));
+    margin-right: 10px;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(43,108,255,.5);
+    flex-shrink: 0;
+  }
+
+  /* ====== 透明三角形卡片（核心） ======
+     - clip-path 切角（右上 + 左下）
+     - background-image 多重渐变实现右上小三角 + 顶部发光线
+     - 无 ::before/::after，纯 background */
+  .card {
+    position: relative;
+    background:
+      /* 右上小三角（青色） */
+      linear-gradient(45deg,
+        transparent calc(50% - 1px),
+        rgba(22,194,213,.95) calc(50% - 1px),
+        rgba(22,194,213,.95) 50%,
+        transparent 50%) top right / 22px 22px no-repeat,
+      /* 顶部发光线（蓝→青） */
+      linear-gradient(90deg,
+        transparent 0%,
+        rgba(43,108,255,.85) 25%,
+        rgba(22,194,213,.85) 70%,
+        transparent 100%) top left / 100% 2px no-repeat,
+      /* 左下小三角（蓝色） */
+      linear-gradient(-45deg,
+        transparent calc(50% - 1px),
+        rgba(43,108,255,.55) calc(50% - 1px),
+        rgba(43,108,255,.55) 50%,
+        transparent 50%) bottom left / 16px 16px no-repeat,
+      /* 主背景：半透明白 */
+      linear-gradient(135deg, rgba(255,255,255,.92), rgba(232,240,255,.85));
+    border: 1px solid rgba(43,108,255,.30);
+    border-radius: 0;
+    padding: 20px 18px 18px;
+    margin: 16px 18px 16px;
+    box-shadow: 0 8px 20px rgba(15,30,77,.10),
+                inset 0 0 0 1px rgba(255,255,255,.6);
+    clip-path: polygon(
+      12px 0, 100% 0, 100% calc(100% - 12px),
+      calc(100% - 12px) 100%, 0 100%, 0 12px);
+  }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; display: block; }
+  .card-sub   { font-size: 13px; color: #5A6B8C; line-height: 1.6; display: block; }
+
+  /* ====== 场景网格（首页） ====== */
+  .scene-grid {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin: 0 18px 8px;
+  }
+  .scene {
+    width: calc(50% - 6px);
+    position: relative;
+    background:
+      linear-gradient(45deg,
+        transparent calc(50% - 1px),
+        rgba(22,194,213,.9) calc(50% - 1px),
+        rgba(22,194,213,.9) 50%,
+        transparent 50%) top right / 20px 20px no-repeat,
+      linear-gradient(90deg,
+        transparent 0%, rgba(43,108,255,.8) 25%, rgba(22,194,213,.8) 70%, transparent 100%) top left / 100% 2px no-repeat,
+      rgba(255,255,255,.92);
+    border: 1px solid rgba(43,108,255,.30);
+    border-radius: 0;
+    padding: 18px 16px;
+    box-shadow: 0 6px 18px rgba(43,108,255,.10);
+    box-sizing: border-box;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  .scene-icon { font-size: 30px; display: block; }
+  .scene-label {
+    font-size: 15px; margin-top: 8px;
+    color: var(--ink); font-weight: 600;
+    display: block;
+  }
+
+  /* ====== 通用按钮（蓝青渐变 + 切角） ====== */
+  .btn {
+    display: block; width: calc(100% - 36px);
+    margin: 16px 18px;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 15px; font-weight: 700;
+    color: #fff;
+    background: linear-gradient(90deg, var(--blue), var(--blue-cyan));
+    border: 1px solid rgba(43,108,255,.4);
+    border-radius: 0;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 22px rgba(43,108,255,.35),
+                inset 0 1px 0 rgba(255,255,255,.35);
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    text-shadow: 0 1px 2px rgba(0,0,0,.2);
+    cursor: pointer;
+  }
+
+  /* ====== 标签（蓝/青/警示/成功） ====== */
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: var(--blue);
+    background: rgba(43,108,255,.10);
+    border: 1px solid rgba(43,108,255,.32);
+    margin-right: 6px; margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .tag-cyan { color: #0E8A99; background: rgba(22,194,213,.14); border-color: rgba(22,194,213,.4); }
+  .tag-warn { color: #C46300; background: rgba(255,170,0,.10); border-color: rgba(255,170,0,.4); }
+  .tag-ok   { color: #0E7D3C; background: rgba(0,180,90,.10); border-color: rgba(0,180,90,.32); }
+
+  /* ====== 价格 ====== */
+  .price {
+    color: var(--blue); font-weight: 700; font-size: 20px;
+    text-shadow: 0 1px 2px rgba(43,108,255,.15);
+    letter-spacing: .5px;
+  }
+  .price-sub { color: #5A6B8C; font-size: 13px; }
+
+  /* ====== 对话页气泡 ====== */
+  .msg-area { padding: 16px; min-height: 320px; }
+  .bubble {
+    max-width: 80%; padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px; line-height: 1.5;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .bubble.user {
+    background: linear-gradient(135deg, var(--blue), var(--blue-cyan));
+    color: #fff; margin-left: auto;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 6px 18px rgba(43,108,255,.30);
+  }
+  .bubble.bot {
+    position: relative;
+    background:
+      linear-gradient(45deg,
+        transparent calc(50% - 1px),
+        rgba(22,194,213,.85) calc(50% - 1px),
+        rgba(22,194,213,.85) 50%,
+        transparent 50%) top right / 18px 18px no-repeat,
+      rgba(255,255,255,.92);
+    border: 1px solid rgba(43,108,255,.30);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 4px 14px rgba(43,108,255,.10);
+  }
+
+  /* 方案入口（一行紧凑卡片） */
+  .plan-entry {
+    position: relative;
+    display: flex; align-items: center;
+    background:
+      linear-gradient(45deg,
+        transparent calc(50% - 1px),
+        rgba(22,194,213,.95) calc(50% - 1px),
+        rgba(22,194,213,.95) 50%,
+        transparent 50%) top right / 22px 22px no-repeat,
+      linear-gradient(90deg,
+        transparent 0%, rgba(43,108,255,.85) 25%, rgba(22,194,213,.85) 70%, transparent 100%) top left / 100% 2px no-repeat,
+      rgba(255,255,255,.90);
+    border: 1px solid rgba(43,108,255,.30);
+    padding: 14px 16px 14px 22px;
+    margin: 8px 0 16px;
+    box-shadow: 0 6px 20px rgba(43,108,255,.10);
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  .pe-bar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--blue), var(--blue-cyan));
+    box-shadow: 0 0 6px rgba(43,108,255,.5);
+  }
+  .pe-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .pe-brief { flex: 1; margin-left: 14px; min-width: 0; }
+  .pe-sum { font-size: 12px; color: var(--muted); display: block; }
+  .pe-price { font-size: 13px; font-weight: 700; color: var(--blue); }
+  .pe-arrow { font-size: 13px; color: var(--blue); padding-left: 8px; }
+
+  /* 输入栏 */
+  .input-bar {
+    display: flex; padding: 10px 14px;
+    background: rgba(255,255,255,.95);
+    border-top: 1px solid #E6EEFB;
+    gap: 8px;
+    align-items: center;
+  }
+  .input {
+    flex: 1;
+    border: 1px solid rgba(43,108,255,.30);
+    border-radius: 18px;
+    padding: 8px 14px; font-size: 13px;
+    background: #fff;
+  }
+  .send-btn {
+    background: linear-gradient(90deg, var(--blue), var(--blue-cyan));
+    color: #fff; padding: 8px 18px;
+    border-radius: 18px; font-size: 13px;
+    box-shadow: 0 4px 12px rgba(43,108,255,.3);
+  }
+
+  /* 页脚说明 */
+  .legend {
+    width: 100%;
+    max-width: 920px;
+    margin: 24px auto 0;
+    padding: 18px 24px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(22,194,213,.3);
+    color: rgba(255,255,255,.85);
+    font-size: 12px;
+    line-height: 1.7;
+    border-radius: 6px;
+  }
+  .legend b { color: var(--blue-cyan); }
+</style>
+</head>
+<body>
+  <h1 class="page-title">🌸 智能花卉 DIY 小程序 · 蓝白透明三角卡 v2</h1>
+
+  <!-- ============= 首页 ============= -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:35</span><span>📶 WiFi 🔋100%</span></div>
+      <div class="navbar">花艺顾问</div>
+      <div class="body">
+        <div class="hero">
+          <span class="hero-title">🌸 花艺顾问</span>
+          <span class="hero-sub">说一句需求，智能体帮你设计专属花艺方案与效果图</span>
+        </div>
+
+        <div class="section-title">
+          <div class="section-bar"></div><span>快速开始</span>
+        </div>
+        <div class="scene-grid">
+          <div class="scene"><span class="scene-icon">🎂</span><span class="scene-label">生日</span></div>
+          <div class="scene"><span class="scene-icon">💐</span><span class="scene-label">母亲节</span></div>
+          <div class="scene"><span class="scene-icon">🏠</span><span class="scene-label">乔迁</span></div>
+          <div class="scene"><span class="scene-icon">🌿</span><span class="scene-label">家居</span></div>
+        </div>
+
+        <div class="section-title">
+          <div class="section-bar"></div><span>或自由描述</span>
+        </div>
+        <div class="btn">开始对话 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 对话页 ============= -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:35</span><span>📶 WiFi 🔋100%</span></div>
+      <div class="navbar">花艺顾问</div>
+      <div class="msg-area">
+        <div class="bubble user">想要11朵红玫瑰加满天星，约500元</div>
+        <div class="bubble bot">为你设计了专属方案 🌿，请看下面的花艺方案卡片：</div>
+
+        <div class="plan-entry">
+          <div class="pe-bar"></div>
+          <div class="pe-title">🌿 花艺方案</div>
+          <div class="pe-brief">
+            <span class="pe-sum">11支红玫瑰 + 1扎白满天星 组成的花束</span>
+            <span class="pe-price">约 ¥75 / 预算 ¥500</span>
+          </div>
+          <div class="pe-arrow">▾</div>
+        </div>
+      </div>
+      <div class="input-bar">
+        <div class="input">描述你的需求…</div>
+        <div class="send-btn">发送</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 方案页 ============= -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:36</span><span>📶 WiFi 🔋100%</span></div>
+      <div class="navbar">方案详情</div>
+      <div class="body">
+        <div class="hero">
+          <span class="hero-title" style="font-size:30px">🌿 你的专属花艺方案</span>
+          <span class="hero-sub">11支红玫瑰 + 1扎白满天星 组成的花束</span>
+        </div>
+
+        <div class="card">
+          <div class="card-title">配色预览</div>
+          <div style="margin:8px 0">
+            <span class="dot" style="display:inline-block;width:18px;height:18px;border-radius:50%;background:#C62828;margin-right:6px"></span>
+            <span class="dot" style="display:inline-block;width:18px;height:18px;border-radius:50%;background:#E8F1FF;margin-right:6px"></span>
+            <span class="dot" style="display:inline-block;width:18px;height:18px;border-radius:50%;background:#2E7D32;margin-right:6px"></span>
+          </div>
+          <div class="price">约 ¥75 <span class="price-sub">/ 预算 ¥500</span></div>
+          <div class="card-sub" style="margin-top:6px">包装：牛皮纸 + 缎带蝴蝶结</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">花材清单 · 花语与寓意</div>
+          <div style="margin:8px 0;padding:6px 0;border-bottom:1px solid rgba(43,108,255,.10)">
+            <div style="font-size:14px"><span style="color:#C62828">●</span> 红玫瑰 ×11支 <span class="tag">主花</span></div>
+            <div style="font-size:11px;color:#9AA8C4;margin-top:4px">花语：热烈的爱 · 时令：全年</div>
+            <div style="font-size:11px;color:#3E7CC4;margin-top:2px">💧 2天换水、剪根</div>
+          </div>
+          <div style="margin:8px 0">
+            <div style="font-size:14px"><span style="color:#E8F1FF">●</span> 白满天星 ×1扎 <span class="tag tag-cyan">配花</span></div>
+            <div style="font-size:11px;color:#9AA8C4;margin-top:4px">花语：思念 · 时令：全年</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">附近花店 · 直接下单</div>
+          <div style="padding:10px 0;border-bottom:1px solid rgba(43,108,255,.10)">
+            <div style="font-size:14px;font-weight:700">花时间鲜花</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">⭐ 4.8 · 0.8km · 覆盖 95%</div>
+            <div class="price" style="font-size:18px;margin-top:6px">¥75</div>
+          </div>
+        </div>
+
+        <div class="btn">去这家店下单</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 订单页 ============= -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:37</span><span>📶 WiFi 🔋100%</span></div>
+      <div class="navbar">确认订单</div>
+      <div class="body">
+        <div class="hero" style="padding:40px 24px 50px;clip-path:polygon(0 0,100% 0,100% 92%,0 100%)">
+          <span class="hero-title" style="font-size:26px">📋 确认订单</span>
+          <span class="hero-sub" style="font-size:12px;margin-top:8px">检查信息后提交</span>
+        </div>
+
+        <div class="card">
+          <div class="card-sub">方案</div>
+          <div class="card-title" style="font-size:14px">11支红玫瑰 + 1扎白满天星 组成的花束</div>
+          <div class="price-sub" style="margin-top:4px">方案价约 ¥75 / 预算 ¥500</div>
+        </div>
+
+        <div class="card">
+          <div class="card-sub">花店</div>
+          <div class="card-title" style="font-size:15px">花时间鲜花（南山区）</div>
+          <div class="price-sub" style="margin-top:4px">⭐ 4.8 · 0.8km · 覆盖 95%</div>
+          <div class="price" style="font-size:18px;margin-top:6px">店铺报价 ¥75</div>
+        </div>
+
+        <div class="card">
+          <div class="card-sub">配送方式</div>
+          <div style="margin:8px 0;font-size:14px;color:var(--ink)">
+            <span style="color:var(--blue)">●</span> 配送
+            <span style="margin-left:24px;color:var(--muted)">○</span> 到店自取
+          </div>
+          <div class="input" style="margin-top:8px;font-size:12px">收货地址（配送时必填）</div>
+          <div class="input" style="margin-top:6px;font-size:12px">备注（如：下午送达 / 贺卡文字）</div>
+        </div>
+
+        <div class="btn">提交订单</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 我的页 ============= -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:38</span><span>📶 WiFi 🔋100%</span></div>
+      <div class="navbar">我的</div>
+      <div class="body">
+        <div class="hero" style="padding:50px 24px 60px;clip-path:polygon(0 0,100% 0,100% 90%,0 100%)">
+          <span class="hero-title" style="font-size:32px">👤 Capri</span>
+          <span class="hero-sub" style="font-size:12px;margin-top:8px">用花，记录每一份心意</span>
+        </div>
+
+        <div style="margin:0 18px">
+          <div style="
+            background:linear-gradient(90deg,var(--blue),var(--blue-cyan));
+            color:#fff; padding:18px 24px; font-size:16px; font-weight:600;
+            margin-bottom:20px; text-align:center; letter-spacing:1px;
+            box-shadow:0 8px 22px rgba(43,108,255,.3);
+            clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);">
+            我的订单 →
+          </div>
+        </div>
+
+        <div class="section-title">
+          <div class="section-bar"></div><span>我的方案</span>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size:14px">11支红玫瑰 + 1扎白满天星 组成的花束</div>
+          <div class="price-sub" style="margin-top:6px">¥75 · 2026-08-07</div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size:14px">19支粉玫瑰 生日花束</div>
+          <div class="price-sub" style="margin-top:6px">¥188 · 2026-08-05</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>设计要点：</b><br>
+    ① <b>顶部深蓝 HUD 渐变</b>（#061333 → #2B6CFF → 浅蓝白），终末地切角 hero 头部<br>
+    ② <b>透明三角卡</b>用 background-image 多重渐变实现右上小三角 + 顶部发光线（避开 wxss 伪元素兼容问题）<br>
+    ③ <b>左侧蓝青竖条</b>用真实 div（.section-bar），不用 ::before<br>
+    ④ <b>按钮切角</b>用 clip-path，与卡片呼应<br>
+    ⑤ <b>蓝主调</b>（#2B6CFF + #16C2D5 渐变），所有紫色（#8E44AD）已清除
+  </div>
+</body>
+</html>

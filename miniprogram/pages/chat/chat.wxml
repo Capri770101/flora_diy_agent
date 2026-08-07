@@ -15,6 +15,7 @@
 
     <!-- 方案入口：一行紧凑卡片，点击从底部弹出方案抽屉（不阻断对话） -->
     <view wx:if="{{plan}}" id="plan-entry" class="plan-entry" bindtap="openPlanDrawer">
+      <view class="pe-bar"></view>
       <view class="pe-title">🌿 花艺方案
         <text wx:if="{{plan.budget_ok === false}}" class="warn">已超预算·自动降级</text>
       </view>

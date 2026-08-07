@@ -1,7 +1,43 @@
+/* mine 页面：蓝白 + 透明三角卡 */
 .mine { padding: 24rpx; }
-.entry { background: #8E44AD; color: #fff; border-radius: 16rpx; padding: 24rpx; font-size: 30rpx; font-weight: 600; margin-bottom: 28rpx; text-align: center; }
-.head { font-size: 36rpx; font-weight: 700; margin-bottom: 20rpx; }
-.empty { color: #999; text-align: center; margin-top: 120rpx; font-size: 28rpx; }
-.item { background: #fff; border-radius: 20rpx; padding: 24rpx; margin-bottom: 16rpx; box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05); }
-.item-sum { font-size: 28rpx; color: #333; line-height: 1.5; }
-.item-meta { font-size: 24rpx; color: #999; margin-top: 10rpx; }
+
+.entry {
+  background: linear-gradient(135deg, #2B6CFF 0%, #16C2D5 100%);
+  color: #fff; border-radius: 0;
+  padding: 28rpx 32rpx; font-size: 30rpx; font-weight: 600;
+  margin-bottom: 16rpx; text-align: center;
+  box-shadow: 0 8rpx 22rpx rgba(43,108,255,0.30);
+  clip-path: polygon(16rpx 0, 100% 0, 100% calc(100% - 16rpx), calc(100% - 16rpx) 100%, 0 100%, 0 16rpx);
+  letter-spacing: 2rpx;
+  text-shadow: 0 1rpx 2rpx rgba(0,0,0,0.15);
+}
+
+/* .head 由 .section-title 替代（统一蓝青竖条） */
+.head { display: none; }
+
+.empty { color: #9AA8C4; text-align: center; margin-top: 120rpx; font-size: 28rpx; }
+
+/* 方案条目：透明三角卡（用 background-image 多重渐变实现装饰，无伪元素） */
+.item {
+  position: relative; overflow: hidden;
+  background:
+    linear-gradient(45deg,
+      transparent calc(50% - 1rpx),
+      rgba(22,194,213,0.90) calc(50% - 1rpx),
+      rgba(22,194,213,0.90) 50%,
+      transparent 50%) top right / 28rpx 28rpx no-repeat,
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(43,108,255,0.80) 25%,
+      rgba(22,194,213,0.80) 70%,
+      transparent 100%) top left / 100% 2rpx no-repeat,
+    rgba(255,255,255,0.90);
+  border: 1rpx solid rgba(43,108,255,0.30);
+  border-radius: 0;
+  padding: 24rpx; margin-bottom: 16rpx;
+  box-shadow: 0 6rpx 18rpx rgba(43,108,255,0.10);
+  clip-path: polygon(12rpx 0, 100% 0, 100% calc(100% - 12rpx), calc(100% - 12rpx) 100%, 0 100%, 0 12rpx);
+}
+.item-deco { display: none; }
+.item-sum { font-size: 28rpx; color: #16233F; line-height: 1.5; }
+.item-meta { font-size: 24rpx; color: #9AA8C4; margin-top: 10rpx; }

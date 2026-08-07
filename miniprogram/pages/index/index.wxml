@@ -4,7 +4,10 @@
     <view class="hero-sub">说一句需求，智能体帮你设计专属花艺方案与效果图</view>
   </view>
 
-  <view class="section-title">快速开始</view>
+  <view class="section-title">
+    <view class="section-bar"></view>
+    <text>快速开始</text>
+  </view>
   <view class="scene-grid">
     <view class="scene" wx:for="{{scenes}}" wx:key="label" bindtap="goChat" data-q="{{item.q}}">
       <view class="scene-icon">{{item.icon}}</view>
@@ -12,6 +15,9 @@
     </view>
   </view>
 
-  <view class="section-title">或自由描述</view>
+  <view class="section-title">
+    <view class="section-bar"></view>
+    <text>或自由描述</text>
+  </view>
   <view class="free-btn btn" bindtap="goChat" data-q="">开始对话 →</view>
 </view>
