@@ -14,5 +14,4 @@
   </view>
   <view class="refresh" bindtap="refresh" wx:if="{{orders.length}}">刷新</view>
 
-  <mine-fab fab-pos="fab-d" />
 </view>

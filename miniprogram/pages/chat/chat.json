@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "对话设计",
-  "usingComponents": {
-    "mine-fab": "/components/mine-fab/mine-fab"
-  }
+  "navigationBarTitleText": "对话设计"
 }

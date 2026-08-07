@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "花艺顾问",
-  "usingComponents": {
-    "mine-fab": "/components/mine-fab/mine-fab"
-  }
+  "navigationBarTitleText": "花艺顾问"
 }

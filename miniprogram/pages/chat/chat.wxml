@@ -80,5 +80,4 @@
     <view class="send-btn" bindtap="send">发送</view>
   </view>
 
-  <mine-fab fab-pos="fab-chat" />
 </view>
