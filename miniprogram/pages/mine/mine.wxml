@@ -1,5 +1,23 @@
 <view class="mine">
   <view class="entry" bindtap="goOrders">我的订单 →</view>
+
+  <!-- API 地址设置：真机换 Wi-Fi 时可在此直接改，无需重新打包 -->
+  <view class="section-title">
+    <view class="section-bar"></view>
+    <text>API 设置</text>
+  </view>
+  <view class="api-card">
+    <view class="api-row">
+      <input class="api-input" type="text" placeholder="如 http://192.168.0.147:3000" value="{{apiBase}}" bindinput="onApiInput" />
+    </view>
+    <view class="api-actions">
+      <view class="api-btn api-save" bindtap="saveApi">保存</view>
+      <view class="api-btn api-test" bindtap="testApi">测试</view>
+    </view>
+    <view wx:if="{{apiStatus}}" class="api-status {{apiStatusClass}}">{{apiStatus}}</view>
+    <view class="api-hint">当前：{{apiBase || 'http://localhost:3000'}}</view>
+  </view>
+
   <view class="section-title">
     <view class="section-bar"></view>
     <text>我的方案</text>
