@@ -5,6 +5,7 @@
   "appid": "wxa5ea16c1ef27e74b",
   "compileType": "miniprogram",
   "setting": {
+    "ignoreUploadUnusedFiles": false,
     "urlCheck": false,
     "es6": true,
     "postcss": true,
