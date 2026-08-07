@@ -1,4 +1,5 @@
 <view class="order">
+  <view class="page-bg"></view>
   <view class="card" wx:if="{{plan}}">
     <view class="label">方案</view>
     <view class="plan-sum">{{plan.summary}}</view>

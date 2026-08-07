@@ -1,4 +1,5 @@
 <view class="orders">
+  <view class="page-bg"></view>
   <view wx:if="{{loading}}" class="empty">加载中…</view>
   <view wx:elif="{{orders.length === 0}}" class="empty">还没有订单，去生成方案下单吧 🌸</view>
   <view class="card" wx:for="{{orders}}" wx:key="order_id">

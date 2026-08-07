@@ -1,4 +1,5 @@
 <view class="home">
+  <view class="page-bg"></view>
   <view class="hero">
     <view class="hero-title">🌸 花艺顾问</view>
     <view class="hero-sub">说一句需求，智能体帮你设计专属花艺方案与效果图</view>
@@ -21,27 +22,27 @@
   </view>
   <view class="free-btn btn" bindtap="goChat" data-q="">开始对话 →</view>
 
-  <!-- ⑤ 历史方案入口（服务端持久化，跨设备） -->
+  <!-- ⑤ 历史方案入口（服务端持久化，跨设备）：紧凑列表卡片，>3 条折叠 -->
   <view class="section-title">
     <view class="section-bar"></view>
     <text>历史方案</text>
   </view>
   <view wx:if="{{plans.length === 0}}" class="hist-empty">还没有历史方案，先去对话生成一份吧～</view>
   <view class="hist-list">
-    <view class="hist-item" wx:for="{{plans}}" wx:key="plan_id" bindtap="goPlan" data-id="{{item.plan_id}}">
+    <view class="hist-item" wx:for="{{visiblePlans}}" wx:key="plan_id" bindtap="goPlan" data-id="{{item.plan_id}}">
       <image wx:if="{{item.render_url}}" class="hist-img" src="{{item.render_url}}" mode="aspectFill" />
       <view class="hist-body">
         <view class="hist-summary">{{item.summary}}</view>
         <view class="hist-meta">
           <text class="hist-price">约 ¥{{item.total}}</text>
           <text wx:if="{{item.budget}}" class="muted"> / 预算 ¥{{item.budget}}</text>
-          <text class="hist-mode {{item.mode === 'existing' ? 'is-existing' : 'is-diy'}}">{{item.mode === 'existing' ? '现有方案' : 'DIY'}}</text>
+          <text class="hist-mode {{item.mode === 'existing' ? 'is-existing' : 'is-diy'}}">{{item.mode === 'existing' ? '现有' : 'DIY'}}</text>
         </view>
-        <view class="hist-date">{{item.created_at}}</view>
       </view>
-    <view class="hist-arrow">›</view>
+      <view class="hist-arrow">›</view>
+    </view>
   </view>
-</view>
+  <view wx:if="{{plans.length > 3 && !showAll}}" class="hist-more" bindtap="toggleAll">查看全部 {{plans.length}} 条历史 →</view>
 <!-- 全局「我的」悬浮按钮 -->
 <mine-fab fab-pos="fab-d" />
 </view>

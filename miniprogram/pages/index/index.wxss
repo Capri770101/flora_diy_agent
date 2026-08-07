@@ -97,5 +97,31 @@
   letter-spacing: 2rpx;
 }
 
+/* 历史方案：紧凑列表卡片（不一次性全展开，>3 条折叠为「查看全部」） */
+.hist-list { margin: 0 28rpx; }
+.hist-item {
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.90);
+  border: 1rpx solid rgba(43,108,255,0.25);
+  border-radius: 0;
+  padding: 16rpx;
+  margin-bottom: 14rpx;
+  box-shadow: 0 4rpx 14rpx rgba(43,108,255,0.08);
+  overflow: hidden;
+  clip-path: polygon(12rpx 0, 100% 0, 100% calc(100% - 12rpx), calc(100% - 12rpx) 100%, 0 100%, 0 12rpx);
+}
+.hist-item:active { background: rgba(234,241,255,0.95); }
+.hist-img { width: 84rpx; height: 84rpx; border-radius: 8rpx; flex-shrink: 0; background: #E8F1FF; }
+.hist-body { flex: 1; min-width: 0; margin: 0 16rpx; }
+.hist-summary { font-size: 26rpx; color: #16233F; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+.hist-meta { font-size: 22rpx; color: #6B7A99; margin-top: 6rpx; }
+.hist-price { color: #2B6CFF; font-weight: 700; }
+.hist-mode { margin-left: 10rpx; font-size: 20rpx; padding: 2rpx 10rpx; border-radius: 6rpx; }
+.hist-mode.is-existing { color: #0E8A99; background: rgba(22,194,213,0.14); }
+.hist-mode.is-diy { color: #2B6CFF; background: rgba(43,108,255,0.10); }
+.hist-arrow { color: #2B6CFF; font-size: 36rpx; flex-shrink: 0; }
+.hist-more { text-align: center; color: #2B6CFF; font-size: 26rpx; padding: 12rpx; margin: 0 28rpx 8rpx; }
+.hist-empty { color: #9AA8C4; text-align: center; margin: 20rpx 0; font-size: 26rpx; }
+
 /* 全局「我的」悬浮按钮定位（右下角，避开安全区） */
 .fab-d { bottom: calc(32rpx + env(safe-area-inset-bottom)); }

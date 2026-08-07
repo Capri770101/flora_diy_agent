@@ -1,4 +1,5 @@
 <view class="mine">
+  <view class="page-bg"></view>
   <view class="entry" bindtap="goOrders">我的订单 →</view>
 
   <!-- API 地址设置：真机换 Wi-Fi 时可在此直接改，无需重新打包 -->

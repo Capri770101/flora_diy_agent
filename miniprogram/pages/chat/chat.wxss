@@ -202,3 +202,59 @@
 
 /* 全局「我的」悬浮按钮：在输入栏上方，避免与发送按钮重叠 */
 .fab-chat { bottom: calc(130rpx + env(safe-area-inset-bottom)); }
+
+/* 确认步骤弹窗（confirm/branch/image_ask/shop_select 浮层，不打断对话流） */
+.modal-mask {
+  position: fixed; left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(6,19,51,0.55);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48rpx 40rpx;
+}
+.modal-card {
+  position: relative;
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  background:
+    linear-gradient(45deg, transparent calc(50% - 1rpx), rgba(22,194,213,0.95) calc(50% - 1rpx), rgba(22,194,213,0.95) 50%, transparent 50%) top right / 32rpx 32rpx no-repeat,
+    linear-gradient(90deg, transparent 0%, rgba(43,108,255,0.85) 25%, rgba(22,194,213,0.85) 70%, transparent 100%) top left / 100% 2rpx no-repeat,
+    rgba(255,255,255,0.97);
+  border: 1rpx solid rgba(43,108,255,0.35);
+  border-radius: 0;
+  padding: 48rpx 30rpx 30rpx;
+  box-shadow: 0 20rpx 50rpx rgba(6,19,51,0.40);
+  clip-path: polygon(18rpx 0, 100% 0, 100% calc(100% - 18rpx), calc(100% - 18rpx) 100%, 0 100%, 0 18rpx);
+  animation: modalPop 0.22s ease;
+}
+@keyframes modalPop { 0% { transform: translateY(24rpx) scale(0.97); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+.modal-close {
+  position: absolute; right: 18rpx; top: 14rpx;
+  font-size: 24rpx; color: #6B7A99;
+  padding: 8rpx 16rpx;
+}
+.modal-card .card-title { font-size: 30rpx; font-weight: 700; color: #16233F; margin-bottom: 18rpx; }
+.modal-card .card-hint { font-size: 24rpx; color: #6B7A99; line-height: 1.6; margin-bottom: 18rpx; }
+.modal-card .card-tip { font-size: 22rpx; color: #E58B1A; background: #FFF4E2; padding: 6rpx 12rpx; border-radius: 8rpx; margin-bottom: 14rpx; }
+.modal-card .req-list { margin-bottom: 18rpx; }
+.modal-card .req-row { display: flex; justify-content: space-between; align-items: center; padding: 12rpx 0; border-bottom: 1rpx solid rgba(43,108,255,0.10); font-size: 26rpx; }
+.modal-card .req-key { color: #6B7A99; }
+.modal-card .req-val { color: #16233F; font-weight: 600; text-align: right; flex: 1; margin-left: 20rpx; }
+.modal-card .card-actions { margin-top: 10rpx; }
+.modal-card .btn { width: 100%; margin: 14rpx 0 0; }
+.modal-card .shop-item {
+  position: relative; background: rgba(255,255,255,0.92);
+  border: 1rpx solid rgba(43,108,255,0.30);
+  border-radius: 0; padding: 18rpx 20rpx; margin-bottom: 12rpx;
+  clip-path: polygon(12rpx 0, 100% 0, 100% calc(100% - 12rpx), calc(100% - 12rpx) 100%, 0 100%, 0 12rpx);
+}
+.modal-card .shop-item.picked { border: 2rpx solid #2B6CFF; background: rgba(234,241,255,0.95); }
+.modal-card .shop-name { font-size: 28rpx; font-weight: 600; color: #16233F; }
+.modal-card .shop-meta { font-size: 22rpx; color: #6B7A99; margin-top: 6rpx; }
+.modal-card .shop-price { font-size: 28rpx; font-weight: 700; color: #2B6CFF; margin-top: 6rpx; }
+.modal-card .more-shop { text-align: center; color: #2B6CFF; font-size: 26rpx; padding: 14rpx 0; }
+.modal-card .picked-bar {
+  margin-top: 16rpx; background: linear-gradient(90deg, #2B6CFF, #16C2D5);
+  color: #fff; text-align: center; border-radius: 40rpx;
+  padding: 18rpx 0; font-size: 28rpx; box-shadow: 0 6rpx 16rpx rgba(43,108,255,0.30);
+}

@@ -21,6 +21,19 @@ page {
   min-height: 100vh;
 }
 
+/* === 全局固定背景图（统一一张：滚动时固定不移动 / 不割裂 / 不重复平铺） === */
+/* 每个页面 wxml 根部放 <view class="page-bg"></view>；z-index:-1 使其在页面背景之上、
+   内容之下，滚动时随 viewport 固定。图片用 cover 铺满且只一张，杜绝重复与割裂。 */
+.page-bg {
+  position: fixed;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url('/images/bg-unified.png') center center / cover no-repeat;
+  pointer-events: none;
+}
+
 /* === 通用容器 === */
 .container {
   padding: 0 0 60rpx;

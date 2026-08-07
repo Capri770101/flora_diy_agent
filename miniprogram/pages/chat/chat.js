@@ -20,8 +20,9 @@ Page({
     input: '', messages: [], plan: null, planDrawer: false,
     selectedShop: null, loading: false, sessionId: null, scroller: 'top',
     thinking: false, thinkingText: '', thinkingStep: 0,
-    // 结构化卡片（M19 契约）：按 card.kind 渲染，与对话流互不阻塞
-    card: null, confirmRequirements: [], clarifyMissing: [], changed: false
+    // 结构化卡片（M19 契约）：clarify 内联对话流；confirm/branch/image_ask/shop_select 浮为弹窗(modal)
+    card: null, confirmRequirements: [], clarifyMissing: [], changed: false,
+    modal: null
   },
 
   onLoad(q) {
@@ -155,19 +156,20 @@ Page({
   },
 
   // ── 结构化卡片交互（按钮回发对应意图文本，由后端状态机统一理解）──
-  onConfirm() { this.sendText('确认'); },
-  onChooseBranch(e) { this.sendText(e.currentTarget.dataset.choice); },     // '现有方案' | 'DIY'
-  onChooseImage(e) { this.sendText(e.currentTarget.dataset.choice); },       // '要' | '不用'
+  onConfirm() { this.closeModal(); this.sendText('确认'); },
+  onChooseBranch(e) { this.closeModal(); this.sendText(e.currentTarget.dataset.choice); },     // '现有方案' | 'DIY'
+  onChooseImage(e) { this.closeModal(); this.sendText(e.currentTarget.dataset.choice); },       // '要' | '不用'
   onPickShop(e) {
     const idx = e.currentTarget.dataset.idx;
     const shopId = e.currentTarget.dataset.shopId;
     // 即时高亮已选门店，提升反馈感
-    const shops = (this.data.card && this.data.card.data && this.data.card.data.shops) || [];
+    const shops = (this.data.modal && this.data.modal.data && this.data.modal.data.shops) || [];
     const shop = shops.find((s) => s.shop_id === shopId) || null;
     if (shop) this.setData({ selectedShop: shop });
+    this.closeModal();
     this.sendText('选第' + idx + '家');
   },
-  onMoreShop() { this.sendText('看看其他店'); },
+  onMoreShop() { this.closeModal(); this.sendText('看看其他店'); },
 
   // 方案抽屉：打开/关闭（方案详情不占对话流，随时可回看）
   openPlanDrawer() { if (this.data.plan) this.setData({ planDrawer: true }); },
@@ -199,8 +201,19 @@ Page({
       plan.render_url = url;
     }
 
+    // 确认步骤浮为弹窗：confirm/branch/image_ask/shop_select → modal，不打断对话流
+    // clarify 仅作指引，保留对话流内联（不弹窗）
+    const MODAL_KINDS = ['confirm', 'branch', 'image_ask', 'shop_select'];
+    const isModal = !!(card && MODAL_KINDS.indexOf(card.kind) >= 0);
+    const modal = isModal ? card : null;
+    const inlineCard = (card && card.kind === 'clarify') ? card : null;
+
+    // 滚动到对话底部，让 bot 的提问文本可见（弹窗浮在其上，不遮挡对话布局）
+    const msgs = this.data.messages;
+    const scroller = msgs.length ? msgs[msgs.length - 1].id : 'bottom';
+
     this.setData({
-      card,
+      card: inlineCard,
       confirmRequirements,
       clarifyMissing,
       changed: !!data.changed,
@@ -209,10 +222,15 @@ Page({
       selectedShop: data.shop_choice || null,
       sessionId: data.session_id,
       loading: false,
-      scroller: card ? ('card-' + card.kind) : 'top'
+      modal,
+      scroller
     });
     if (plan) this.saveHistory(plan);
   },
+
+  // 关闭确认弹窗（不打断对话流，可重新触发 / 重新选择方案）
+  closeModal() { if (this.data.modal) this.setData({ modal: null }); },
+  noop() {},
 
   saveHistory(plan) {
     let map = wx.getStorageSync('planMap') || {};
@@ -230,6 +248,7 @@ Page({
   },
 
   goOrder() {
+    this.closeModal();
     const p = this.data.plan;
     const c = this.data.selectedShop;
     if (p && c) {
