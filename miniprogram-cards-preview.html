@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>智能花卉 DIY · M21 卡片流 + 首页历史 预览样机</title>
+<style>
+  :root {
+    --blue: #2B6CFF; --blue-deep: #0F1E4D; --blue-cyan: #16C2D5;
+    --ink: #16233F; --muted: #6B7A99; --warn: #E58B1A;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; padding: 32px 16px;
+    background: radial-gradient(ellipse at top, #1a2554 0%, #0a0e22 70%);
+    font-family: "PingFang SC", -apple-system, "Segoe UI", sans-serif;
+    display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+    min-height: 100vh;
+  }
+  h1.page-title {
+    width: 100%; text-align: center; color: #E9F1FF; font-size: 22px; font-weight: 700;
+    letter-spacing: 2px; margin: 0 0 8px; text-shadow: 0 2px 8px rgba(22,194,213,.4);
+  }
+  .sub { width:100%; text-align:center; color:#9fb3d9; font-size:13px; margin:0 0 18px; }
+  .phone { width: 390px; background: #000; border-radius: 44px; padding: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(43,108,255,.2); }
+  .screen { width: 100%; min-height: 760px; border-radius: 32px; overflow: hidden; position: relative;
+    background: linear-gradient(180deg, #061333 0%, #0F1E4D 10%, #16337A 25%, #2B6CFF 40%, #6FA1FF 55%, #CFE0FF 70%, #E9F1FF 85%, #F4F7FF 100%); color: var(--ink); }
+  .statusbar { height: 30px; display:flex; align-items:center; justify-content:space-between; padding: 0 22px; color:#E9F1FF; font-size:12px; }
+  .navbar { height: 46px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:600; font-size:16px; background: rgba(6,19,51,.35); backdrop-filter: blur(6px); }
+  .body { padding: 14px; overflow-y: auto; max-height: 660px; }
+
+  /* 首页 */
+  .hero { background: rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.35); border-radius:18px; padding:18px; color:#EAF2FF; margin-bottom:14px; }
+  .hero h2 { margin:0 0 6px; font-size:18px; }
+  .hero p { margin:0; font-size:13px; opacity:.85; line-height:1.5; }
+  .section-title { color: var(--blue-deep); font-size:14px; font-weight:700; margin:16px 4px 8px; }
+  .history-card { background:#fff; border-radius:14px; padding:12px 14px; margin-bottom:10px; box-shadow:0 6px 16px rgba(15,30,77,.12); }
+  .history-card .top { display:flex; justify-content:space-between; align-items:center; }
+  .history-card .title { font-weight:700; font-size:14px; color:var(--ink); }
+  .history-card .mode { font-size:11px; padding:2px 8px; border-radius:10px; background:#EAF1FF; color:var(--blue); }
+  .history-card .meta { font-size:12px; color:var(--muted); margin-top:6px; }
+  .history-card .price { color:var(--warn); font-weight:700; }
+
+  /* 对话气泡 */
+  .msg { max-width: 82%; margin: 8px 0; padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height:1.5; }
+  .bot { background:#fff; color:var(--ink); border-bottom-left-radius:4px; box-shadow:0 4px 12px rgba(15,30,77,.1); }
+  .user { background:var(--blue); color:#fff; margin-left:auto; border-bottom-right-radius:4px; }
+  .card { background:#fff; border-radius:16px; padding:14px; margin:10px 0; box-shadow:0 8px 22px rgba(15,30,77,.16); border:1px solid rgba(43,108,255,.12); }
+  .card .tag { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:9px; background:var(--blue); color:#fff; margin-bottom:8px; }
+  .card .tag.clarify { background:#E58B1A; } .card .tag.branch { background:#16C2D5; } .card .tag.img { background:#7B5CFF; } .card .tag.shop { background:#1FA463; }
+  .card .line { font-size:13px; color:var(--ink); margin:4px 0; }
+  .chip { display:inline-block; font-size:12px; padding:3px 10px; border-radius:10px; background:#FFF1DD; color:#a35e00; margin:3px 4px 0 0; }
+  .rows { font-size:12.5px; color:var(--muted); line-height:1.7; }
+  .rows b { color:var(--ink); }
+  .btns { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .btn { flex:1; min-width:64px; text-align:center; padding:9px 0; border-radius:12px; font-size:13px; font-weight:600; }
+  .btn.primary { background:var(--blue); color:#fff; } .btn.ghost { background:#EAF1FF; color:var(--blue); } .btn.ok { background:#1FA463; color:#fff; } .btn.no { background:#F0F2F7; color:var(--muted); }
+  .shop-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-top:1px solid #EEF2F8; }
+  .shop-row:first-of-type { border-top:none; }
+  .shop-row .info { font-size:12.5px; } .shop-row .info .nm { font-weight:700; color:var(--ink); } .shop-row .info .sub { color:var(--muted); font-size:11px; }
+  .shop-row .sel { font-size:12px; color:var(--blue); font-weight:700; }
+  .legend { width:100%; color:#9fb3d9; font-size:12px; line-height:1.7; padding:0 6px; }
+  .legend code { color:#16C2D5; }
+</style>
+</head>
+<body>
+  <h1 class="page-title">智能花卉 DIY · 对话卡片流预览</h1>
+  <p class="sub">M21 骨架（结构 + class，不含样式美化）· 对应改进①②③④② + ⑤ 首页历史</p>
+
+  <!-- 首页：历史方案入口 -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:41</span><span>花卉 DIY</span></div>
+      <div class="navbar">首页</div>
+      <div class="body">
+        <div class="hero">
+          <h2>🌿 花艺小助手</h2>
+          <p>告诉我场合、对象、品类和预算，我帮你设计专属方案，还能直接匹配附近花店下单。</p>
+        </div>
+        <div class="section-title">📜 历史方案</div>
+        <div class="history-card">
+          <div class="top"><span class="title">生日·妈妈·薰衣草花束</span><span class="mode">DIY</span></div>
+          <div class="meta">预算 ¥300 · 总价 <span class="price">¥268</span> · 2026-08-05</div>
+        </div>
+        <div class="history-card">
+          <div class="top"><span class="title">表白·女朋友·红玫瑰花盒</span><span class="mode">现有方案</span></div>
+          <div class="meta">预算 ¥500 · 总价 <span class="price">¥459</span> · 2026-08-03</div>
+        </div>
+        <div class="history-card">
+          <div class="top"><span class="title">11朵红玫瑰+1朵满天星</span><span class="mode">DIY</span></div>
+          <div class="meta">指定花材 · 总价 <span class="price">¥158</span> · 2026-08-01</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 对话：5 类结构化卡片流 -->
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span>9:41</span><span>花卉 DIY</span></div>
+      <div class="navbar">对话</div>
+      <div class="body">
+        <div class="msg bot">你好呀～我是你的花艺小助手 🌸 想做一束花送给谁呢？告诉我用途、预算和喜欢的风格或花材～</div>
+        <div class="msg user">生日送妈妈，预算300</div>
+
+        <!-- ① 门禁：关键需求不齐 → clarify 卡，不出方案 -->
+        <div class="card">
+          <span class="tag clarify">clarify · 需求澄清</span>
+          <div class="line">还想知道：场合、品类、对象，补充后我才设计方案 🌿</div>
+          <div><span class="chip">缺·场合</span><span class="chip">缺·品类</span><span class="chip">缺·对象</span></div>
+        </div>
+
+        <div class="msg user">场合生日、对象妈妈、品类花束</div>
+
+        <!-- ① 关键需求齐 → confirm 卡（仍不出方案） -->
+        <div class="card">
+          <span class="tag">confirm · 需求确认</span>
+          <div class="rows"><b>场合</b>：生日　<b>对象</b>：妈妈　<b>品类</b>：花束　<b>预算</b>：¥300</div>
+          <div class="btns"><span class="btn primary">确认</span><span class="btn ghost">修改</span></div>
+        </div>
+
+        <div class="msg user">确认</div>
+
+        <!-- ③ 先问 现有 / DIY -->
+        <div class="card">
+          <span class="tag branch">branch · 方案来源</span>
+          <div class="line">生成方案前，想先确认：直接选用商家现有方案（含成品效果图），还是自己 DIY 设计？</div>
+          <div class="btns"><span class="btn ghost">现有方案</span><span class="btn primary">DIY</span></div>
+        </div>
+
+        <div class="msg user">DIY</div>
+
+        <!-- ④ DIY → 出图询问（现有方案会直出商家图、跳过这步） -->
+        <div class="card">
+          <span class="tag img">image_ask · 效果图</span>
+          <div class="line">已生成 DIY 方案：薰衣草花束 总价约 ¥268。要不要生成一张效果图参考？</div>
+          <div class="btns"><span class="btn ok">要</span><span class="btn no">不用</span></div>
+        </div>
+
+        <div class="msg user">不用</div>
+
+        <!-- ② 方案定稿后 → 独立选店卡片（不在方案卡内） -->
+        <div class="card">
+          <span class="tag shop">shop_select · 选择门店</span>
+          <div class="line">方案已就绪，以下是附近花店，点选一家锁定下单：</div>
+          <div class="shop-row"><div class="info"><div class="nm">花间集（盐田店）</div><div class="sub">0.8km · 评分4.9 · 约¥268</div></div><div class="sel">选第1家 ›</div></div>
+          <div class="shop-row"><div class="info"><div class="nm">云端花艺</div><div class="sub">1.2km · 评分4.7 · 约¥275</div></div><div class="sel">选第2家 ›</div></div>
+          <div class="shop-row"><div class="info"><div class="nm">拾光花店</div><div class="sub">1.6km · 评分4.6 · 约¥259</div></div><div class="sel">选第3家 ›</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <p><b>卡片协议（后端 card.kind 驱动，前端只渲染）</b></p>
+    <p><code>clarify</code> 关键需求未齐 → 只回显缺失，<b>不出方案</b>（改进①）<br/>
+    <code>confirm</code> 场合/对象/品类/预算齐 → 确认卡，<b>确认后才出方案</b>（改进①）<br/>
+    <code>branch</code> 确认后 → 现有方案 / DIY 二选一（改进③）<br/>
+    <code>image_ask</code> DIY 后 → 是否生成效果图；现有方案直出商家图、跳过（改进④）<br/>
+    <code>shop_select</code> 方案定稿后 → <b>独立</b>选店卡片（改进②，方案卡内不含店铺）</p>
+    <p>首页「历史方案」调 <code>GET /api/v1/plans</code>（改进⑤）。卡片按钮回发意图文本，由后端状态机统一理解。</p>
+  </div>
+</body>
+</html>
