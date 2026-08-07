@@ -40,4 +40,6 @@
   <view class="btn" wx:if="{{!order}}" bindtap="submit">提交订单</view>
   <view class="btn pay" wx:if="{{order && order.status === 'created'}}" bindtap="pay">微信支付 ¥{{order.price_total}}</view>
   <view class="btn done" wx:if="{{order && order.status === 'paid'}}">已支付 · 等待花店接单制作</view>
+
+  <mine-fab fab-pos="fab-d" />
 </view>

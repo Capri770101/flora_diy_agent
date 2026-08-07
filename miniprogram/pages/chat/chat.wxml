@@ -79,4 +79,6 @@
     <input class="input" placeholder="描述你的需求…" value="{{input}}" bindinput="onInput" confirm-type="send" bindconfirm="send" />
     <view class="send-btn" bindtap="send">发送</view>
   </view>
+
+  <mine-fab fab-pos="fab-chat" />
 </view>

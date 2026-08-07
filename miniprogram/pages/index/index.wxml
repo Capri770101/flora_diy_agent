@@ -20,4 +20,6 @@
     <text>或自由描述</text>
   </view>
   <view class="free-btn btn" bindtap="goChat" data-q="">开始对话 →</view>
+
+  <mine-fab fab-pos="fab-d" />
 </view>

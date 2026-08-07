@@ -1,0 +1,5 @@
+<!-- 全局「我的」悬浮按钮（蓝白 + 透明三角形切角风格） -->
+<view class="fab fab-pos" bindtap="goMine" hover-class="fab-hover">
+  <view class="fab-ico">👤</view>
+  <text class="fab-txt">我的</text>
+</view>

@@ -17,8 +17,8 @@ Page({
 
   onLoad(q) {
     if (q && q.q) {
+      // 需求1：仅将卡片默认指令预填到输入框（替换已有内容），不自动发送，等待用户确认后手动发送
       this.setData({ input: decodeURIComponent(q.q) });
-      this.send();
     }
   },
   onInput(e) { this.setData({ input: e.detail.value }); },

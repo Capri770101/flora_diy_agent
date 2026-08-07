@@ -333,6 +333,20 @@
     border-radius: 6px;
   }
   .legend b { color: var(--blue-cyan); }
+
+  /* 全局「我的」悬浮按钮（预览中由脚本注入到每个屏幕） */
+  .screen .fab {
+    position: absolute; right: 14px; bottom: 16px;
+    width: 48px; height: 48px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #2B6CFF 0%, #16C2D5 100%);
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow: 0 6px 16px rgba(43,108,255,.4);
+    clip-path: polygon(22% 0,100% 0,100% 78%,78% 100%,0 100%,0 22%);
+    color: #fff; z-index: 50; cursor: pointer;
+  }
+  .screen .fab .fab-ico { font-size: 18px; line-height: 1; }
+  .screen .fab .fab-txt { font-size: 11px; font-weight: 600; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -525,7 +539,23 @@
     ③ <b>左侧蓝青竖条</b>用真实 div（.section-bar），不用 ::before<br>
     ④ <b>按钮切角</b>用 clip-path，与卡片呼应<br>
     ⑤ <b>蓝主调</b>（#2B6CFF + #16C2D5 渐变），所有紫色（#8E44AD）已清除<br>
-    ⑥ <b>对齐统一</b>：卡片 / 区块标题 / 按钮 / 场景卡 / 我的页条目统一左缩进 28rpx，hero 通栏；消除页内标题与卡片错位、页间缩进不一致
+    ⑥ <b>对齐统一</b>：卡片 / 区块标题 / 按钮 / 场景卡 / 我的页条目统一左缩进 28rpx，hero 通栏；消除页内标题与卡片错位、页间缩进不一致<br>
+    ⑦ <b>需求1 · 首页卡片预填</b>：点击「快速开始」卡片不再立即发请求，而是把该卡片的默认指令文本预填到对话页输入框（替换已有内容），由用户手动点发送<br>
+    ⑧ <b>需求2 · 全局「我的」按钮</b>：每个屏幕右下角的切角悬浮按钮（👤 我的），点击跳转「我的」页面；在首页 / 对话 / 方案 / 订单 / 我的 等所有主要页面均可见
   </div>
+
+  <script>
+    // 给每个屏幕注入「我的」悬浮按钮（模拟小程序全局可见组件 mine-fab）
+    document.querySelectorAll('.screen').forEach(function (s) {
+      var fab = document.createElement('div');
+      fab.className = 'fab';
+      fab.innerHTML = '<span class="fab-ico">👤</span><span class="fab-txt">我的</span>';
+      fab.title = '我的';
+      fab.addEventListener('click', function () { alert('跳转「我的」页面'); });
+      // 对话页输入栏在底部，悬浮按钮上移避免遮挡发送按钮（对应小程序 fab-chat）
+      if (s.querySelector('.input-bar')) fab.style.bottom = '78px';
+      s.appendChild(fab);
+    });
+  </script>
 </body>
 </html>

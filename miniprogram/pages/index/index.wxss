@@ -96,3 +96,6 @@
   font-weight: 600;
   letter-spacing: 2rpx;
 }
+
+/* 全局「我的」悬浮按钮定位（右下角，避开安全区） */
+.fab-d { bottom: calc(32rpx + env(safe-area-inset-bottom)); }

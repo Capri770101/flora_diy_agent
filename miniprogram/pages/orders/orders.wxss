@@ -13,3 +13,6 @@
 .link { font-size: 26rpx; color: #2B6CFF; }
 .refresh { text-align: center; color: #2B6CFF; font-size: 26rpx; padding: 20rpx; }
 .empty { text-align: center; color: #9AA8C4; margin-top: 100rpx; }
+
+/* 全局「我的」悬浮按钮定位（右下角，避开安全区） */
+.fab-d { bottom: calc(32rpx + env(safe-area-inset-bottom)); }

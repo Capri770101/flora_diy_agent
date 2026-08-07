@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "我的订单" }
+{
+  "navigationBarTitleText": "我的订单",
+  "usingComponents": {
+    "mine-fab": "/components/mine-fab/mine-fab"
+  }
+}

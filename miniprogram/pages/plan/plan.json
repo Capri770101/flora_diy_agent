@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "方案详情" }
+{
+  "navigationBarTitleText": "方案详情",
+  "usingComponents": {
+    "mine-fab": "/components/mine-fab/mine-fab"
+  }
+}

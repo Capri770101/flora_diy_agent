@@ -57,3 +57,5 @@
   </view>
 </view>
 <view wx:else class="empty">方案不存在</view>
+
+<mine-fab fab-pos="fab-d" />
