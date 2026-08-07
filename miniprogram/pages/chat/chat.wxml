@@ -13,7 +13,65 @@
       <text class="thinking-text">{{thinkingText}}</text>
     </view>
 
-    <!-- 方案入口：一行紧凑卡片，点击从底部弹出方案抽屉（不阻断对话） -->
+    <!-- ① 需求澄清卡片：关键需求未齐，禁止出方案 -->
+    <view wx:if="{{card.kind === 'clarify'}}" id="card-clarify" class="card card-clarify">
+      <view class="card-title">还需要补充一些信息</view>
+      <view class="tag-row">
+        <view class="tag" wx:for="{{clarifyMissing}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view class="card-hint">补充后我会为你设计方案</view>
+    </view>
+
+    <!-- ② 确认卡片：关键需求齐，确认后才出方案 -->
+    <view wx:if="{{card.kind === 'confirm'}}" id="card-confirm" class="card card-confirm">
+      <view class="card-title">请确认你的需求</view>
+      <view class="req-list">
+        <view class="req-row" wx:for="{{confirmRequirements}}" wx:key="key">
+          <text class="req-key">{{item.key}}</text>
+          <text class="req-val">{{item.value}}</text>
+        </view>
+      </view>
+      <view wx:if="{{changed}}" class="card-tip">需求有更新，请重新确认</view>
+      <view class="card-actions">
+        <view class="btn btn-primary" bindtap="onConfirm">确认，去设计方案</view>
+      </view>
+    </view>
+
+    <!-- ③ 分支卡片：选现有方案 or DIY -->
+    <view wx:if="{{card.kind === 'branch'}}" id="card-branch" class="card card-branch">
+      <view class="card-title">选择方案方式</view>
+      <view class="card-hint">直接选用商家现有方案（含成品效果图），还是自己 DIY？</view>
+      <view class="card-actions">
+        <view class="btn" bindtap="onChooseBranch" data-choice="现有方案">商家现有方案</view>
+        <view class="btn" bindtap="onChooseBranch" data-choice="DIY">自己 DIY</view>
+      </view>
+    </view>
+
+    <!-- ④ 出图询问卡片：DIY 后是否生成效果图 -->
+    <view wx:if="{{card.kind === 'image_ask'}}" id="card-image" class="card card-image">
+      <view class="card-title">要不要生成效果图</view>
+      <view class="card-hint">已为你生成 DIY 方案，是否再生成一张效果图参考？</view>
+      <view class="card-actions">
+        <view class="btn btn-primary" bindtap="onChooseImage" data-choice="要">要，生成效果图</view>
+        <view class="btn" bindtap="onChooseImage" data-choice="不用">不用，直接选店</view>
+      </view>
+    </view>
+
+    <!-- ⑤ 独立选店卡片：方案卡不含店铺选择（改进②） -->
+    <view wx:if="{{card.kind === 'shop_select'}}" id="card-shop" class="card card-shop">
+      <view class="card-title">选择花店</view>
+      <view class="shop-item {{selectedShop && selectedShop.shop_id === s.shop_id ? 'picked' : ''}}"
+            wx:for="{{card.data.shops}}" wx:key="shop_id" wx:for-item="s" wx:for-index="si"
+            bindtap="onPickShop" data-idx="{{si + 1}}" data-shop-id="{{s.shop_id}}">
+        <view class="shop-name">{{s.name}}</view>
+        <view class="shop-meta">{{s.distance_km}}km · ⭐{{s.rating}} · 覆盖{{s.coverage}}%</view>
+        <view class="shop-price">¥{{s.price_total}}</view>
+      </view>
+      <view class="more-shop" bindtap="onMoreShop">看看其他店 →</view>
+      <view class="picked-bar" wx:if="{{selectedShop}}" bindtap="goOrder">已锁定「{{selectedShop.name}}」· 去下单 →</view>
+    </view>
+
+    <!-- 方案入口：一行紧凑卡片，点击从底部弹出方案抽屉（不阻断对话，且不含店铺选择） -->
     <view wx:if="{{plan}}" id="plan-entry" class="plan-entry" bindtap="openPlanDrawer">
       <view class="pe-bar"></view>
       <view class="pe-title">🌿 花艺方案
@@ -51,27 +109,6 @@
         <view class="step-d">{{item.d}}</view>
       </view>
       <view class="detail-btn" bindtap="openPlan">查看完整方案 →</view>
-
-      <view class="shops" wx:if="{{plan.shop_suggestions && plan.shop_suggestions.length}}">
-        <view class="shops-title">🏬 附近花店 · 点选一家，我帮您锁定</view>
-        <view class="shop {{selectedShop && selectedShop.shop_id === item.shop_id ? 'picked' : ''}}"
-              wx:for="{{plan.shop_suggestions}}" wx:key="shop_id" wx:for-item="s" wx:for-index="si"
-              bindtap="pickShop" data-idx="{{si + 1}}">
-          <view class="s-head">
-            <text class="s-name">{{s.name}}</text>
-            <text class="s-price">¥{{s.price_total}}</text>
-          </view>
-          <view class="s-meta">{{s.distance_km}}km · ⭐{{s.rating}} · 覆盖{{s.coverage}}%
-            <text wx:if="{{s.missing.length}}" class="s-miss"> · 缺{{s.missing[0].name}}可替换</text>
-          </view>
-          <text wx:if="{{selectedShop && selectedShop.shop_id === item.shop_id}}" class="s-check">✓ 已选</text>
-        </view>
-        <view class="more-shop" bindtap="sendMore">看看其他店 →</view>
-      </view>
-
-      <view class="picked-bar" wx:if="{{selectedShop}}" bindtap="goOrder">
-        已锁定「{{selectedShop.name}}」约 ¥{{selectedShop.price_total}} · 去下单 →
-      </view>
     </scroll-view>
   </view>
 
@@ -79,5 +116,4 @@
     <input class="input" placeholder="描述你的需求…" value="{{input}}" bindinput="onInput" confirm-type="send" bindconfirm="send" />
     <view class="send-btn" bindtap="send">发送</view>
   </view>
-
 </view>

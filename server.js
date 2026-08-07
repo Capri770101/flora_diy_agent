@@ -204,6 +204,7 @@ router.post('/api/v1/chat/stream', async (ctx) => {
       shop_choice: result.shop_choice || null,
       need_clarify: result.need_clarify,
       missing_fields: result.missing_fields,
+      changed: result.changed,
       card: result.card || null
     });
   } catch (e) {

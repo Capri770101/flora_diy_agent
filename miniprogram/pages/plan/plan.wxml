@@ -41,20 +41,11 @@
     <view class="care" wx:for="{{plan.care_tips}}" wx:key="index">· {{item}}</view>
   </view>
 
-  <view class="card" wx:if="{{plan.shop_suggestions && plan.shop_suggestions.length}}">
-    <view class="label">🏬 附近花店 · 直接下单</view>
-    <view class="shop" wx:for="{{plan.shop_suggestions}}" wx:key="shop_id" wx:for-item="shop">
-      <view class="shop-head">
-        <text class="shop-name">{{shop.name}}</text>
-        <text class="shop-dist">{{shop.distance_km}}km</text>
-      </view>
-      <view class="shop-meta">⭐ {{shop.rating}} · 覆盖 {{shop.coverage}}%
-        <text wx:if="{{shop.missing.length}}" class="warn"> · 缺 {{shop.missing[0].name}} 可替换</text>
-      </view>
-      <view class="shop-price">¥{{shop.price_total}}<text class="muted" wx:if="{{shop.price_diff}}"> / 方案价 ¥{{plan.total}}</text></view>
-      <view class="order-btn" bindtap="order" data-shop="{{shop.shop_id}}">去这家店下单</view>
-    </view>
+  <!-- 改进②：方案卡不含店铺选择；选店与下单统一在对话的「独立选店卡片」完成 -->
+  <view class="card">
+    <view class="label">💡 下单提示</view>
+    <view class="care">本方案不含店铺选择。回到对话，在「选择花店」卡片里挑一家即可下单。</view>
   </view>
+  <view class="btn order-btn" bindtap="goChat">去对话选店下单 →</view>
 </view>
 <view wx:else class="empty">方案不存在</view>
-

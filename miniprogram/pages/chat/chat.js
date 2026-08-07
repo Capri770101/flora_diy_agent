@@ -1,24 +1,37 @@
-// 对话页（流式输出 · 打字机动画 · 思考气泡 · 方案抽屉）
+// 对话页（流式输出 · 打字机动画 · 思考气泡 · 结构化卡片）
 const { request, requestStream } = require('../../utils/api.js');
 
 let seq = 0;
 
-// 思考阶段文案（按真实加载进度出现，每阶段仅一次，不轮播）：
-//   [0] 请求发出 → 收到 meta：理解需求
-//   [1] 收到 meta → 首个 token：设计 / 选店
+// 思考阶段文案（按真实加载进度出现，每阶段仅一次，不轮播）
 const THINKING_STEPS = ['正在理解你的需求…', '正在为你设计方案…'];
+
+// 需求字段中文标签（用于确认卡 / 澄清卡展示）
+const REQ_LABELS = {
+  occasion: '场合', recipient: '对象', category: '品类', budget: '预算',
+  style: '风格', color: '色系', preferred: '偏好', avoid: '忌讳',
+  scene: '场景', quantity_spec: '数量', month: '月份'
+};
+
+function labelOf(k) { return REQ_LABELS[k] || k; }
 
 Page({
   data: {
     input: '', messages: [], plan: null, planDrawer: false,
     selectedShop: null, loading: false, sessionId: null, scroller: 'top',
-    thinking: false, thinkingText: '', thinkingStep: 0
+    thinking: false, thinkingText: '', thinkingStep: 0,
+    // 结构化卡片（M19 契约）：按 card.kind 渲染，与对话流互不阻塞
+    card: null, confirmRequirements: [], clarifyMissing: [], changed: false
   },
 
   onLoad(q) {
     if (q && q.q) {
       // 需求1：仅将卡片默认指令预填到输入框（替换已有内容），不自动发送，等待用户确认后手动发送
       this.setData({ input: decodeURIComponent(q.q) });
+    }
+    // 恢复 v7 欢迎气泡：首次进入主动发一条，避免"白屏未加载"观感（M21 重构时曾误删）
+    if (!this.data.sessionId && this.data.messages.length === 0) {
+      this.addMsg('bot', '你好呀～我是你的花艺小助手，说说场合、对象、品类和预算，我帮你设计专属方案 🌿');
     }
   },
   onInput(e) { this.setData({ input: e.detail.value }); },
@@ -65,7 +78,7 @@ Page({
   },
 
   // 流式发消息（SSE 打字机）；失败回落普通请求（仍有打字机动画）
-  async sendStream(body, fallback) {
+  async sendStream(body) {
     let started = false;
     await requestStream('/api/v1/chat/stream', 'POST', body, {
       onMeta: () => this.advanceThinking(), // 服务端完成理解，进入设计/选店阶段（仅一次）
@@ -98,7 +111,7 @@ Page({
   },
 
   // 一次性请求 → 本地打字机动画
-  async sendFallback(body, fallback) {
+  async sendFallback(body) {
     const data = await request('/api/v1/chat', 'POST', body);
     this._turnDone = true;
     this.stopThinking();
@@ -109,8 +122,9 @@ Page({
     });
   },
 
-  async send() {
-    const text = this.data.input.trim();
+  // 发送一段文本（用户输入或卡片按钮回发）
+  async sendText(text) {
+    text = (text || '').trim();
     if (!text || this.data.loading) return;
     this.addMsg('user', text);
     this.setData({ input: '', loading: true });
@@ -135,27 +149,68 @@ Page({
     }
   },
 
+  send() {
+    this.sendText(this.data.input);
+  },
+
+  // ── 结构化卡片交互（按钮回发对应意图文本，由后端状态机统一理解）──
+  onConfirm() { this.sendText('确认'); },
+  onChooseBranch(e) { this.sendText(e.currentTarget.dataset.choice); },     // '现有方案' | 'DIY'
+  onChooseImage(e) { this.sendText(e.currentTarget.dataset.choice); },       // '要' | '不用'
+  onPickShop(e) {
+    const idx = e.currentTarget.dataset.idx;
+    const shopId = e.currentTarget.dataset.shopId;
+    // 即时高亮已选门店，提升反馈感
+    const shops = (this.data.card && this.data.card.data && this.data.card.data.shops) || [];
+    const shop = shops.find((s) => s.shop_id === shopId) || null;
+    if (shop) this.setData({ selectedShop: shop });
+    this.sendText('选第' + idx + '家');
+  },
+  onMoreShop() { this.sendText('看看其他店'); },
+
   // 方案抽屉：打开/关闭（方案详情不占对话流，随时可回看）
   openPlanDrawer() { if (this.data.plan) this.setData({ planDrawer: true }); },
   closePlanDrawer() { this.setData({ planDrawer: false }); },
 
   applyResult(data) {
     const app = getApp();
-    if (data.plan) {
-      if (data.render_url && data.render_url.startsWith('/')) {
-        data.render_url = app.globalData.apiBase + data.render_url;
-        data.plan.render_url = data.render_url;
-      }
-      data.plan.shop_suggestions = data.shop_suggestions || [];
+    const card = data.card || null;
+
+    // 确认卡：展开需求字段为「标签-值」列表
+    let confirmRequirements = [];
+    if (card && card.kind === 'confirm' && card.data && card.data.requirements) {
+      const req = card.data.requirements;
+      confirmRequirements = Object.keys(req)
+        .filter((k) => req[k] !== null && req[k] !== undefined && req[k] !== '')
+        .map((k) => ({ key: labelOf(k), value: req[k] }));
     }
+
+    // 澄清卡：缺失字段转中文标签
+    let clarifyMissing = [];
+    if (card && card.kind === 'clarify' && card.data && card.data.missing) {
+      clarifyMissing = card.data.missing.map(labelOf);
+    }
+
+    // 方案：不内嵌店铺选择（选店在独立卡片，改进②）
+    let plan = data.plan || null;
+    if (plan && data.render_url && data.render_url.startsWith('/')) {
+      const url = (app.globalData.apiBase || '') + data.render_url;
+      plan.render_url = url;
+    }
+
     this.setData({
-      plan: data.plan,
-      planDrawer: false, // 新方案到来时关闭抽屉，回到对话
+      card,
+      confirmRequirements,
+      clarifyMissing,
+      changed: !!data.changed,
+      plan,
+      planDrawer: false, // 新方案/新卡片到来时关闭抽屉，回到对话
       selectedShop: data.shop_choice || null,
       sessionId: data.session_id,
-      loading: false
+      loading: false,
+      scroller: card ? ('card-' + card.kind) : 'top'
     });
-    if (data.plan) this.saveHistory(data.plan);
+    if (plan) this.saveHistory(plan);
   },
 
   saveHistory(plan) {
@@ -171,16 +226,6 @@ Page({
     if (this.data.plan) {
       wx.navigateTo({ url: '/pages/plan/plan?id=' + this.data.plan.plan_id });
     }
-  },
-
-  pickShop(e) {
-    this.setData({ input: '选第' + e.currentTarget.dataset.idx + '家', planDrawer: false });
-    this.send();
-  },
-
-  sendMore() {
-    this.setData({ input: '看看其他店', planDrawer: false });
-    this.send();
   },
 
   goOrder() {
