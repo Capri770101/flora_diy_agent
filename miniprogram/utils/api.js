@@ -87,4 +87,56 @@ function requestStream(path, method, data, handlers) {
   });
 }
 
-module.exports = { request, requestStream };
+// ============================================================================
+// 领域接口封装（对齐后端 M19 契约）
+// ----------------------------------------------------------------------------
+// 对话结构化卡片协议（后端在 /api/v1/chat 与 /api/v1/chat/stream 的 done 帧
+// 透传 `card` 字段，前端按 kind 渲染对应交互卡，均不阻塞对话流）：
+//   kind=null            普通文本轮，无特殊卡片
+//   'clarify'            关键需求未齐 → 回显缺失字段，引导用户补充（不出方案）
+//   'confirm'            关键需求齐 → 方案确认卡（含 requirements 摘要）；用户确认后才进入分支
+//   'branch'             确认后 → 询问「现有方案 / DIY」二选一
+//   'image_ask'          DIY 分支 → 询问是否生成效果图（原有商家效果图则跳过此步）
+//   'shop_select'        方案定稿后 → 独立选店卡（Top3 门店），与方案卡分离
+// 重要：方案卡（plan）不含店铺选择；店铺选择只在 shop_select 卡片内呈现（改进②）。
+// 历史方案：GET /api/v1/plans 返回服务端持久化列表（改进⑤，跨设备）。
+// 下单支付：POST /api/v1/orders 创建；POST /api/v1/orders/:id/pay 调支付接口
+//          （当前 provider=mock，返回 MOCK_SIGN_ 签名；预留微信支付替换点，改进⑥）。
+// ============================================================================
+
+// 一次性对话（非流式）：返回完整响应体（含 card / plan / shop_suggestions）
+function chat(body) {
+  return request('/api/v1/chat', 'POST', body);
+}
+
+// 流式对话（打字机）：handlers.onDone(payload) 中的 payload 同样含 card / plan / shop_suggestions
+function chatStream(body, handlers) {
+  return requestStream('/api/v1/chat/stream', 'POST', body, handlers);
+}
+
+// 历史方案列表（服务端持久化，跨设备）
+function getPlans() {
+  return request('/api/v1/plans', 'GET');
+}
+
+// 单个方案详情
+function getPlan(id) {
+  return request('/api/v1/plans/' + id, 'GET');
+}
+
+// 单个订单详情
+function getOrder(id) {
+  return request('/api/v1/orders/' + id, 'GET');
+}
+
+// 创建订单（plan_id + shop_id 必填）
+function createOrder(body) {
+  return request('/api/v1/orders', 'POST', body);
+}
+
+// 调起支付（当前 mock；生产接入微信支付后签名契约不变）
+function payOrder(id) {
+  return request('/api/v1/orders/' + id + '/pay', 'POST', {});
+}
+
+module.exports = { request, requestStream, chat, chatStream, getPlans, getPlan, getOrder, createOrder, payOrder };

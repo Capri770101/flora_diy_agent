@@ -263,9 +263,34 @@
 
 ---
 
-## 8. 待办（实现清单）
+## 8. 结构化卡片协议（M19 · 6 项改进契约）
+
+后端在 `/api/v1/chat` 与 `/api/v1/chat/stream` 的响应体（done 帧）中**透传 `card` 字段**。
+前端按 `card.kind` 渲染对应交互卡，所有卡片均不阻塞对话流，用户点选即把对应意图文本回发 `/chat`。
+
+| `card.kind` | 触发时机 | 前端应渲染 | 用户回发意图 |
+|---|---|---|---|
+| `null` | 普通文本轮 | 普通气泡 | 自由输入 |
+| `clarify` | 关键需求未齐（场合/对象/品类/预算 任一缺失） | 回显 `card.data.missing_fields`，引导补充；**绝不出现方案** | 补充需求 |
+| `confirm` | 关键需求齐，方案确认前 | 确认卡：展示 `card.data.requirements` 摘要；**不含店铺选择** | `确认` / 修改某项 |
+| `branch` | 用户确认后 | 分支卡：二选一 `现有方案` / `DIY` | `现有方案` / `DIY` |
+| `image_ask` | DIY 分支选定后 | 出图询问卡：是否生成效果图 | `要` / `不用` |
+| `shop_select` | 方案定稿后（现有方案直接到此、DIY 视是否出图到此） | **独立选店卡**：展示 `card.data.shops`（Top3），与方案卡分离 | `选第N家` / `看看其他店` |
+
+约定：
+1. **改进①**：`need_clarify===true` 或 `card.kind==='clarify'` 时，禁止展示方案；`card.kind==='confirm'` 时方案仍为 `null`，须等用户确认。
+2. **改进②**：方案卡（`plan`）内不得含店铺选择；店铺选择仅出现在 `shop_select` 卡片。
+3. **改进③/④**：`branch` 选 `现有方案` → 后端直接返回 `plan.mode==='existing'` + 商家效果图（`render_url` 以 `/preview/merchant-` 开头），**跳过 `image_ask`** 直接进入 `shop_select`；选 `DIY` → 先 `image_ask`，答 `不用` 则 `render_url` 为空、直接 `shop_select`。
+4. **改进⑤**：首页"历史方案"调 `GET /api/v1/plans`，返回 `{plan_id, summary, total, budget, category, mode, render_url, created_at}[]`（服务端持久化，跨设备）。
+5. **改进⑥**：下单 `POST /api/v1/orders {plan_id, shop_id}`；支付 `POST /api/v1/orders/:id/pay` 返回 `{order, payment}`，`payment.paySign` 以 `MOCK_SIGN_` 开头（当前 mock；接微信支付后签名契约不变，前端仍走 `wx.requestPayment`）。
+
+> 客户端 glue 见 `miniprogram/utils/api.js`（`getPlans / createOrder / payOrder / chat / chatStream`）。
+> 卡片的视觉样式（颜色、布局、动效）由小程序侧 vibe coding 实现，后端只负责协议与数据。
+
+## 9. 待办（实现清单）
 
 - [x] 实现 `POST /api/v1/feedback`（服务端落库 + 聚合回写 + `/feedback/stats`）
-- [ ] 存储从整文件 JSON 升级到 SQLite（并发安全 + 聚合查询）
+- [x] 存储升级到 SQLite（并发安全 + 聚合查询，node:sqlite 零依赖）
 - [ ] 接入鉴权（微信 `code2session` → 平台 token）
 - [ ] 真实文生图接入后，补充 `render_type: real_image` 的 CDN 缓存策略
+- [ ] 小程序侧按第 8 节卡片协议渲染 ①②③④⑤（UI 由小程序侧实现）
