@@ -1,5 +1,5 @@
 <view class="home">
-  <view class="page-bg"></view>
+  <image class="page-bg" src="/images/bg-unified.png" mode="aspectFill"></image>
   <view class="hero">
     <view class="hero-title">🌸 花艺顾问</view>
     <view class="hero-sub">说一句需求，智能体帮你设计专属花艺方案与效果图</view>

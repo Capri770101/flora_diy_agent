@@ -1,5 +1,5 @@
 <view class="chat">
-  <view class="page-bg"></view>
+  <image class="page-bg" src="/images/bg-unified.png" mode="aspectFill"></image>
   <!-- 消息流：纯对话气泡，方案不占用对话空间 -->
   <scroll-view scroll-y class="msg-area" scroll-into-view="{{scroller}}" scroll-with-animation>
     <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="bubble {{item.role}}">

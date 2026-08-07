@@ -1,4 +1,4 @@
-<view class="page-bg"></view>
+<image class="page-bg" src="/images/bg-unified.png" mode="aspectFill"></image>
 <view class="plan" wx:if="{{plan}}">
   <view class="hero">
     <view class="h-title">🌿 你的专属花艺方案</view>
