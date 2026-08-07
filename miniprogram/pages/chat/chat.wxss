@@ -173,12 +173,15 @@
   box-shadow: 0 6rpx 16rpx rgba(43,108,255,0.30);
 }
 
-/* 输入栏 */
+/* 输入栏：渐变背景 + 顶部阴影 + 底部安全区，确保在浅蓝渐变页面上清晰可辨 */
 .input-bar {
-  display: flex; padding: 16rpx;
-  background: rgba(255,255,255,0.95);
-  border-top: 1rpx solid #E6EEFB;
-  backdrop-filter: blur(8rpx);
+  display: flex; align-items: center;
+  padding: 16rpx 20rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, #FFFFFF 0%, #EEF3FF 100%);
+  border-top: 1rpx solid rgba(43,108,255,0.22);
+  box-shadow: 0 -6rpx 20rpx rgba(15,30,77,0.10);
+  backdrop-filter: blur(12rpx);
+  flex-shrink: 0;
 }
 .input {
   flex: 1;
