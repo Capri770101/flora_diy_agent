@@ -1,5 +1,6 @@
 /* home 页面：蓝白 + 透明三角卡 */
-.home { padding: 24rpx; }
+/* 横向 padding 归零，块级卡片统一由自身 margin(28rpx) 控制左对齐 */
+.home { padding: 0 0 24rpx; }
 
 /* 顶部主视觉：深蓝 HUD + 斜切（终末地感） */
 .hero {
@@ -32,17 +33,19 @@
 /* .section-title 用全局（带蓝青竖条） */
 .section-title { font-size: 28rpx; }
 
-/* 场景网格 */
+/* 场景网格：左右 margin 28rpx，与 .section-title / .card / .btn 左对齐
+   兼容写法：纯百分比宽度 + space-between，不依赖 calc / gap（部分手机微信对二者支持不稳） */
 .scene-grid {
   display: flex; flex-wrap: wrap;
-  gap: 16rpx;
-  margin: 0 0 8rpx;
-  padding: 0 4rpx;
+  justify-content: space-between;
+  margin: 0 28rpx 8rpx;
+  padding: 0;
 }
 
 /* 场景卡：透明三角卡（用 background-image 多重渐变实现装饰，无伪元素） */
 .scene {
-  width: calc(50% - 8rpx);
+  width: 48%;
+  margin-bottom: 16rpx;
   position: relative;
   background:
     linear-gradient(45deg,

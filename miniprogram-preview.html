@@ -102,7 +102,7 @@
     display: flex; align-items: center;
     font-size: 15px; font-weight: 700;
     color: var(--ink);
-    margin: 28px 28px 12px;
+    margin: 20px 18px 10px;
     text-shadow: 0 1px 3px rgba(255,255,255,.6);
   }
   .section-bar {
@@ -156,11 +156,12 @@
 
   /* ====== 场景网格（首页） ====== */
   .scene-grid {
-    display: flex; flex-wrap: wrap; gap: 12px;
+    display: flex; flex-wrap: wrap;
+    justify-content: space-between;
     margin: 0 18px 8px;
   }
   .scene {
-    width: calc(50% - 6px);
+    width: 48%;
     position: relative;
     background:
       linear-gradient(45deg,
@@ -514,7 +515,8 @@
     ② <b>透明三角卡</b>用 background-image 多重渐变实现右上小三角 + 顶部发光线（避开 wxss 伪元素兼容问题）<br>
     ③ <b>左侧蓝青竖条</b>用真实 div（.section-bar），不用 ::before<br>
     ④ <b>按钮切角</b>用 clip-path，与卡片呼应<br>
-    ⑤ <b>蓝主调</b>（#2B6CFF + #16C2D5 渐变），所有紫色（#8E44AD）已清除
+    ⑤ <b>蓝主调</b>（#2B6CFF + #16C2D5 渐变），所有紫色（#8E44AD）已清除<br>
+    ⑥ <b>对齐统一</b>：卡片 / 区块标题 / 按钮 / 场景卡 / 我的页条目统一左缩进 28rpx，hero 通栏；消除页内标题与卡片错位、页间缩进不一致
   </div>
 </body>
 </html>
