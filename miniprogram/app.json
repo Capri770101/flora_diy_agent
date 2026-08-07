@@ -20,5 +20,8 @@
   },
   "requiredPrivateInfos": ["getLocation"],
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "mine-fab": "/components/mine-fab/mine-fab"
+  }
 }

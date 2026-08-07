@@ -1,9 +1,17 @@
 // 请求封装
 const app = getApp();
+// 每次请求现取最新 base（用户改完 storage 后无需重启 app，下一次请求即生效）
+function getApiBase() {
+  try {
+    const stored = wx.getStorageSync('apiBase');
+    if (stored && /^https?:\/\//.test(stored)) return stored;
+  } catch (e) { /* 忽略 */ }
+  return (app.globalData && app.globalData.apiBase) || '';
+}
 function request(path, method, data) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: (app.globalData.apiBase || '') + path,
+      url: getApiBase() + path,
       method: method || 'GET',
       data: data || {},
       header: { 'Content-Type': 'application/json' },
@@ -26,7 +34,7 @@ function requestStream(path, method, data, handlers) {
     const settleOnce = (fn, arg) => { if (!settled) { settled = true; fn(arg); } };
 
     const task = wx.request({
-      url: (app.globalData.apiBase || '') + path,
+      url: getApiBase() + path,
       method: method || 'POST',
       data: data || {},
       header: { 'Content-Type': 'application/json' },

@@ -42,3 +42,46 @@
 .item-deco { display: none; }
 .item-sum { font-size: 28rpx; color: #16233F; line-height: 1.5; }
 .item-meta { font-size: 24rpx; color: #9AA8C4; margin-top: 10rpx; }
+
+/* API 设置卡：与方案条目同风格的透明三角卡 */
+.api-card {
+  position: relative; overflow: hidden;
+  background:
+    linear-gradient(45deg,
+      transparent calc(50% - 1rpx),
+      rgba(22,194,213,0.90) calc(50% - 1rpx),
+      rgba(22,194,213,0.90) 50%,
+      transparent 50%) top right / 28rpx 28rpx no-repeat,
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(43,108,255,0.80) 25%,
+      rgba(22,194,213,0.80) 70%,
+      transparent 100%) top left / 100% 2rpx no-repeat,
+    rgba(255,255,255,0.90);
+  border: 1rpx solid rgba(43,108,255,0.30);
+  border-radius: 0;
+  padding: 24rpx; margin: 0 28rpx 16rpx;
+  box-shadow: 0 6rpx 18rpx rgba(43,108,255,0.10);
+  clip-path: polygon(12rpx 0, 100% 0, 100% calc(100% - 12rpx), calc(100% - 12rpx) 100%, 0 100%, 0 12rpx);
+}
+.api-row { margin-bottom: 16rpx; }
+.api-input {
+  background: rgba(255,255,255,0.95);
+  border: 1rpx solid rgba(43,108,255,0.30);
+  border-radius: 8rpx;
+  padding: 14rpx 16rpx;
+  font-size: 26rpx; color: #16233F;
+  font-family: monospace;
+}
+.api-actions { display: flex; gap: 16rpx; }
+.api-btn {
+  flex: 1; text-align: center; padding: 14rpx 0; font-size: 28rpx; font-weight: 600;
+  color: #fff; border-radius: 0; letter-spacing: 2rpx;
+  clip-path: polygon(10rpx 0, 100% 0, 100% calc(100% - 10rpx), calc(100% - 10rpx) 100%, 0 100%, 0 10rpx);
+}
+.api-save { background: linear-gradient(135deg, #2B6CFF 0%, #16C2D5 100%); }
+.api-test { background: rgba(43,108,255,0.20); color: #2B6CFF; border: 1rpx solid rgba(43,108,255,0.40); }
+.api-status { margin-top: 14rpx; font-size: 24rpx; line-height: 1.5; }
+.api-ok { color: #16C2D5; }
+.api-err { color: #E55C5C; }
+.api-hint { margin-top: 8rpx; font-size: 22rpx; color: #9AA8C4; word-break: break-all; }

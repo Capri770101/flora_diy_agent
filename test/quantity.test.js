@@ -2,6 +2,7 @@
 const assert = require('node:assert');
 const { decompose } = require('../lib/decomposer');
 const { composePlan } = require('../lib/planner');
+const { runAgent } = require('../lib/agent/index');
 
 let pass = 0, fail = 0;
 function ok(name, cond) {
@@ -43,6 +44,26 @@ function ok(name, cond) {
   ok('无数量 → quantity_spec 空', !req3.quantity_spec || req3.quantity_spec.length === 0);
   const plan3 = composePlan(req3);
   ok('无数量 → 走默认方案且有 items', plan3.items.length > 0 && plan3.mode !== 'custom_spec');
+
+  console.log('— M17-3 reply 走现算路径 + 去"定制"字（端到端） —');
+  // 模拟真实对话：用户报数量 → 智能体必须给真实方案（不报"需要定制"）。
+  // 路径不强制 custom_spec：命中预设搭配也 OK，契约只锁 reply 文案。
+  const dingzhiCases = [
+    '我要11朵红玫瑰和1朵满天星，预算不限',
+    '11支红玫瑰+1扎满天星，500块以内',
+    '十一支红玫瑰配满天星',
+    '3支百合加上2扎尤加利',
+    '我想要9支粉色康乃馨'
+  ];
+  for (const q of dingzhiCases) {
+    const out = await runAgent({ text: q, session: null, location: '深圳', config: { skip_image: true } });
+    const reply = out.reply || '';
+    const hasItems = out.plan && Array.isArray(out.plan.items) && out.plan.items.length > 0;
+    const hasRealPrice = out.plan && out.plan.total > 0;
+    const hasDingzhi = /定制/.test(reply);
+    ok('「' + q.slice(0, 14) + '…」产出真实方案（有 items 且有价）', hasItems && hasRealPrice);
+    ok('  reply 不含"定制/需要定制"', !hasDingzhi);
+  }
 
   console.log('— M18 预算自然语言理解 —');
   const b1 = await decompose('预算改到500吧');
