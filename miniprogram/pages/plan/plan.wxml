@@ -47,5 +47,7 @@
     <view class="care">本方案不含店铺选择。回到对话，在「选择花店」卡片里挑一家即可下单。</view>
   </view>
   <view class="btn order-btn" bindtap="goChat">去对话选店下单 →</view>
+  <!-- 全局「我的」悬浮按钮 -->
+  <mine-fab fab-pos="fab-d" />
 </view>
 <view wx:else class="empty">方案不存在</view>

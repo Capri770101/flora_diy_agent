@@ -305,3 +305,15 @@ page {
   line-height: 1.5;
   text-shadow: 0 1rpx 4rpx rgba(0,0,0,0.2);
 }
+
+/* ============================================================
+   全局「我的」悬浮按钮定位（配合 mine-fab 组件的 fab-pos 外部类）
+   ============================================================ */
+/* 常规页面：避开底部安全区 */
+.fab-d {
+  bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+/* 对话页：放在输入栏之上，避免遮挡发送按钮 */
+.fab-chat {
+  bottom: calc(130rpx + env(safe-area-inset-bottom));
+}

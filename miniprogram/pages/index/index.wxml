@@ -39,7 +39,9 @@
         </view>
         <view class="hist-date">{{item.created_at}}</view>
       </view>
-      <view class="hist-arrow">›</view>
-    </view>
+    <view class="hist-arrow">›</view>
   </view>
+</view>
+<!-- 全局「我的」悬浮按钮 -->
+<mine-fab fab-pos="fab-d" />
 </view>

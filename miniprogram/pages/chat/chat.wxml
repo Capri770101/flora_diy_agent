@@ -116,4 +116,6 @@
     <input class="input" placeholder="描述你的需求…" value="{{input}}" bindinput="onInput" confirm-type="send" bindconfirm="send" />
     <view class="send-btn" bindtap="send">发送</view>
   </view>
+  <!-- 全局「我的」悬浮按钮：放在输入栏之上，避免遮挡发送按钮 -->
+  <mine-fab fab-pos="fab-chat" />
 </view>

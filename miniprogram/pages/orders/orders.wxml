@@ -14,4 +14,6 @@
   </view>
   <view class="refresh" bindtap="refresh" wx:if="{{orders.length}}">刷新</view>
 
+  <!-- 全局「我的」悬浮按钮 -->
+  <mine-fab fab-pos="fab-d" />
 </view>
